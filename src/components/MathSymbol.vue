@@ -1,21 +1,22 @@
 <template>
-  <div class="header">
-    <h1>Equations Editor</h1>
+  <div class="symbol">
+    <b-button>{{ symbol }}</b-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'EquationsEditor',
+  name: 'MathSymbol',
   props: {
-    msg: String
+    symbol: String
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.header {
-  margin-bottom: 30px;
+.symbol {
+  /* border: 1px solid #000; */
+  margin: 5px;
 }
 </style>
