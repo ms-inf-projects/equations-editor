@@ -6,10 +6,7 @@
 
 <script>
 export default {
-  name: 'EquationsEditor',
-  props: {
-    msg: String
-  }
+  name: 'EquationsEditor'
 }
 </script>
 

@@ -16,9 +16,7 @@
 
 <script>
 export default {
-  name: 'HelpPanel',
-  props: {
-  }
+  name: 'HelpPanel'
 }
 </script>
 

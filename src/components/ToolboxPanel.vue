@@ -17,8 +17,6 @@ export default {
   name: 'ToolboxPanel',
   components: {
     MathSymbol
-  },
-  props: {
   }
 }
 </script>
@@ -28,17 +26,5 @@ export default {
 .toolbox-panel {
   border: 0.5px solid #333;
   min-height: 200px;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 </style>

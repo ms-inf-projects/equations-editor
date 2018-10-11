@@ -1,6 +1,6 @@
 <template>
   <div class="main-view">
-    <b-container class="bv-example-row">
+    <b-container>
       <b-row>          
           <b-col>
             <header-panel/>
@@ -17,6 +17,7 @@
           <toolbox-panel/>
         </b-col>
       </b-row>
+      <export-panel/>
     </b-container>
   </div>
 </template>
@@ -26,6 +27,7 @@ import HeaderPanel from '../components/HeaderPanel.vue'
 import HelpPanel from '../components/HelpPanel.vue'
 import ToolboxPanel from '../components/ToolboxPanel.vue'
 import EditorPanel from '../components/EditorPanel.vue'
+import ExportPanel from '../components/ExportPanel.vue'
 
 export default {
   name: 'MainView',
@@ -33,24 +35,23 @@ export default {
     HeaderPanel,
     HelpPanel,
     ToolboxPanel,
-    EditorPanel
-  },
-  props: {
+    EditorPanel,
+    ExportPanel
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
+<style>
+.section-header {
+  height: 100%;
+  font-size: 24px;
+  margin: 5px;
+}
+</style>
+
 <style scoped>
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.main-view {
+
 }
 </style>
