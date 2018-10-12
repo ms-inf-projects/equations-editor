@@ -4,6 +4,7 @@ import store from './store'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'katex/dist/katex.min.js'
 
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false
