@@ -9,8 +9,6 @@
   },
   "dependencies": {
     "bootstrap-vue": "^2.0.0-rc.11",
-    "fmath": "^1.0.1",
-    "katex": "^0.10.0-rc.1",
     "vue": "^2.5.17",
     "vuex": "^3.0.1"
   },
