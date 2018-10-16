@@ -1,18 +1,18 @@
 <template>
   <div class="symbol">
-    Suma
-    <sup><equation-input></equation-input></sup>
-    <sub><equation-input></equation-input></sub>
+    <equation-input></equation-input>
+    &Sum;
+    <equation-input></equation-input>
   </div>
 </template>
 
 <script>
-// import EquationInput from "./EquationInput.vue";
+import EquationInput from "./EquationInput.vue";
 
 export default {
   name: "Sum",
   components: {
-    // EquationInput
+    EquationInput
   },
   props: {
     symbol: String

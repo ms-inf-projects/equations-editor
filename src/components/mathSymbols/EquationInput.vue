@@ -1,6 +1,8 @@
 <template>
   <div class="equation-input" v-on:click="activateInput()" ref="equationInput">
-    [_]
+    <!-- <span v-if="isEmpty">[_]</span> -->
+  []
+  <!-- {{this.embededSymbols.length}} -->
   </div>
 </template>
 
@@ -9,7 +11,11 @@ export default {
   name: "EquationInput",
   components: {},
   data() {
-    return {};
+    return {
+      isMounted: false,
+      parent: Object,
+      embededSymbols: new Array(10)
+    };
   },
   props: {},
   methods: {
@@ -17,9 +23,30 @@ export default {
       let payload = {
         activatedInput: this
       };
+      console.log(this.$refs);
 
       this.$store.dispatch("activateEquationInput", payload);
     }
+
+    // TODO - not sure how to remove component when it is deleted
+    // addSymbol(newSymbol) {
+    //   this.embededSymbols.push(newSymbol);
+    // }
+  },
+  computed: {
+    isEmpty: function() {
+      return this.embededSymbols.length;
+      // return true;
+    }
+  },
+
+  mounted() {
+    this.embededSymbols = this.$refs.equationInput.$children;
+  },
+
+  updated() {
+    console.log("updated");
+    this.embededSymbols = this.$refs.equationInput.$children;
   }
 };
 </script>

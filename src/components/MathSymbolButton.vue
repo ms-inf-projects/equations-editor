@@ -1,6 +1,6 @@
 <template>
     <b-col class="math-symbol-button">
-      <b-button v-on:click="insertSymbol()">{{ mathSymbol }}</b-button>
+      <b-button v-on:click="insertSymbol()">{{ mathSymbolDisplay }}</b-button>
     </b-col> 
 </template>
 
@@ -9,7 +9,7 @@ export default {
   name: "ExportButton",
   components: {},
   props: {
-    mathSymbol: String
+    mathSymbolDisplay: String
   },
   methods: {
     insertSymbol() {

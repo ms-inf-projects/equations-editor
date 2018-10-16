@@ -4,10 +4,10 @@
     <b-row>
       <!-- TODO - try to refactor: foreach - list of symbols and methods -->
       <!-- TODO - correct display in buttons -->
-      <math-symbol-button mathSymbol="&int;" v-on:buttonClick="insertIntegral()"></math-symbol-button>
-      <math-symbol-button mathSymbol="&sum;" v-on:buttonClick="insertSum()"></math-symbol-button>
+      <math-symbol-button mathSymbolDisplay="&int;" v-on:buttonClick="insertMathSymbol(insertIntegral)"></math-symbol-button>
+      <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol(insertSum)"></math-symbol-button>
     </b-row>
-    <div class="editor" v-on:click="finishActivation()">
+    <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
 			<equation-input></equation-input>
     </div>
   </div>
@@ -35,28 +35,40 @@ export default {
     finishActivation() {
       this.$store.dispatch("finishActivation");
     },
+    handleKeyboard(event) {
+      // TODO - handle keyboard events
+    },
 
     // TODO - when no active input the error occure
     // TODO - try to make inserting methods more DRY or consider moving them to separate file
-    insertIntegral() {
-      console.log("Inserting integral");
+    insertMathSymbol(constructor) {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
-        var ComponentClass = Vue.extend(Integral);
+        var ComponentClass = constructor();
         var instance = new ComponentClass({ parent: activeInput });
         instance.$mount(); // pass nothing
         activeInput.$refs.equationInput.appendChild(instance.$el);
+        console.log(instance);
+        console.log(activeInput);
+        activeInput.embededSymbols.push(instance);
+        // activeInput.addSymbol(instance);
       }
     },
+
+    insertIntegral() {
+      return Vue.extend(Integral);
+    },
     insertSum() {
-      if (activeInput) {
-        let activeInput = this.$store.getters.getActiveInput;
-        var ComponentClass = Vue.extend(Sum);
-        var instance = new ComponentClass({ parent: activeInput });
-        instance.$mount(); // pass nothing
-        activeInput.$refs.equationInput.appendChild(instance.$el);
-      }
+      return Vue.extend(Sum);
     }
+  },
+
+  mounted() {
+    let self = this;
+
+    window.addEventListener("keyup", function(ev) {
+      self.handleKeyboard(ev); // declared in your component methods
+    });
   }
 };
 </script>
