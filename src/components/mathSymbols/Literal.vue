@@ -4,7 +4,7 @@
  -->
 <template>
   <div class="literal">
-    {{data}}
+    <span>{{data}}</span>
   </div>
 </template>
 
@@ -31,6 +31,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .literal {
-
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+  /* position: absolute; */
+  /* top: 50%; */
+  /* left: 50%; */
+  /* height: 30%; */
+  /* width: 50%; */
+  /* margin: -15% 0 0 -25%; */
 }
 </style>

@@ -1,6 +1,6 @@
-<!-- Handles
+<!-- Opędzi
   - calka oznaczona
-  - suma
+  - suma itp.
   - ulamek
  -->
 <template>

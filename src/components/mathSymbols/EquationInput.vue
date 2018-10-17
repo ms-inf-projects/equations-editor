@@ -1,7 +1,6 @@
 <template>
   <div class="equation-input" v-on:click="activateInput()" ref="equationInput">
-    <!-- <span v-if="isEmpty">[_]</span> -->
-  []
+    <span v-if="isEmpty">[_]</span>
   <!-- {{this.embededSymbols.length}} -->
   </div>
 </template>
@@ -13,6 +12,7 @@ export default {
   data() {
     return {
       isMounted: false,
+      isEmpty: true,
       parent: Object,
       embededSymbols: new Array(10)
     };
@@ -28,6 +28,12 @@ export default {
       this.$store.dispatch("activateEquationInput", payload);
     },
 
+    updateContainerState() {
+      console.log(this);
+      if (this.$refs.equationInput.children.length > 0) this.isEmpty = false;
+      else this.isEmpty = true;
+    },
+
     toLatex() {
       // TODO - call toLatex on all of the components
       // glue the result
@@ -39,10 +45,10 @@ export default {
     // }
   },
   computed: {
-    isEmpty: function() {
-      return this.embededSymbols.length;
-      // return true;
-    }
+    // isEmpty: function() {
+    //   return this.embededSymbols.length;
+    //   // return true;
+    // }
   },
 
   mounted() {
@@ -58,4 +64,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.equation-input {
+  /* display: inline-block;
+  vertical-align: top; */
+}
 </style>

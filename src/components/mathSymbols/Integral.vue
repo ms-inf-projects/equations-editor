@@ -1,8 +1,12 @@
 <template>
   <div class="symbol">
-    <equation-input></equation-input>
+    <div>
+      <equation-input></equation-input>
+    </div>
     &int;
-    <equation-input></equation-input>
+    <div>
+      <equation-input></equation-input>
+    </div>
   </div>
 </template>
 
@@ -23,7 +27,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .symbol {
-  margin: 5px;
+  margin: 1px;
   display: inline-block;
 }
 </style>

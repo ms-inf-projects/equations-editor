@@ -20,6 +20,7 @@ import EquationInput from "./mathSymbols/EquationInput.vue";
 import Integral from "./mathSymbols/Integral.vue";
 import Sum from "./mathSymbols/Sum.vue";
 import Literal from "./mathSymbols/Literal.vue";
+import alphanumeric from "../modules/alphanumeric.js";
 
 export default {
   name: "EditorPanel",
@@ -38,22 +39,29 @@ export default {
       this.$store.dispatch("finishActivation");
     },
     handleKeyboard(event) {
+      if (alphanumeric.isBakcspaceOrDelete(event.keyCode)) {
+        // TODO remove active input
+        return;
+      }
+
+      if (!alphanumeric.isLiteralSymbol(event.keyCode)) {
+        return;
+      }
+
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
         var ComponentClass = Vue.extend(Literal);
-        var instance = new ComponentClass({ 
+        var instance = new ComponentClass({
           parent: activeInput,
-          propsData: {data: event.key}
+          propsData: { data: event.key }
         });
         instance.$mount(); // pass nothing
         activeInput.$refs.equationInput.appendChild(instance.$el);
-        activeInput.embededSymbols.push(instance);
-        // activeInput.addSymbol(instance);
+        activeInput.updateContainerState();
       }
     },
 
     // TODO - when no active input the error occure
-    // TODO - try to make inserting methods more DRY or consider moving them to separate file
     insertMathSymbol(constructor) {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
@@ -61,8 +69,7 @@ export default {
         var instance = new ComponentClass({ parent: activeInput });
         instance.$mount(); // pass nothing
         activeInput.$refs.equationInput.appendChild(instance.$el);
-        activeInput.embededSymbols.push(instance);
-        // activeInput.addSymbol(instance);
+        activeInput.updateContainerState();
       }
     },
 
@@ -71,6 +78,9 @@ export default {
     },
     insertSum() {
       return Vue.extend(Sum);
+    },
+    insertLiteral() {
+      return Vue.extend(Literal);
     }
   },
 
