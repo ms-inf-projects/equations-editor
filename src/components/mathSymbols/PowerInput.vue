@@ -1,13 +1,11 @@
 <!-- Handles
-  - calka oznaczona
-  - suma
-  - ulamek
+  - potega
  -->
 <template>
-  <div class="symbol">
-    <equation-input ref="upInput"></equation-input>
-    {{symbol}}
-    <equation-input ref="downInput"></equation-input>
+  <div class="">
+    <!-- TODO - style -->
+    <equation-input ref="base"></equation-input>
+    <equation-input ref="index"></equation-input>
   </div>
 </template>
 

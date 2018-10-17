@@ -1,13 +1,10 @@
 <!-- Handles
-  - calka oznaczona
-  - suma
-  - ulamek
+  - single letters
+  - single numbers
  -->
 <template>
-  <div class="symbol">
-    <equation-input ref="upInput"></equation-input>
-    {{symbol}}
-    <equation-input ref="downInput"></equation-input>
+  <div class="literal">
+    {{data}}
   </div>
 </template>
 
@@ -20,15 +17,12 @@ export default {
     EquationInput
   },
   props: {
-    symbol: String
+    data: String
   },
 
   methods: {
     toLatex() {
       // TODO - implement
-      // parse symbol to latex
-      // call to latex on both equation inputs
-      // glue it all together
     }
   }
 };
@@ -36,8 +30,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.symbol {
-  margin: 5px;
-  display: inline-block;
+.literal {
+
 }
 </style>

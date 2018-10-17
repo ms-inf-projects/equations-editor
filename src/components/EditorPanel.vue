@@ -19,6 +19,7 @@ import MathSymbolButton from "./MathSymbolButton.vue";
 import EquationInput from "./mathSymbols/EquationInput.vue";
 import Integral from "./mathSymbols/Integral.vue";
 import Sum from "./mathSymbols/Sum.vue";
+import Literal from "./mathSymbols/Literal.vue";
 
 export default {
   name: "EditorPanel",
@@ -26,7 +27,8 @@ export default {
     MathSymbolButton,
     EquationInput,
     Integral,
-    Sum
+    Sum,
+    Literal
   },
   data() {
     return {};
@@ -36,7 +38,18 @@ export default {
       this.$store.dispatch("finishActivation");
     },
     handleKeyboard(event) {
-      // TODO - handle keyboard events
+      let activeInput = this.$store.getters.getActiveInput;
+      if (activeInput) {
+        var ComponentClass = Vue.extend(Literal);
+        var instance = new ComponentClass({ 
+          parent: activeInput,
+          propsData: {data: event.key}
+        });
+        instance.$mount(); // pass nothing
+        activeInput.$refs.equationInput.appendChild(instance.$el);
+        activeInput.embededSymbols.push(instance);
+        // activeInput.addSymbol(instance);
+      }
     },
 
     // TODO - when no active input the error occure
@@ -48,8 +61,6 @@ export default {
         var instance = new ComponentClass({ parent: activeInput });
         instance.$mount(); // pass nothing
         activeInput.$refs.equationInput.appendChild(instance.$el);
-        console.log(instance);
-        console.log(activeInput);
         activeInput.embededSymbols.push(instance);
         // activeInput.addSymbol(instance);
       }

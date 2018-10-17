@@ -26,6 +26,11 @@ export default {
       console.log(this.$refs);
 
       this.$store.dispatch("activateEquationInput", payload);
+    },
+
+    toLatex() {
+      // TODO - call toLatex on all of the components
+      // glue the result
     }
 
     // TODO - not sure how to remove component when it is deleted
