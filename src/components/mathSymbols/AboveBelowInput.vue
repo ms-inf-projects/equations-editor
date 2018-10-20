@@ -25,6 +25,11 @@ export default {
 
   methods: {
     toLatex() {
+      let upInputLatex = this.$refs.upInput.toLatex();
+      let downInputLatex = this.$refs.downInput.toLatex();
+
+      let latexOutput;
+
       // TODO - implement
       // parse symbol to latex
       // call to latex on both equation inputs
@@ -32,12 +37,18 @@ export default {
     }
   }
 };
+
+function mapSymbolToLatex(symbol) {
+  // TODO - use some const map
+  return "int_";
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .symbol {
-  margin: 5px;
+  margin: 1px;
   display: inline-block;
+  vertical-align: middle;
 }
 </style>

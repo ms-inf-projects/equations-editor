@@ -4,8 +4,8 @@
     <b-row>
       <!-- TODO - try to refactor: foreach - list of symbols and methods -->
       <!-- TODO - correct display in buttons -->
-      <math-symbol-button mathSymbolDisplay="&int;" v-on:buttonClick="insertMathSymbol(insertIntegral)"></math-symbol-button>
-      <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol(insertSum)"></math-symbol-button>
+      <math-symbol-button mathSymbolDisplay="&int;" v-on:buttonClick="insertMathSymbol('\u222B')"></math-symbol-button>
+      <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol('\u03A3')"></math-symbol-button>
     </b-row>
     <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
 			<equation-input></equation-input>
@@ -17,8 +17,7 @@
 import Vue from "vue";
 import MathSymbolButton from "./MathSymbolButton.vue";
 import EquationInput from "./mathSymbols/EquationInput.vue";
-import Integral from "./mathSymbols/Integral.vue";
-import Sum from "./mathSymbols/Sum.vue";
+import AboveBelowInput from "./mathSymbols/AboveBelowInput.vue";
 import Literal from "./mathSymbols/Literal.vue";
 import alphanumeric from "../modules/alphanumeric.js";
 
@@ -27,8 +26,7 @@ export default {
   components: {
     MathSymbolButton,
     EquationInput,
-    Integral,
-    Sum,
+    AboveBelowInput,
     Literal
   },
   data() {
@@ -62,22 +60,18 @@ export default {
     },
 
     // TODO - when no active input the error occure
-    insertMathSymbol(constructor) {
+    insertMathSymbol(symbol) {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
-        var ComponentClass = constructor();
-        var instance = new ComponentClass({ parent: activeInput });
+        var ComponentClass = Vue.extend(AboveBelowInput);
+        let instance = new ComponentClass({
+          parent: activeInput,
+          propsData: { symbol: symbol }
+        });
         instance.$mount(); // pass nothing
         activeInput.$refs.equationInput.appendChild(instance.$el);
         activeInput.updateContainerState();
       }
-    },
-
-    insertIntegral() {
-      return Vue.extend(Integral);
-    },
-    insertSum() {
-      return Vue.extend(Sum);
     },
     insertLiteral() {
       return Vue.extend(Literal);

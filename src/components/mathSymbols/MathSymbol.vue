@@ -1,16 +1,28 @@
+<!-- 
+    TODO: consider using litteral for as many cases as you can
+    For: +,-,=, 
+    Maybe: *, >,<, !, Pi and other consts
+
+-->
+
 <template>
-  <div class="symbol">
-    <b-button>{{ symbol }}</b-button>
+  <div class="literal">
+    <span class="literal-data">{{data}}</span>
   </div>
 </template>
 
 <script>
+import EquationInput from "./EquationInput.vue";
+
 export default {
-  name: 'MathSymbol',
+  name: "MathSymbol",
+  components: {
+    EquationInput
+  },
   props: {
     symbol: String
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
