@@ -44,7 +44,7 @@ export default {
         return;
       }
 
-      if (!alphanumeric.isLiteralSymbol(event.keyCode)) {
+      if (!alphanumeric.isLiteralSymbol(event.key)) {
         return;
       }
 

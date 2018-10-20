@@ -1,8 +1,8 @@
 module.exports = {
-    isLiteralSymbol: function (keyCode) {
-        // 48-57 -> 0-9, 65-90 -> A-Z, 97-122 -> a-z
-        if ((keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122))
-            return true
+    isLiteralSymbol: function (key) {
+        if (/^[a-zA-Z0-9]{1}$/.test(key)) {
+            return true;
+        }
 
         return false
     },
@@ -12,5 +12,9 @@ module.exports = {
             return true;
 
         return false;
+    },
+
+    isMathOperator: function (key) {
+        // TODO true when one of: -,+,=,/,(,
     }
 }

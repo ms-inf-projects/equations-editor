@@ -29,5 +29,6 @@ export default {
 .symbol {
   margin: 1px;
   display: inline-block;
+  vertical-align: middle;
 }
 </style>

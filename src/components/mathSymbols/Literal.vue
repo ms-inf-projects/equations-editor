@@ -4,7 +4,7 @@
  -->
 <template>
   <div class="literal">
-    <span>{{data}}</span>
+    <span class="literal-data">{{data}}</span>
   </div>
 </template>
 
@@ -32,13 +32,19 @@ export default {
 <style scoped>
 .literal {
   display: inline-block;
-  vertical-align: top;
-  height: 100%;
+  text-align: center;
+  vertical-align: auto;
+  /* vertical-align: 110%; */
+  /* height: 100px; */
   /* position: absolute; */
   /* top: 50%; */
   /* left: 50%; */
   /* height: 30%; */
   /* width: 50%; */
   /* margin: -15% 0 0 -25%; */
+}
+
+.literal-data {
+  vertical-align: middle;
 }
 </style>
