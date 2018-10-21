@@ -4,7 +4,7 @@
  -->
 <template>
   <div class="literal">
-    <span class="literal-data">{{data}}</span>
+    <span class="literal-data">{{symbol}}</span>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
     EquationInput
   },
   props: {
-    data: String
+    symbol: String
   },
 
   methods: {

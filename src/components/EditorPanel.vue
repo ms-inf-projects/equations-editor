@@ -4,8 +4,8 @@
     <b-row>
       <!-- TODO - try to refactor: foreach - list of symbols and methods -->
       <!-- TODO - correct display in buttons -->
-      <math-symbol-button mathSymbolDisplay="&int;" v-on:buttonClick="insertMathSymbol('\u222B')"></math-symbol-button>
-      <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol('\u03A3')"></math-symbol-button>
+      <math-symbol-button mathSymbolDisplay="&int;" v-on:buttonClick="insertMathSymbol('\u222B', insertAboveBelowInput)"></math-symbol-button>
+      <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol('\u03A3', insertAboveBelowInput)"></math-symbol-button>
     </b-row>
     <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
 			<equation-input></equation-input>
@@ -46,24 +46,16 @@ export default {
         return;
       }
 
-      let activeInput = this.$store.getters.getActiveInput;
-      if (activeInput) {
-        var ComponentClass = Vue.extend(Literal);
-        var instance = new ComponentClass({
-          parent: activeInput,
-          propsData: { data: event.key }
-        });
-        instance.$mount(); // pass nothing
-        activeInput.$refs.equationInput.appendChild(instance.$el);
-        activeInput.updateContainerState();
-      }
+      this.insertMathSymbol(event.key, this.insertLiteral);
     },
 
+    removeActiveInput() {},
+
     // TODO - when no active input the error occure
-    insertMathSymbol(symbol) {
+    insertMathSymbol(symbol, componentConstructor) {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
-        var ComponentClass = Vue.extend(AboveBelowInput);
+        var ComponentClass = componentConstructor();
         let instance = new ComponentClass({
           parent: activeInput,
           propsData: { symbol: symbol }
@@ -73,8 +65,13 @@ export default {
         activeInput.updateContainerState();
       }
     },
+
     insertLiteral() {
       return Vue.extend(Literal);
+    },
+
+    insertAboveBelowInput() {
+      return Vue.extend(AboveBelowInput);
     }
   },
 
