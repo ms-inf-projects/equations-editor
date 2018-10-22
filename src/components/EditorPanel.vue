@@ -4,11 +4,11 @@
     <b-row>
       <!-- TODO - try to refactor: foreach - list of symbols and methods -->
       <!-- TODO - correct display in buttons -->
-      <math-symbol-button mathSymbolDisplay="&int;" v-on:buttonClick="insertMathSymbol('\u222B', insertAboveBelowInput)"></math-symbol-button>
-      <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol('\u03A3', insertAboveBelowInput)"></math-symbol-button>
+      <math-symbol-button mathSymbolDisplay="&int;" v-on:buttonClick="insertMathSymbol('\u222B', symbols.aboveBelow)"></math-symbol-button>
+      <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol('\u03A3', symbols.aboveBelow)"></math-symbol-button>
     </b-row>
     <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
-			<equation-input></equation-input>
+			<equation-input id="mainInput"></equation-input>
     </div>
   </div>
 </template>
@@ -20,6 +20,7 @@ import EquationInput from "./mathSymbols/EquationInput.vue";
 import AboveBelowInput from "./mathSymbols/AboveBelowInput.vue";
 import Literal from "./mathSymbols/Literal.vue";
 import alphanumeric from "../modules/alphanumeric.js";
+import mathComponents from "../modules/mathComponents.js";
 
 export default {
   name: "EditorPanel",
@@ -30,7 +31,9 @@ export default {
     Literal
   },
   data() {
-    return {};
+    return {
+      symbols: mathComponents.symbolTypes
+    };
   },
   methods: {
     finishActivation() {
@@ -46,23 +49,20 @@ export default {
         return;
       }
 
-      this.insertMathSymbol(event.key, this.insertLiteral);
+      this.insertMathSymbol(event.key, this.symbols.literal);
     },
 
     removeActiveInput() {},
 
     // TODO - when no active input the error occure
-    insertMathSymbol(symbol, componentConstructor) {
+    insertMathSymbol(symbol, type) {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
-        var ComponentClass = componentConstructor();
-        let instance = new ComponentClass({
-          parent: activeInput,
-          propsData: { symbol: symbol }
+        activeInput.addEmbededComponent({
+          type: type,
+          symbol: symbol,
+          latexData: ""
         });
-        instance.$mount(); // pass nothing
-        activeInput.$refs.equationInput.appendChild(instance.$el);
-        activeInput.updateContainerState();
       }
     },
 
@@ -90,5 +90,9 @@ export default {
 .editor {
   border: 1px solid #000;
   min-height: 200px;
+}
+
+#mainInput {
+  font-size: 2em;
 }
 </style>

@@ -9,13 +9,9 @@
 </template>
 
 <script>
-import EquationInput from "./EquationInput.vue";
-
 export default {
   name: "AboveBelowInput",
-  components: {
-    EquationInput
-  },
+  components: {},
   props: {
     symbol: String
   },
