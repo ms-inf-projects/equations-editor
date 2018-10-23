@@ -3,22 +3,22 @@
     <div class="section-header">toolbox</div>
     <div>
       <div class="toolbox-panel">
-        <math-symbol symbol="x"></math-symbol>
-        <math-symbol symbol="+"></math-symbol>
+        <!-- <math-symbol symbol="x"></math-symbol> -->
+        <!-- <math-symbol symbol="+"></math-symbol> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import MathSymbol from './MathSymbol.vue'
+// import MathSymbol from './MathSymbol.vue'
 
 export default {
-  name: 'ToolboxPanel',
+  name: "ToolboxPanel",
   components: {
-    MathSymbol
+    // MathSymbol
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
