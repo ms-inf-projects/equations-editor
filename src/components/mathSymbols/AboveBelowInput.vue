@@ -5,9 +5,9 @@
  -->
 <template>
   <div class="symbol">
-    <equation-input ref="upInput"></equation-input>
+    <equation-input :equationObject="upEqObject" ></equation-input>
     {{symbol}}
-    <equation-input ref="downInput"></equation-input>
+    <equation-input :equationObject="downEqObject" ></equation-input>
   </div>
 </template>
 
@@ -20,15 +20,13 @@ export default {
     EquationInput: () => import("./EquationInput.vue")
   },
   props: {
-    symbol: String
+    symbol: String,
+    upEqObject: Object,
+    downEqObject: Object
   },
 
   methods: {
     toLatex() {
-      let upInputLatex = this.$refs.upInput.toLatex();
-      let downInputLatex = this.$refs.downInput.toLatex();
-
-      let latexOutput;
 
       // TODO - implement
       // parse symbol to latex

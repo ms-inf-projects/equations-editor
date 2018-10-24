@@ -1,10 +1,13 @@
 <template>
   <div class="equation-input" v-on:click="activateInput()" ref="equationInput">
-    <span v-if="isEmpty">[_]</span>
-    <div class="component-container" v-for="(elem, index) in embededSymbols.symbols" :key="index">
+    <span v-if="!equationObject.components">[_]</span>
+    <span> {{ equationObject.components.length }} </span>
+    <div class="component-container" v-for="(elem, index) in equationObject.components" :key="index">
       <above-below-input v-if="elem.type == types.aboveBelow" 
         :symbol="elem.symbol"
         :id="elem.id"
+        :upEqObject="elem.upEqObject"
+        :downEqObject="elem.downEqObject"
         v-on:deleted="componentDeleted(id)"
         v-on:parseToLatex="saveLatex(id, latexData)">
       </above-below-input>
@@ -32,13 +35,12 @@ export default {
   data() {
     return {
       // TODO - consider storing different array for different types
-      embededSymbols: {
-        symbols: []
-      },
       types: mathComponents.symbolTypes
     };
   },
-  props: {},
+  props: {
+    equationObject: Object
+  },
   methods: {
     activateInput() {
       let payload = {
@@ -62,23 +64,19 @@ export default {
       // TODO -call toLatex based on type?
       // glue the result
     },
-
+        
+        
+    // TODO - do I need to send event insted of update?
     addEmbededComponent(componentData) {
-      debugger;
-
-      if (
-        !this.embededSymbols.symbols ||
-        this.embededSymbols.symbols.length == 0
-      ) {
+      if (!this.equationObject.components || this.equationObject.components.length == 0) {
         componentData.id = 1;
-        this.$set(this.embededSymbols, "symbols", [componentData]);
+        this.equationObject.components =[componentData];
+        console.log(this.equationObject)
       } else {
-        let lastIndex = this.embededSymbols.symbols[
-          this.embededSymbols.symbols.length - 1
-        ].id;
+        let lastIndex = this.equationObject.components[ this.equationObject.components.length - 1].id;
         componentData.id = lastIndex + 1;
-        this.embededSymbols.symbols.push(componentData);
-        this.$set(this.embededSymbols, "symbols", this.embededSymbols.symbols);
+        this.equationObject.components.push(componentData);
+        console.log(this.equationObject)
       }
     }
 
@@ -91,8 +89,8 @@ export default {
   computed: {
     isEmpty() {
       if (
-        !this.embededSymbols.symbols ||
-        this.embededSymbols.symbols.length == 0
+        !this.equationObject.symbols ||
+        this.equationObject.symbols.length == 0
       ) {
         return true;
       }

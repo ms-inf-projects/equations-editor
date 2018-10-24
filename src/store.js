@@ -5,6 +5,25 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // TODO - decide on approach
+    // searching the recursive object 
+    // handling with array and parent children references
+    equationObject: Object,
+    components: Array,
+    lastUUID: 1,
+
+    activeInputId: 0,
+
+    equationInputs: Array,
+    /*
+      equationInput {
+        parent: equationInput,
+        children: []equationInput,
+        id: int,
+        
+      }
+    */
+
     activeEquationInput: Object,
     activationSet: false,
   },
@@ -12,6 +31,15 @@ export default new Vuex.Store({
   getters: {
     getActiveInput: state => {
       return state.activeEquationInput;
+    },
+
+    getEquationObject: state => {
+      return state.equationObject;
+    },
+
+    getUUID: state => {
+      state.lastUUID++;
+      return state.lastUUID;
     }
   },
 

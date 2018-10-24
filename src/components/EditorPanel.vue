@@ -8,7 +8,7 @@
       <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol('\u03A3', symbols.aboveBelow)"></math-symbol-button>
     </b-row>
     <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
-			<equation-input id="mainInput"></equation-input>
+			<equation-input :equationObject="equationObject()" id="mainInput"></equation-input>
     </div>
   </div>
 </template>
@@ -35,6 +35,19 @@ export default {
       symbols: mathComponents.symbolTypes
     };
   },
+
+  computed: {
+    equationObject() {
+      let obj = this.$store.getters.getEquationObject
+
+      if(!obj.components){
+        obj.components = []
+      }
+
+      return obj;
+    }
+  },
+
   methods: {
     finishActivation() {
       this.$store.dispatch("finishActivation");
@@ -58,10 +71,14 @@ export default {
     insertMathSymbol(symbol, type) {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
+        let uuid = this.$store.getters.getUUID;
+
         activeInput.addEmbededComponent({
           type: type,
+          uuid: uuid,
           symbol: symbol,
-          latexData: ""
+          latexData: "",
+          components: []
         });
       }
     },
