@@ -8,6 +8,7 @@ export default new Vuex.Store({
     // TODO - decide on approach
     // searching the recursive object 
     // handling with array and parent children references
+    // propagating events
     equationObject: Object,
     components: Array,
     lastUUID: 1,
