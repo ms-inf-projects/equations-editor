@@ -8,14 +8,13 @@
         :id="elem.id"
         :upEqObject="elem.upEqObject"
         :downEqObject="elem.downEqObject"
-        v-on:deleted="componentDeleted(id)"
-        v-on:parseToLatex="saveLatex(id, latexData)">
+        v-on:childUpdate="childUpdate"
+        v-on:deleted="componentDeleted(id)">
       </above-below-input>
       <literal v-if="elem.type == types.literal" 
         :symbol="elem.symbol"
         :id="elem.id"
-        v-on:deleted="componentDeleted(id)"
-        v-on:parseToLatex="saveLatex(id, latexData)">
+        v-on:deleted="componentDeleted(id)">
       </literal>
     </div>
   </div>
@@ -55,10 +54,6 @@ export default {
       // TODO - remove component from the array
     },
 
-    saveLatex(id, latexData) {
-      this.embededSymbols.filter(x => x.id == id)[0].latexData = latexData;
-    },
-
     toLatex() {
       // TODO - call toLatex on all of the components
       // TODO -call toLatex based on type?
@@ -78,12 +73,20 @@ export default {
         this.equationObject.components.push(componentData);
         console.log(this.equationObject)
       }
+
+      // TODO - HERE EMMIT EVENT UPDATING THE PARENT
+    },
+
+    // TODO - will this function also handle delete case
+    childUpdate(childObject) {
+      // TODO - ensure everyone is uuid
+      let childToUpdate = this.equationObject.components.filter(x => x.uuid == childObject.uuid)[0]
+      // TODO - can I just asign childToUpdate = childObject or do I need to assign every field?
+      childToUpdate.components = childObject.components;
+
+      // TODO - HERE EMMIT EVENT UPDATING THE PARENT
     }
 
-    // TODO - not sure how to remove component when it is deleted
-    // addSymbol(newSymbol) {
-    //   this.embededSymbols.push(newSymbol);
-    // }
   },
 
   computed: {
