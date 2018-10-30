@@ -1,7 +1,7 @@
 <template>
   <div class="equation-input" v-on:click="activateInput()" ref="equationInput">
     <span v-if="!equationObject.components">[_]</span>
-    <span> {{ equationObject.components.length }} </span>
+    <!-- <span> {{ equationObject.components.length }} </span> -->
     <div class="component-container" v-for="(elem, index) in equationObject.components" :key="index">
       <above-below-input v-if="elem.type == types.aboveBelow" 
         :symbol="elem.symbol"
@@ -59,19 +59,23 @@ export default {
       // TODO -call toLatex based on type?
       // glue the result
     },
-        
-        
+
     // TODO - do I need to send event insted of update?
     addEmbededComponent(componentData) {
-      if (!this.equationObject.components || this.equationObject.components.length == 0) {
+      if (
+        !this.equationObject.components ||
+        this.equationObject.components.length == 0
+      ) {
         componentData.id = 1;
-        this.equationObject.components =[componentData];
-        console.log(this.equationObject)
+        this.equationObject.components = [componentData];
+        console.log(this.equationObject);
       } else {
-        let lastIndex = this.equationObject.components[ this.equationObject.components.length - 1].id;
+        let lastIndex = this.equationObject.components[
+          this.equationObject.components.length - 1
+        ].id;
         componentData.id = lastIndex + 1;
         this.equationObject.components.push(componentData);
-        console.log(this.equationObject)
+        console.log(this.equationObject);
       }
 
       // TODO - HERE EMMIT EVENT UPDATING THE PARENT
@@ -80,13 +84,14 @@ export default {
     // TODO - will this function also handle delete case
     childUpdate(childObject) {
       // TODO - ensure everyone is uuid
-      let childToUpdate = this.equationObject.components.filter(x => x.uuid == childObject.uuid)[0]
+      let childToUpdate = this.equationObject.components.filter(
+        x => x.uuid == childObject.uuid
+      )[0];
       // TODO - can I just asign childToUpdate = childObject or do I need to assign every field?
       childToUpdate.components = childObject.components;
 
       // TODO - HERE EMMIT EVENT UPDATING THE PARENT
     }
-
   },
 
   computed: {

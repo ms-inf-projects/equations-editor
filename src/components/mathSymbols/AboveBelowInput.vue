@@ -5,9 +5,17 @@
  -->
 <template>
   <div class="symbol">
-    <equation-input :equationObject="upEqObject" ></equation-input>
+    <equation-input :equationObject="upEqObject" 
+                    v-on:childUpdate="childUpdate"
+                    v-on:deleted="componentDeleted(id)">
+
+    </equation-input>
     {{symbol}}
-    <equation-input :equationObject="downEqObject" ></equation-input>
+    <equation-input :equationObject="downEqObject" 
+                    v-on:childUpdate="childUpdate"
+                    v-on:deleted="componentDeleted(id)">
+
+    </equation-input>
   </div>
 </template>
 
@@ -27,11 +35,22 @@ export default {
 
   methods: {
     toLatex() {
-
       // TODO - implement
       // parse symbol to latex
       // call to latex on both equation inputs
       // glue it all together
+    },
+
+    updateUpInput(childObject) {
+      this.childUpdate(this.upEqObject, childObject);
+    },
+
+    updateDownInput(childObject) {
+      this.childUpdate(this.downEqObject, childObject);
+    },
+
+    childUpdate(current, updated) {
+      // TODO - emmit child update?
     }
   }
 };
