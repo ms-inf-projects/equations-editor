@@ -5,13 +5,15 @@
  -->
 <template>
   <div class="symbol">
-    <equation-input :equationObject="component.upEqObject" 
+    <equation-input v-if="component.upEqObject"
+                    :equationObject="component.upEqObject" 
                     v-on:childUpdate="updateUpInput"
                     v-on:deleted="componentDeleted(id)">
 
     </equation-input>
     {{symbol}}
-    <equation-input :equationObject="component.downEqObject" 
+    <equation-input v-if="component.downEqObject"
+                    :equationObject="component.downEqObject" 
                     v-on:childUpdate="updateDownInput"
                     v-on:deleted="componentDeleted(id)">
 
@@ -20,8 +22,6 @@
 </template>
 
 <script>
-// import EquationInput from "./EquationInput.vue";
-
 export default {
   name: "AboveBelowInput",
   components: {
@@ -55,7 +55,6 @@ export default {
     },
 
     childUpdate(updatedObject) {
-      console.log("Above and belowe event");
       this.$emit("childUpdate", updatedObject);
     }
   }

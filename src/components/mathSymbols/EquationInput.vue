@@ -10,11 +10,20 @@
         v-on:childUpdate="childUpdate"
         v-on:deleted="componentDeleted(id)">
       </above-below-input>
+
       <literal v-if="elem.type == types.literal" 
         :symbol="elem.symbol"
         :id="elem.id"
         v-on:deleted="componentDeleted(id)">
       </literal>
+
+      <root v-if="elem.type == types.root" 
+        :symbol="elem.symbol"
+        :id="elem.id"
+        :component="elem"
+        v-on:childUpdate="childUpdate"
+        v-on:deleted="componentDeleted(id)">
+      </root>
     </div>
   </div>
 </template>
@@ -23,12 +32,14 @@
 import mathComponents from "../../modules/mathComponents.js";
 import AboveBelowInput from "./AboveBelowInput.vue";
 import Literal from "./Literal.vue";
+import Root from "./Root.vue";
 
 export default {
   name: "EquationInput",
   components: {
     AboveBelowInput,
-    Literal
+    Literal,
+    Root
   },
   data() {
     return {
@@ -50,17 +61,12 @@ export default {
       this.$store.dispatch("activateEquationInput", payload);
     },
 
-    componentDeleted(id) {
-      // TODO - remove component from the array
-    },
-
     toLatex() {
       // TODO - call toLatex on all of the components
       // TODO -call toLatex based on type?
       // glue the result
     },
 
-    // TODO - do I need to send event insted of update?
     addEmbededComponent(componentData) {
       if (
         !this.equationObject.components ||
@@ -78,12 +84,25 @@ export default {
         console.log(this.equationObject);
       }
 
-      // TODO - HERE EMMIT EVENT UPDATING THE PARENT
       if (this.rootInput) {
         this.$emit("updateRoot", this.equationObject);
       } else {
         this.$emit("childUpdate", this.equationObject);
       }
+    },
+
+    deleteInput() {
+      this.$emit("childUpdate", null);
+    },
+
+    removeLast() {
+      let updated = this.equationObject;
+
+      if (updated.components.length > 0) {
+        updated.components.splice(-1, 1);
+      }
+
+      this.$emit("childUpdate", updated);
     },
 
     // TODO - will this function also handle delete case
@@ -93,7 +112,7 @@ export default {
       let childToUpdate = this.equationObject.components.filter(
         x => x.uuid == childObject.uuid
       )[0];
-      // TODO - can I just asign childToUpdate = childObject or do I need to assign every field?
+
       childToUpdate = childObject;
 
       if (this.rootInput) {
@@ -101,8 +120,6 @@ export default {
       } else {
         this.$emit("childUpdate", this.equationObject);
       }
-
-      // TODO - HERE EMMIT EVENT UPDATING THE PARENT
     },
     aboveBelowChildUpdate() {}
   },

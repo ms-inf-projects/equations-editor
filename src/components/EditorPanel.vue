@@ -6,12 +6,13 @@
       <!-- TODO - correct display in buttons -->
       <math-symbol-button mathSymbolDisplay="&int;" v-on:buttonClick="insertMathSymbol('\u222B', symbols.aboveBelow)"></math-symbol-button>
       <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol('\u03A3', symbols.aboveBelow)"></math-symbol-button>
+      <math-symbol-button mathSymbolDisplay="&root;" v-on:buttonClick="insertMathSymbol('\u8730;', symbols.root)"></math-symbol-button>
     </b-row>
     <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
 			<equation-input :equationObject="equationObject" 
                       id="mainInput"
                       :rootInput="true"
-                      v-on:updateRoot="updateRoot">
+                      v-on:updateRoot="updateRootObject">
 
       </equation-input>
     </div>
@@ -39,27 +40,11 @@ export default {
     return {
       symbols: mathComponents.symbolTypes,
       equationObject: this.$store.getters.getEquationObject
-      // eqObj: this.$store.getters.getEquationObject
     };
   },
 
-  // computed: {
-  //   equationObjectCmp() {
-  //     console.log("Recalculated  ");
-  //     let obj = ;
-  //     console.log(obj);
-
-  //     if (!this.equationObject.components) {
-  //       obj.components = [];
-  //     }
-  //     console.log(obj);
-
-  //     return this.$store.getters.getEquationObject;
-  //   }
-  // },
-
   methods: {
-    updateRoot(eqObj) {
+    updateRootObject(eqObj) {
       console.log("Updating root");
       console.log(eqObj);
       let payload = {
@@ -73,9 +58,15 @@ export default {
     finishActivation() {
       this.$store.dispatch("finishActivation");
     },
+
     handleKeyboard(event) {
-      if (alphanumeric.isBakcspaceOrDelete(event.keyCode)) {
-        // TODO remove active input
+      if (alphanumeric.isDelete(event.keyCode)) {
+        this.removeActiveInput();
+        return;
+      }
+
+      if (alphanumeric.isBackspace(event.keyCode)) {
+        this.removeLastFromActiveInput();
         return;
       }
 
@@ -86,7 +77,19 @@ export default {
       this.insertMathSymbol(event.key, this.symbols.literal);
     },
 
-    removeActiveInput() {},
+    removeActiveInput() {
+      let activeInput = this.$store.getters.getActiveInput;
+      if (activeInput) {
+        activeInput.deleteInput();
+      }
+    },
+
+    removeLastFromActiveInput() {
+      let activeInput = this.$store.getters.getActiveInput;
+      if (activeInput) {
+        activeInput.removeLast();
+      }
+    },
 
     // TODO - when no active input the error occure
     insertMathSymbol(symbol, type) {
@@ -94,38 +97,19 @@ export default {
       if (activeInput) {
         let uuid = this.$store.getters.getUUID;
 
-        let component = {};
-
-        if (type == this.symbols.aboveBelow) {
-          component = {
-            type: type,
-            uuid: uuid,
-            symbol: symbol,
-            upEqObject: {
-              components: []
-            },
-            downEqObject: {
-              components: []
-            }
-          };
-        }
+        let component = mathComponents.createSymbolComponent(
+          type,
+          uuid,
+          symbol
+        );
 
         activeInput.addEmbededComponent(component);
       }
-    },
-
-    insertLiteral() {
-      return Vue.extend(Literal);
-    },
-
-    insertAboveBelowInput() {
-      return Vue.extend(AboveBelowInput);
     }
   },
 
   mounted() {
     let self = this;
-
     window.addEventListener("keyup", function(ev) {
       self.handleKeyboard(ev); // declared in your component methods
     });

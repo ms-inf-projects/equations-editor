@@ -1,5 +1,5 @@
 module.exports = {
-  isLiteralSymbol: function(key) {
+  isLiteralSymbol: function (key) {
     if (/^[a-zA-Z0-9]{1}$/.test(key)) {
       return true;
     }
@@ -7,13 +7,15 @@ module.exports = {
     return false;
   },
 
-  isBakcspaceOrDelete: function(keyCode) {
-    if (keyCode == 8 || keyCode == 127) return true;
-
-    return false;
+  isDelete: function (keyCode) {
+    return keyCode == 46;
   },
 
-  isMathOperator: function(key) {
+  isBackspace: function (keyCode) {
+    return keyCode == 8;
+  },
+
+  isMathOperator: function (key) {
     // TODO true when one of: -,+,=,/,(,
   }
 };
