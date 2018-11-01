@@ -8,7 +8,12 @@
       <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol('\u03A3', symbols.aboveBelow)"></math-symbol-button>
     </b-row>
     <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
-			<equation-input :equationObject="equationObject()" id="mainInput"></equation-input>
+			<equation-input :equationObject="equationObject" 
+                      id="mainInput"
+                      :rootInput="true"
+                      v-on:updateRoot="updateRoot">
+
+      </equation-input>
     </div>
   </div>
 </template>
@@ -32,23 +37,39 @@ export default {
   },
   data() {
     return {
-      symbols: mathComponents.symbolTypes
+      symbols: mathComponents.symbolTypes,
+      equationObject: this.$store.getters.getEquationObject
+      // eqObj: this.$store.getters.getEquationObject
     };
   },
 
-  computed: {
-    equationObject() {
-      let obj = this.$store.getters.getEquationObject
+  // computed: {
+  //   equationObjectCmp() {
+  //     console.log("Recalculated  ");
+  //     let obj = ;
+  //     console.log(obj);
 
-      if(!obj.components){
-        obj.components = []
-      }
+  //     if (!this.equationObject.components) {
+  //       obj.components = [];
+  //     }
+  //     console.log(obj);
 
-      return obj;
-    }
-  },
+  //     return this.$store.getters.getEquationObject;
+  //   }
+  // },
 
   methods: {
+    updateRoot(eqObj) {
+      console.log("Updating root");
+      console.log(eqObj);
+      let payload = {
+        equationObject: eqObj
+      };
+
+      this.$store.dispatch("updateEquationObject", payload);
+      this.equationObject = this.$store.getters.getEquationObject;
+    },
+
     finishActivation() {
       this.$store.dispatch("finishActivation");
     },
@@ -73,13 +94,23 @@ export default {
       if (activeInput) {
         let uuid = this.$store.getters.getUUID;
 
-        activeInput.addEmbededComponent({
-          type: type,
-          uuid: uuid,
-          symbol: symbol,
-          latexData: "",
-          components: []
-        });
+        let component = {};
+
+        if (type == this.symbols.aboveBelow) {
+          component = {
+            type: type,
+            uuid: uuid,
+            symbol: symbol,
+            upEqObject: {
+              components: []
+            },
+            downEqObject: {
+              components: []
+            }
+          };
+        }
+
+        activeInput.addEmbededComponent(component);
       }
     },
 

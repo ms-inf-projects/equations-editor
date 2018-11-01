@@ -5,14 +5,14 @@
  -->
 <template>
   <div class="symbol">
-    <equation-input :equationObject="upEqObject" 
-                    v-on:childUpdate="childUpdate"
+    <equation-input :equationObject="component.upEqObject" 
+                    v-on:childUpdate="updateUpInput"
                     v-on:deleted="componentDeleted(id)">
 
     </equation-input>
     {{symbol}}
-    <equation-input :equationObject="downEqObject" 
-                    v-on:childUpdate="childUpdate"
+    <equation-input :equationObject="component.downEqObject" 
+                    v-on:childUpdate="updateDownInput"
                     v-on:deleted="componentDeleted(id)">
 
     </equation-input>
@@ -29,8 +29,7 @@ export default {
   },
   props: {
     symbol: String,
-    upEqObject: Object,
-    downEqObject: Object
+    component: Object
   },
 
   methods: {
@@ -42,15 +41,22 @@ export default {
     },
 
     updateUpInput(childObject) {
-      this.childUpdate(this.upEqObject, childObject);
+      let updatedObject = this.component;
+      updatedObject.upEqObject = childObject;
+
+      this.childUpdate(updatedObject);
     },
 
     updateDownInput(childObject) {
-      this.childUpdate(this.downEqObject, childObject);
+      let updatedObject = this.component;
+      updatedObject.downEqObject = childObject;
+
+      this.childUpdate(updatedObject);
     },
 
-    childUpdate(current, updated) {
-      // TODO - emmit child update?
+    childUpdate(updatedObject) {
+      console.log("Above and belowe event");
+      this.$emit("childUpdate", updatedObject);
     }
   }
 };

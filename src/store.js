@@ -9,7 +9,10 @@ export default new Vuex.Store({
     // searching the recursive object 
     // handling with array and parent children references
     // propagating events
-    equationObject: Object,
+    equationObject: {
+      uuid: 1,
+      components: [],
+    },
     components: Array,
     lastUUID: 1,
 
@@ -54,6 +57,9 @@ export default new Vuex.Store({
     },
     finishActivation: (state) => {
       state.activationSet = false;
+    },
+    updateEquationObject: (state, equationObject) => {
+      state.equationObject = equationObject;
     }
   },
 
@@ -63,6 +69,9 @@ export default new Vuex.Store({
     },
     finishActivation: (context) => {
       context.commit('finishActivation')
+    },
+    updateEquationObject: (context, payload) => {
+      context.commit('updateEquationObject', payload.equationObject)
     }
   }
 })

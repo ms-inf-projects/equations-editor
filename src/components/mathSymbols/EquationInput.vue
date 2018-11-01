@@ -1,13 +1,12 @@
 <template>
   <div class="equation-input" v-on:click="activateInput()" ref="equationInput">
-    <span v-if="!equationObject.components">[_]</span>
+    <span v-if="equationObject.components.length==0">[_]</span>
     <!-- <span> {{ equationObject.components.length }} </span> -->
     <div class="component-container" v-for="(elem, index) in equationObject.components" :key="index">
       <above-below-input v-if="elem.type == types.aboveBelow" 
         :symbol="elem.symbol"
         :id="elem.id"
-        :upEqObject="elem.upEqObject"
-        :downEqObject="elem.downEqObject"
+        :component="elem"
         v-on:childUpdate="childUpdate"
         v-on:deleted="componentDeleted(id)">
       </above-below-input>
@@ -38,7 +37,8 @@ export default {
     };
   },
   props: {
-    equationObject: Object
+    equationObject: Object,
+    rootInput: false
   },
   methods: {
     activateInput() {
@@ -79,19 +79,32 @@ export default {
       }
 
       // TODO - HERE EMMIT EVENT UPDATING THE PARENT
+      if (this.rootInput) {
+        this.$emit("updateRoot", this.equationObject);
+      } else {
+        this.$emit("childUpdate", this.equationObject);
+      }
     },
 
     // TODO - will this function also handle delete case
     childUpdate(childObject) {
+      console.log("Child update on uuid: ", this.equationObject.uuid);
       // TODO - ensure everyone is uuid
       let childToUpdate = this.equationObject.components.filter(
         x => x.uuid == childObject.uuid
       )[0];
       // TODO - can I just asign childToUpdate = childObject or do I need to assign every field?
-      childToUpdate.components = childObject.components;
+      childToUpdate = childObject;
+
+      if (this.rootInput) {
+        this.$emit("updateRoot", this.equationObject);
+      } else {
+        this.$emit("childUpdate", this.equationObject);
+      }
 
       // TODO - HERE EMMIT EVENT UPDATING THE PARENT
-    }
+    },
+    aboveBelowChildUpdate() {}
   },
 
   computed: {
