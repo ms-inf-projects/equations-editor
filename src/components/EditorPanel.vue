@@ -16,6 +16,20 @@
 
       </equation-input>
     </div>
+    <b-row class="top-space">
+      <b-col>
+        <b-button v-on:click="processToLatex()">
+          Process to latex
+        </b-button>
+      </b-col>
+    </b-row>
+    <b-row class="top-space">
+      <b-col>
+        <div class="latex-display">
+          {{ latexData }}
+        </div>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -39,7 +53,8 @@ export default {
   data() {
     return {
       symbols: mathComponents.symbolTypes,
-      equationObject: this.$store.getters.getEquationObject
+      equationObject: this.$store.getters.getEquationObject,
+      latexData: ""
     };
   },
 
@@ -105,6 +120,12 @@ export default {
 
         activeInput.addEmbededComponent(component);
       }
+    },
+
+    processToLatex() {
+      let output = this.$store.getters.getLatexOutput;
+      this.latexData = output;
+      console.log(output);
     }
   },
 
@@ -122,6 +143,17 @@ export default {
 .editor {
   border: 1px solid #000;
   min-height: 200px;
+}
+
+.latex-display {
+  text-align: center;
+  border: 1px solid #000;
+  min-height: 50px;
+  font-size: 1.1em;
+}
+
+.top-space {
+  margin-top: 10px;
 }
 
 #mainInput {

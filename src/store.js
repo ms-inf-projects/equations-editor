@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import mathComponents from "./modules/mathComponents.js";
 
 Vue.use(Vuex)
 
@@ -44,6 +45,10 @@ export default new Vuex.Store({
     getUUID: state => {
       state.lastUUID++;
       return state.lastUUID;
+    },
+
+    getLatexOutput: state => {
+      return mathComponents.processToLatex(state.equationObject);
     }
   },
 
