@@ -1,22 +1,18 @@
-<!-- Opędzi
-  - calka oznaczona
-  - suma itp.
-  - ulamek
+<!-- Handels
+  - integral
+  - sum
+  - product
  -->
 <template>
   <div class="symbol">
     <equation-input v-if="component.upEqObject"
                     :equationObject="component.upEqObject" 
-                    v-on:childUpdate="updateUpInput"
-                    v-on:deleted="componentDeleted(id)">
-
+                    v-on:childUpdate="updateUpInput">
     </equation-input>
     {{symbol}}
     <equation-input v-if="component.downEqObject"
                     :equationObject="component.downEqObject" 
-                    v-on:childUpdate="updateDownInput"
-                    v-on:deleted="componentDeleted(id)">
-
+                    v-on:childUpdate="updateDownInput">
     </equation-input>
   </div>
 </template>
@@ -33,13 +29,6 @@ export default {
   },
 
   methods: {
-    toLatex() {
-      // TODO - implement
-      // parse symbol to latex
-      // call to latex on both equation inputs
-      // glue it all together
-    },
-
     updateUpInput(childObject) {
       let updatedObject = this.component;
       updatedObject.upEqObject = childObject;
@@ -59,11 +48,6 @@ export default {
     }
   }
 };
-
-function mapSymbolToLatex(symbol) {
-  // TODO - use some const map
-  return "int_";
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

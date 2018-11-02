@@ -1,30 +1,25 @@
-<!-- Opędzi
-  - pierwiastek
+<!-- Handles
+  - root
  -->
 <template>
   <div class="symbol">
     <equation-input :equationObject="component.degreeEqObject" 
                     v-on:childUpdate="updateDegreeInput"
-                    v-on:deleted="componentDeleted(id)"
                     class="degree">
-
     </equation-input>
-    <div class="root">&#8730;
+    <div class="root">
+      &#8730;
       <equation-input :equationObject="component.baseEqObject" 
                       v-on:childUpdate="updateBaseInput"
-                      v-on:deleted="componentDeleted(id)"
                       class="up-border base">
-
       </equation-input>
     </div>
   </div>
 </template>
 
 <script>
-// import EquationInput from "./EquationInput.vue";
-
 export default {
-  name: "AboveBelowInput",
+  name: "Root",
   components: {
     EquationInput: () => import("./EquationInput.vue")
   },
@@ -34,13 +29,6 @@ export default {
   },
 
   methods: {
-    toLatex() {
-      // TODO - implement
-      // parse symbol to latex
-      // call to latex on both equation inputs
-      // glue it all together
-    },
-
     updateDegreeInput(childObject) {
       let updatedObject = this.component;
       updatedObject.degreeEqObject = childObject;
@@ -61,11 +49,6 @@ export default {
     }
   }
 };
-
-function mapSymbolToLatex(symbol) {
-  // TODO - use some const map
-  return "int_";
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

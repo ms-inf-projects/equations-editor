@@ -16,11 +16,7 @@ export default {
     symbol: String
   },
 
-  methods: {
-    toLatex() {
-      // TODO - implement
-    }
-  }
+  methods: {}
 };
 </script>
 

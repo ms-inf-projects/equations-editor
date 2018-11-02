@@ -34,8 +34,7 @@ module.exports = {
     }
 };
 
-// Components creation
-
+// Components creation ------------------------------------
 function createAboveBeloweSymbol(symbol) {
     return {
         type: symbolTypes.aboveBelow,
@@ -59,6 +58,7 @@ function createLiteralSymbol(symbol) {
 function createRootSymbol() {
     return {
         type: symbolTypes.root,
+        symbol: '\u8730',
         degreeEqObject: {
             components: []
         },
@@ -68,24 +68,26 @@ function createRootSymbol() {
     }
 }
 
-// Latex processing
+// Latex processing ----------------------------------------
 
-// TODO - handle with map of functions
+function processEquetionInput(equationInput) {
+    if (equationInput == null) return null
+
+    return equationInput.components.map(x => processComponent(x)).join('');
+}
+
+const processFunctions = {
+    aboveBelow: processAboveBelow,
+    root: processRoot,
+    literal: processLiteral
+};
+
 function processComponent(component) {
-    switch (component.type) {
-        case symbolTypes.aboveBelow:
-            return processAboveBelow(component);
+    return processFunctions[component.type](component);
+}
 
-        case symbolTypes.root:
-
-            break;
-
-        case symbolTypes.literal:
-            return component.symbol;
-
-        default:
-            return ""
-    }
+function processLiteral(component) {
+    return component.symbol;
 }
 
 function processAboveBelow(component) {
@@ -94,36 +96,30 @@ function processAboveBelow(component) {
 
     let output = symbolToLatex(component.symbol)
 
-    if (downInput) {
-        output += `_{${downInput}}`;
-    }
-
-    if (upInpt) {
-        output += `^{${upInpt}}`;
-    }
+    if (downInput) output += `_{${downInput}}`;
+    if (upInpt) output += `^{${upInpt}}`;
 
     return output + " ";
 }
 
-function processEquetionInput(equationInput) {
-    if (equationInput == null) return null
+function processRoot(component) {
+    let degreeInput = processEquetionInput(component.degreeEqObject)
+    let baseInput = processEquetionInput(component.baseEqObject)
 
-    return equationInput.components.map(x => processComponent(x)).join('');
+    let output = symbolToLatex(component.symbol)
+
+    if (degreeInput) output += `[${degreeInput}]`;
+    if (baseInput) output += `{${baseInput}}`;
+
+    return output + " ";
 }
 
-// const latexSymbols = {
-//   ''
-// },
+const latexSymbols = {
+    '\u222B': "\\int",
+    '\u03A3': "\\sum",
+    '\u8730': "\\sqrt"
+};
 
-// TODO - handle with map
 function symbolToLatex(symbol) {
-
-    switch (symbol) {
-        case '\u222B':
-            return "\\int"
-        case '\u03A3':
-            return "\\sum"
-        default:
-            return ""
-    }
+    return latexSymbols[symbol]
 }

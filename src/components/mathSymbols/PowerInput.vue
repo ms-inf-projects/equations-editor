@@ -1,5 +1,5 @@
 <!-- Handles
-  - potega
+  - x to power
  -->
 <template>
   <div class="">
@@ -10,25 +10,16 @@
 </template>
 
 <script>
-import EquationInput from "./EquationInput.vue";
-
 export default {
   name: "AboveBelowInput",
   components: {
-    EquationInput
+    EquationInput: () => import("./EquationInput.vue")
   },
   props: {
     symbol: String
   },
 
-  methods: {
-    toLatex() {
-      // TODO - implement
-      // parse symbol to latex
-      // call to latex on both equation inputs
-      // glue it all together
-    }
-  }
+  methods: {}
 };
 </script>
 

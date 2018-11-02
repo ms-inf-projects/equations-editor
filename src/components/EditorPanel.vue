@@ -6,7 +6,7 @@
       <!-- TODO - correct display in buttons -->
       <math-symbol-button mathSymbolDisplay="&int;" v-on:buttonClick="insertMathSymbol('\u222B', symbols.aboveBelow)"></math-symbol-button>
       <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol('\u03A3', symbols.aboveBelow)"></math-symbol-button>
-      <math-symbol-button mathSymbolDisplay="&root;" v-on:buttonClick="insertMathSymbol('\u8730;', symbols.root)"></math-symbol-button>
+      <math-symbol-button mathSymbolDisplay="root;" v-on:buttonClick="insertMathSymbol('\u8730', symbols.root)"></math-symbol-button>
     </b-row>
     <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
 			<equation-input :equationObject="equationObject" 
@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import MathSymbolButton from "./MathSymbolButton.vue";
 import EquationInput from "./mathSymbols/EquationInput.vue";
 import AboveBelowInput from "./mathSymbols/AboveBelowInput.vue";

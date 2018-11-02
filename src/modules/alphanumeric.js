@@ -15,7 +15,7 @@ module.exports = {
     return keyCode == 8;
   },
 
-  isMathOperator: function (key) {
-    // TODO true when one of: -,+,=,/,(,
-  }
+  // isMathOperator: function (key) {
+  //   // TODO true when one of: -,+,=,/,(,
+  // }
 };
