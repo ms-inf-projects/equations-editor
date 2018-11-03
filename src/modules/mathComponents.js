@@ -5,7 +5,7 @@ const symbolTypes = {
     root: "root",
 }
 
-module.exports = {
+export default {
     symbolTypes,
 
     createSymbolComponent: function (type, uuid, symbol) {

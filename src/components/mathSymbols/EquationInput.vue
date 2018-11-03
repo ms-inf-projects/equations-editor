@@ -1,11 +1,12 @@
 <template>
   <div class="equation-input" v-on:click="activateInput()" ref="equationInput">
-    <span v-if="equationObject.components.length==0">[_]</span>
+    <!-- TODO in first case there should be some white space - min height -->
+    <span v-if="!equationObject.components"></span>
+    <span v-if="equationObject.components && equationObject.components.length==0">[_]</span>
     <div class="component-container" v-for="(elem, index) in equationObject.components" :key="index">
       <above-below-input v-if="elem.type == types.aboveBelow" 
         :symbol="elem.symbol"
-        :component="elem"
-        v-on:childUpdate="childUpdate">
+        :component="elem">
       </above-below-input>
 
       <literal v-if="elem.type == types.literal" 
@@ -14,8 +15,7 @@
 
       <root v-if="elem.type == types.root" 
         :symbol="elem.symbol"
-        :component="elem"
-        v-on:childUpdate="childUpdate">
+        :component="elem">
       </root>
     </div>
   </div>
@@ -67,16 +67,19 @@ export default {
         componentData.id = lastIndex + 1;
         this.equationObject.components.push(componentData);
       }
-
-      if (this.rootInput) {
-        this.$emit("updateRoot", this.equationObject);
-      } else {
-        this.$emit("childUpdate", this.equationObject);
-      }
     },
 
     deleteInput() {
-      this.$emit("childUpdate", null);
+      if (!this.equationObject.components) return;
+
+      if (this.equationObject.components.length > 0) {
+        this.equationObject.components = [];
+      } else if (
+        this.equationObject.components.length == 0 &&
+        !this.rootInput
+      ) {
+        this.equationObject.components = null;
+      }
     },
 
     removeLast() {
@@ -87,22 +90,7 @@ export default {
       }
 
       this.$emit("childUpdate", updated);
-    },
-
-    childUpdate() {
-      // TODO - revisit this part
-      // console.log("Child update on uuid: ", this.equationObject.uuid);
-      // this.equationObject.components.filter(
-      //   x => x.uuid == childObject.uuid
-      // )[0] = childObject;
-
-      if (this.rootInput) {
-        this.$emit("updateRoot", this.equationObject);
-      } else {
-        this.$emit("childUpdate", this.equationObject);
-      }
-    },
-    aboveBelowChildUpdate() {}
+    }
   }
 };
 </script>

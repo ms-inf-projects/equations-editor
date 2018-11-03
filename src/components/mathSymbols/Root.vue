@@ -3,14 +3,12 @@
  -->
 <template>
   <div class="symbol">
-    <equation-input :equationObject="component.degreeEqObject" 
-                    v-on:childUpdate="updateDegreeInput"
+    <equation-input :equationObject="component.degreeEqObject"
                     class="degree">
     </equation-input>
     <div class="root">
       &#8730;
-      <equation-input :equationObject="component.baseEqObject" 
-                      v-on:childUpdate="updateBaseInput"
+      <equation-input :equationObject="component.baseEqObject"
                       class="up-border base">
       </equation-input>
     </div>
@@ -26,27 +24,6 @@ export default {
   props: {
     symbol: String,
     component: Object
-  },
-
-  methods: {
-    updateDegreeInput(childObject) {
-      let updatedObject = this.component;
-      updatedObject.degreeEqObject = childObject;
-
-      this.childUpdate(updatedObject);
-    },
-
-    updateBaseInput(childObject) {
-      let updatedObject = this.component;
-      updatedObject.baseEqObject = childObject;
-
-      this.childUpdate(updatedObject);
-    },
-
-    childUpdate(updatedObject) {
-      console.log("Above and belowe event");
-      this.$emit("childUpdate", updatedObject);
-    }
   }
 };
 </script>

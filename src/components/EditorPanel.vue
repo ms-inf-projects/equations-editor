@@ -11,9 +11,7 @@
     <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
 			<equation-input :equationObject="equationObject" 
                       id="mainInput"
-                      :rootInput="true"
-                      v-on:updateRoot="updateRootObject">
-
+                      :rootInput="true">
       </equation-input>
     </div>
     <b-row class="top-space">
@@ -36,8 +34,6 @@
 <script>
 import MathSymbolButton from "./MathSymbolButton.vue";
 import EquationInput from "./mathSymbols/EquationInput.vue";
-import AboveBelowInput from "./mathSymbols/AboveBelowInput.vue";
-import Literal from "./mathSymbols/Literal.vue";
 import alphanumeric from "../modules/alphanumeric.js";
 import mathComponents from "../modules/mathComponents.js";
 
@@ -45,9 +41,7 @@ export default {
   name: "EditorPanel",
   components: {
     MathSymbolButton,
-    EquationInput,
-    AboveBelowInput,
-    Literal
+    EquationInput
   },
   data() {
     return {
@@ -58,21 +52,11 @@ export default {
   },
 
   methods: {
-    updateRootObject(eqObj) {
-      console.log("Updating root");
-      console.log(eqObj);
-      let payload = {
-        equationObject: eqObj
-      };
-
-      this.$store.dispatch("updateEquationObject", payload);
-      this.equationObject = this.$store.getters.getEquationObject;
-    },
-
     finishActivation() {
       this.$store.dispatch("finishActivation");
     },
 
+    // TODO - improve keyboard handling
     handleKeyboard(event) {
       if (alphanumeric.isDelete(event.keyCode)) {
         this.removeActiveInput();
@@ -131,7 +115,7 @@ export default {
   mounted() {
     let self = this;
     window.addEventListener("keyup", function(ev) {
-      self.handleKeyboard(ev); // declared in your component methods
+      self.handleKeyboard(ev);
     });
   }
 };

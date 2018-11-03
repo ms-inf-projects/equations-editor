@@ -14,9 +14,7 @@ export default {
   components: {},
   props: {
     symbol: String
-  },
-
-  methods: {}
+  }
 };
 </script>
 

@@ -6,13 +6,11 @@
 <template>
   <div class="symbol">
     <equation-input v-if="component.upEqObject"
-                    :equationObject="component.upEqObject" 
-                    v-on:childUpdate="updateUpInput">
+                    :equationObject="component.upEqObject">
     </equation-input>
     {{symbol}}
     <equation-input v-if="component.downEqObject"
-                    :equationObject="component.downEqObject" 
-                    v-on:childUpdate="updateDownInput">
+                    :equationObject="component.downEqObject" >
     </equation-input>
   </div>
 </template>
@@ -26,26 +24,6 @@ export default {
   props: {
     symbol: String,
     component: Object
-  },
-
-  methods: {
-    updateUpInput(childObject) {
-      let updatedObject = this.component;
-      updatedObject.upEqObject = childObject;
-
-      this.childUpdate(updatedObject);
-    },
-
-    updateDownInput(childObject) {
-      let updatedObject = this.component;
-      updatedObject.downEqObject = childObject;
-
-      this.childUpdate(updatedObject);
-    },
-
-    childUpdate(updatedObject) {
-      this.$emit("childUpdate", updatedObject);
-    }
   }
 };
 </script>
