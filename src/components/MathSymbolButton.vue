@@ -1,19 +1,32 @@
 <template>
     <b-col class="math-symbol-button">
-      <b-button v-on:click="insertSymbol()">{{ mathSymbolDisplay }}</b-button>
+      <b-button v-on:click="insertSymbol()">{{ decodedSymbol }}</b-button>
     </b-col> 
 </template>
 
 <script>
+import { EventBus } from "../event-bus.js";
+
 export default {
   name: "ExportButton",
   components: {},
   props: {
-    mathSymbolDisplay: String
+    mathSymbolDisplay: String,
+    inputType: String,
+    symbol: ""
   },
   methods: {
     insertSymbol() {
-      this.$emit("buttonClick");
+      EventBus.$emit(
+        "mastSymbolButtonClick",
+        this.inputType,
+        this.decodedSymbol
+      );
+    }
+  },
+  computed: {
+    decodedSymbol() {
+      return String.fromCharCode(parseInt(this.symbol, 16));
     }
   }
 };
