@@ -1,13 +1,6 @@
 <template>
   <div class="">
     <div class="section-header">editor</div>
-    <b-row>
-      <!-- TODO - try to refactor: foreach - list of symbols and methods -->
-      <!-- TODO - correct display in buttons -->
-      <math-symbol-button mathSymbolDisplay="&int;" v-on:buttonClick="insertMathSymbol('\u222B', symbols.aboveBelow)"></math-symbol-button>
-      <math-symbol-button mathSymbolDisplay="&sum;" v-on:buttonClick="insertMathSymbol('\u03A3', symbols.aboveBelow)"></math-symbol-button>
-      <math-symbol-button mathSymbolDisplay="root;" v-on:buttonClick="insertMathSymbol('\u8730', symbols.root)"></math-symbol-button>
-    </b-row>
     <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
 			<equation-input :equationObject="equationObject" 
                       id="mainInput"
@@ -32,15 +25,14 @@
 </template>
 
 <script>
-import MathSymbolButton from "./MathSymbolButton.vue";
 import EquationInput from "./mathSymbols/EquationInput.vue";
 import alphanumeric from "../modules/alphanumeric.js";
 import mathComponents from "../modules/mathComponents.js";
+import { EventBus } from "../event-bus";
 
 export default {
   name: "EditorPanel",
   components: {
-    MathSymbolButton,
     EquationInput
   },
   data() {
@@ -90,11 +82,10 @@ export default {
     },
 
     // TODO - when no active input the error occure
-    insertMathSymbol(symbol, type) {
+    insertMathSymbol(type, symbol) {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
         let uuid = this.$store.getters.getUUID;
-
         let component = mathComponents.createSymbolComponent(
           type,
           uuid,
@@ -110,6 +101,12 @@ export default {
       this.latexData = output;
       console.log(output);
     }
+  },
+
+  created() {
+    EventBus.$on("mastSymbolButtonClick", (type, symbol) =>
+      this.insertMathSymbol(type, symbol)
+    );
   },
 
   mounted() {

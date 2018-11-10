@@ -1,22 +1,43 @@
 <template>
   <div class="">
-    <div class="section-header">toolbox</div>
     <div>
-      <div class="toolbox-panel">
-        <!-- <math-symbol symbol="x"></math-symbol> -->
-        <!-- <math-symbol symbol="+"></math-symbol> -->
+      <div class="section-header">
+        toolbox
+      </div>
+      <div class="toolbox-panel" v-bind:class="{ hidden: !toolboxDisplayed }">
+        <!-- TODO - try to refactor: foreach - list of symbols and methods -->
+        <!-- TODO - correct display in buttons -->
+        <math-symbol-button symbol='222B' v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
+        <math-symbol-button symbol='03A3' v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
+        <math-symbol-button symbol='221A' v-bind:inputType="symbols.root" ></math-symbol-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import MathSymbol from './MathSymbol.vue'
+import mathComponents from "../modules/mathComponents.js";
+import MathSymbolButton from "./MathSymbolButton.vue";
 
 export default {
   name: "ToolboxPanel",
   components: {
-    // MathSymbol
+    MathSymbolButton
+  },
+  data() {
+    return {
+      symbols: mathComponents.symbolTypes,
+      toolboxDisplayed: true,
+      buttonText: "Hide"
+    };
+  },
+  methods: {
+    toggleToolbox() {
+      this.toolboxDisplayed = !this.toolboxDisplayed;
+
+      if (this.toolboxDisplayed) this.buttonText = "Hide";
+      else this.buttonText = "Show";
+    }
   }
 };
 </script>
@@ -25,6 +46,6 @@ export default {
 <style scoped>
 .toolbox-panel {
   border: 0.5px solid #333;
-  min-height: 200px;
+  height: 200px;
 }
 </style>

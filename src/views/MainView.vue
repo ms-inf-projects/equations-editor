@@ -7,15 +7,14 @@
           </b-col>
       </b-row>
       <b-row>
-        <b-col cols="3" md="3">
-          <help-panel/>
-        </b-col>
-        <b-col cols="6" md="6">
+      
+        <b-col cols="12" md="8">
           <editor-panel/>
         </b-col>
-        <b-col cols="3" md="3">
+        <b-col cols="12" sm="4">
           <toolbox-panel/>
         </b-col>
+      
       </b-row>
       <export-panel/>
     </b-container>
@@ -23,14 +22,14 @@
 </template>
 
 <script>
-import HeaderPanel from '../components/HeaderPanel.vue'
-import HelpPanel from '../components/HelpPanel.vue'
-import ToolboxPanel from '../components/ToolboxPanel.vue'
-import EditorPanel from '../components/EditorPanel.vue'
-import ExportPanel from '../components/ExportPanel.vue'
+import HeaderPanel from "../components/HeaderPanel.vue";
+import HelpPanel from "../components/HelpPanel.vue";
+import ToolboxPanel from "../components/ToolboxPanel.vue";
+import EditorPanel from "../components/EditorPanel.vue";
+import ExportPanel from "../components/ExportPanel.vue";
 
 export default {
-  name: 'MainView',
+  name: "MainView",
   components: {
     HeaderPanel,
     HelpPanel,
@@ -38,7 +37,7 @@ export default {
     EditorPanel,
     ExportPanel
   }
-}
+};
 </script>
 
 
@@ -52,6 +51,5 @@ export default {
 
 <style scoped>
 .main-view {
-
 }
 </style>
