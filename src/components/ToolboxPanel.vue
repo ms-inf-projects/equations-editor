@@ -1,17 +1,33 @@
 <template>
-  <div class="">
-    <div>
-      <div class="section-header">
+  <div class="toolbox-panel">
+      <div class="section-header toolbox-header hide-on-mobile">
         toolbox
       </div>
-      <div class="toolbox-panel" v-bind:class="{ hidden: !toolboxDisplayed }">
-        <!-- TODO - try to refactor: foreach - list of symbols and methods -->
-        <!-- TODO - correct display in buttons -->
-        <math-symbol-button symbol='222B' isCode="true" v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
-        <math-symbol-button symbol='03A3' isCode="true" v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
-        <math-symbol-button symbol='221A' isCode="true" v-bind:inputType="symbols.root" ></math-symbol-button>
+      <b-button class="toggle-button show-on-mobile" v-on:click="toggleToolbox">
+        <span > {{ buttonText }} </span>
+      </b-button>
+      <div class="toolbox toolbox-responsive">
+
+        <b-button class="change-palet-btn left">
+         L
+        </b-button>
+        <b-button class="change-palet-btn right">
+         R
+        </b-button>
+
+        <div class="toolbox-area" v-bind:class="{ hidden: !toolboxDisplayed }">
+          <div class="toolbox-content">
+
+          </div>
+          <!-- TODO - try to refactor: foreach - list of symbols and methods -->
+          <!-- TODO - correct display in buttons -->
+          <math-symbol-button symbol='222B' isCode="true" v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
+          <math-symbol-button symbol='03A3' isCode="true" v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
+          <math-symbol-button symbol='221A' isCode="true" v-bind:inputType="symbols.root" ></math-symbol-button>
+        </div>
+
       </div>
-    </div>
+
   </div>
 </template>
 
@@ -44,8 +60,55 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.toolbox-panel {
+.toolbox-area {
   border: 0.5px solid #333;
-  height: 200px;
+  display: inline-block;
+  width: 78%;
+  margin: auto;
+}
+
+.toolbox {
+  position: relative;
+}
+
+.change-palet-btn {
+  position: absolute;
+  display: inline-block;
+  top: 30%;
+}
+
+.left {
+  left: 0%;
+}
+
+.right {
+  right: 0%;
+}
+
+.show-on-mobile {
+  display: none;
+}
+
+@media only screen and (max-device-width: 480px) {
+  .show-on-mobile {
+    display: initial;
+  }
+
+  .hide-on-mobile {
+    display: none;
+  }
+
+  .toolbox-responsive {
+    width: 100%;
+    background-color: #333;
+  }
+
+  .hidden {
+    display: none;
+  }
+}
+
+.toggle-button {
+  width: 100%;
 }
 </style>
