@@ -4,9 +4,6 @@
       <div class="section-header">
         toolbox
       </div>
-      <!-- <b-button class="toggle-button" v-on:click="toggleToolbox">
-        <span > {{ buttonText }} </span>
-      </b-button> -->
       <div class="toolbox-panel" v-bind:class="{ hidden: !toolboxDisplayed }">
         <!-- TODO - try to refactor: foreach - list of symbols and methods -->
         <!-- TODO - correct display in buttons -->
@@ -49,15 +46,6 @@ export default {
 <style scoped>
 .toolbox-panel {
   border: 0.5px solid #333;
-  /* background-color: #55a; */
   height: 200px;
-}
-
-.toggle-button {
-  /* width: 100%; */
-}
-
-.hidden {
-  /* height: 0px; */
 }
 </style>
