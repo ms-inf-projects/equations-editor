@@ -7,9 +7,9 @@
       <div class="toolbox-panel" v-bind:class="{ hidden: !toolboxDisplayed }">
         <!-- TODO - try to refactor: foreach - list of symbols and methods -->
         <!-- TODO - correct display in buttons -->
-        <math-symbol-button symbol='222B' v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
-        <math-symbol-button symbol='03A3' v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
-        <math-symbol-button symbol='221A' v-bind:inputType="symbols.root" ></math-symbol-button>
+        <math-symbol-button symbol='222B' isCode="true" v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
+        <math-symbol-button symbol='03A3' isCode="true" v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
+        <math-symbol-button symbol='221A' isCode="true" v-bind:inputType="symbols.root" ></math-symbol-button>
       </div>
     </div>
   </div>
