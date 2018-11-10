@@ -64,7 +64,7 @@ export default {
         return;
       }
 
-      this.insertMathSymbol(event.key, this.symbols.literal);
+      this.insertMathSymbol(this.symbols.literal, event.key);
     },
 
     removeActiveInput() {

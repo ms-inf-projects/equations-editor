@@ -13,7 +13,8 @@ export default {
   props: {
     mathSymbolDisplay: String,
     inputType: String,
-    symbol: ""
+    symbol: "",
+    isCode: false
   },
   methods: {
     insertSymbol() {
@@ -26,7 +27,8 @@ export default {
   },
   computed: {
     decodedSymbol() {
-      return String.fromCharCode(parseInt(this.symbol, 16));
+      if (this.isCode) return String.fromCharCode(parseInt(this.symbol, 16));
+      else return this.symbol;
     }
   }
 };
