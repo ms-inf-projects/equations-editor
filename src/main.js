@@ -4,8 +4,11 @@ import store from './store'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-// import katex from 'katex/dist/katex.min.js'
+import {
+  FontAwesomeIcon
+} from '@fortawesome/vue-fontawesome'
 
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false
 

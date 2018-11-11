@@ -1,6 +1,6 @@
 <template>
     <b-col class="math-symbol-button">
-      <b-button v-on:click="insertSymbol()">{{ decodedSymbol }}</b-button>
+      <b-button class="symbol-btn" variant="primary" v-on:click="insertSymbol()">{{ decodedSymbol }}</b-button>
     </b-col> 
 </template>
 
@@ -38,5 +38,9 @@ export default {
 <style scoped>
 .math-symbol-button {
   margin: 10px 0px 10px 0px;
+}
+
+.symbol-btn {
+  font-size: 1.3em;
 }
 </style>

@@ -3,22 +3,19 @@
       <div class="section-header toolbox-header hide-on-mobile">
         toolbox
       </div>
-      <b-button class="toggle-button show-on-mobile" v-on:click="toggleToolbox">
+      <div class="toggle-button show-on-mobile" v-on:click="toggleToolbox">
         <span > {{ buttonText }} </span>
-      </b-button>
-      <div class="toolbox toolbox-responsive">
+      </div>
+      <div class="toolbox toolbox-responsive" v-bind:class="{ hidden: !toolboxDisplayed }">
 
-        <b-button class="change-palet-btn left">
-         L
-        </b-button>
-        <b-button class="change-palet-btn right">
-         R
-        </b-button>
+        <div class="change-palet-btn left">
+          <font-awesome-icon icon="angle-left" />
+        </div>
+        <div class="change-palet-btn right">
+          <font-awesome-icon icon="angle-right" />    
+        </div>
 
-        <div class="toolbox-area" v-bind:class="{ hidden: !toolboxDisplayed }">
-          <div class="toolbox-content">
-
-          </div>
+        <div class="toolbox-area" >
           <!-- TODO - try to refactor: foreach - list of symbols and methods -->
           <!-- TODO - correct display in buttons -->
           <math-symbol-button symbol='222B' isCode="true" v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
@@ -35,6 +32,19 @@
 import mathComponents from "../modules/mathComponents.js";
 import MathSymbolButton from "./MathSymbolButton.vue";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faCaretLeft,
+  faCaretRight,
+  faAngleRight,
+  faAngleLeft
+} from "@fortawesome/free-solid-svg-icons";
+
+library.add(faCaretLeft);
+library.add(faCaretRight);
+library.add(faAngleRight);
+library.add(faAngleLeft);
+
 export default {
   name: "ToolboxPanel",
   components: {
@@ -44,15 +54,15 @@ export default {
     return {
       symbols: mathComponents.symbolTypes,
       toolboxDisplayed: true,
-      buttonText: "Hide"
+      buttonText: "Hide toolbox"
     };
   },
   methods: {
     toggleToolbox() {
       this.toolboxDisplayed = !this.toolboxDisplayed;
 
-      if (this.toolboxDisplayed) this.buttonText = "Hide";
-      else this.buttonText = "Show";
+      if (this.toolboxDisplayed) this.buttonText = "Hide toolbox";
+      else this.buttonText = "Show toolbox";
     }
   }
 };
@@ -61,10 +71,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .toolbox-area {
-  border: 0.5px solid #333;
+  border: 0.5px solid rgb(51, 51, 51);
   display: inline-block;
   width: 78%;
   margin: auto;
+  height: auto;
+  max-height: 50%;
 }
 
 .toolbox {
@@ -73,8 +85,21 @@ export default {
 
 .change-palet-btn {
   position: absolute;
+  z-index: 12;
   display: inline-block;
-  top: 30%;
+  font-size: 3em;
+  top: 10%;
+  padding: 0px 8px 0px 8px;
+  border-radius: 10%;
+  cursor: pointer;
+}
+
+.change-palet-btn:hover {
+  color: rgb(99, 147, 236);
+}
+
+.change-palet-btn:active {
+  color: rgb(69, 117, 236);
 }
 
 .left {
@@ -90,8 +115,24 @@ export default {
 }
 
 @media only screen and (max-device-width: 480px) {
+  .change-palet-btn {
+    color: #fff;
+  }
+
+  .change-palet-btn:hover {
+    color: #ccc;
+  }
+
+  .change-palet-btn:active {
+    color: #ccc;
+  }
+
   .show-on-mobile {
     display: initial;
+  }
+
+  .toolbox-area {
+    border: none;
   }
 
   .hide-on-mobile {
@@ -100,15 +141,28 @@ export default {
 
   .toolbox-responsive {
     width: 100%;
-    background-color: #333;
+    /* background-color: rgb(0, 60, 88); */
+    background-color: rgb(5, 65, 118);
   }
 
   .hidden {
     display: none;
   }
-}
 
-.toggle-button {
-  width: 100%;
+  .toggle-button {
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    background-color: rgb(0, 60, 88);
+    color: #ffffff;
+    width: 100%;
+    padding: 3px;
+    border-top: rgb(0, 60, 88) solid 3px;
+    border-bottom: #1a5ca3 solid 3px;
+  }
+
+  .toggle-button:hover {
+    background-color: rgb(0, 60, 88);
+  }
 }
 </style>

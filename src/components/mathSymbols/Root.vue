@@ -6,24 +6,42 @@
     <equation-input :equationObject="component.degreeEqObject"
                     class="degree">
     </equation-input>
-    <div class="root">
-      &#8730;
-      <equation-input :equationObject="component.baseEqObject"
-                      class="up-border base">
+    <div class="root" ref="rootRef">
+      <img src="../../assets/root_img_2.png" v-bind:style="{height: rootHeight +'px'}">
+      <equation-input  :equationObject="component.baseEqObject"
+                      class="base" v-bind:style="{borderTop: borderWidth + 'px solid #000'}">
       </equation-input>
     </div>
   </div>
 </template>
-
+ 
 <script>
+import { EventBus } from "../../event-bus.js";
+
 export default {
   name: "Root",
   components: {
     EquationInput: () => import("./EquationInput.vue")
   },
+  data() {
+    return {
+      rootHeight: 20
+    };
+  },
   props: {
     symbol: String,
     component: Object
+  },
+  computed: {
+    borderWidth() {
+      return this.rootHeight / 10 / 4;
+    }
+  },
+
+  created() {
+    EventBus.$on("componentInserted", () => {
+      this.rootHeight = this.$refs.rootRef.clientHeight;
+    });
   }
 };
 </script>
@@ -44,7 +62,6 @@ export default {
 .base {
   display: inline-block;
   vertical-align: top;
-  border-top: 1px solid #000;
 }
 
 .degree {
