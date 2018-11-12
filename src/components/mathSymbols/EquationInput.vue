@@ -26,6 +26,7 @@ import mathComponents from "../../modules/mathComponents.js";
 import AboveBelowInput from "./AboveBelowInput.vue";
 import Literal from "./Literal.vue";
 import Root from "./Root.vue";
+import { EventBus } from "../../event-bus.js";
 
 export default {
   name: "EquationInput",
@@ -40,6 +41,7 @@ export default {
     };
   },
   props: {
+    // TODO - consider passing font size reduction as prop
     equationObject: Object,
     rootInput: false
   },
@@ -91,6 +93,10 @@ export default {
 
       this.$emit("childUpdate", updated);
     }
+  },
+
+  mounted() {
+    EventBus.$emit("componentInserted");
   }
 };
 </script>

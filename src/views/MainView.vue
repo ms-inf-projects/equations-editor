@@ -11,7 +11,7 @@
         <b-col cols="12" md="8">
           <editor-panel/>
         </b-col>
-        <b-col cols="12" sm="4">
+        <b-col cols="12" md="4" class="toolbox">
           <toolbox-panel/>
         </b-col>
       
@@ -51,5 +51,13 @@ export default {
 
 <style scoped>
 .main-view {
+}
+
+@media only screen and (max-device-width: 480px) {
+  .toolbox {
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+  }
 }
 </style>

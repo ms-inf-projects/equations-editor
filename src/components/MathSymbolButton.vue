@@ -1,6 +1,6 @@
 <template>
     <b-col class="math-symbol-button">
-      <b-button v-on:click="insertSymbol()">{{ decodedSymbol }}</b-button>
+      <b-button class="symbol-btn" variant="primary" v-on:click="insertSymbol()">{{ decodedSymbol }}</b-button>
     </b-col> 
 </template>
 
@@ -12,23 +12,23 @@ export default {
   components: {},
   props: {
     mathSymbolDisplay: String,
-    inputType: String,
-    symbol: "",
+    symbol: Object,
     isCode: false
   },
   methods: {
     insertSymbol() {
       EventBus.$emit(
         "mastSymbolButtonClick",
-        this.inputType,
+        this.symbol.type,
         this.decodedSymbol
       );
     }
   },
   computed: {
     decodedSymbol() {
-      if (this.isCode) return String.fromCharCode(parseInt(this.symbol, 16));
-      else return this.symbol;
+      if (this.isCode)
+        return String.fromCharCode(parseInt(this.symbol.code, 16));
+      else return this.symbol.code;
     }
   }
 };
@@ -37,6 +37,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .math-symbol-button {
-  margin: 10px;
+  margin: 10px 0px 10px 0px;
+}
+
+.symbol-btn {
+  font-size: 1.3em;
 }
 </style>
