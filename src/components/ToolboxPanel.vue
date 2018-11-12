@@ -16,11 +16,11 @@
         </div>
 
         <div class="toolbox-area" >
-          <!-- TODO - try to refactor: foreach - list of symbols and methods -->
+          <!-- TODO - try to refactor: foreach - list of symbolTypes and methods -->
           <!-- TODO - correct display in buttons -->
-          <math-symbol-button symbol='222B' isCode="true" v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
-          <math-symbol-button symbol='03A3' isCode="true" v-bind:inputType="symbols.aboveBelow" ></math-symbol-button>
-          <math-symbol-button symbol='221A' isCode="true" v-bind:inputType="symbols.root" ></math-symbol-button>
+          <math-symbol-button :symbol='symbols.integral' isCode="true" ></math-symbol-button>
+          <math-symbol-button :symbol='symbols.sum' isCode="true" ></math-symbol-button>
+          <math-symbol-button :symbol='symbols.root' isCode="true" ></math-symbol-button>
         </div>
 
       </div>
@@ -33,15 +33,8 @@ import mathComponents from "../modules/mathComponents.js";
 import MathSymbolButton from "./MathSymbolButton.vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faCaretLeft,
-  faCaretRight,
-  faAngleRight,
-  faAngleLeft
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faCaretLeft);
-library.add(faCaretRight);
 library.add(faAngleRight);
 library.add(faAngleLeft);
 
@@ -52,7 +45,8 @@ export default {
   },
   data() {
     return {
-      symbols: mathComponents.symbolTypes,
+      symbols: mathComponents.symbols,
+      // symbolCodes: mathComponents.symbolCodes,
       toolboxDisplayed: true,
       buttonText: "Hide toolbox"
     };

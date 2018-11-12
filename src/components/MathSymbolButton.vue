@@ -12,23 +12,24 @@ export default {
   components: {},
   props: {
     mathSymbolDisplay: String,
-    inputType: String,
-    symbol: "",
+    // inputType: String,
+    symbol: Object,
     isCode: false
   },
   methods: {
     insertSymbol() {
       EventBus.$emit(
         "mastSymbolButtonClick",
-        this.inputType,
+        this.symbol.type,
         this.decodedSymbol
       );
     }
   },
   computed: {
     decodedSymbol() {
-      if (this.isCode) return String.fromCharCode(parseInt(this.symbol, 16));
-      else return this.symbol;
+      if (this.isCode)
+        return String.fromCharCode(parseInt(this.symbol.code, 16));
+      else return this.symbol.code;
     }
   }
 };

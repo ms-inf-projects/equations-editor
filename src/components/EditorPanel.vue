@@ -7,7 +7,7 @@
                       :rootInput="true">
       </equation-input>
     </div>
-    <!-- <b-row class="top-space">
+    <b-row class="top-space">
       <b-col>
         <b-button v-on:click="processToLatex()">
           Process to latex
@@ -20,7 +20,7 @@
           {{ latexData }}
         </div>
       </b-col>
-    </b-row> -->
+    </b-row>
   </div>
 </template>
 
@@ -99,7 +99,7 @@ export default {
     processToLatex() {
       let output = this.$store.getters.getLatexOutput;
       this.latexData = output;
-      console.log(output);
+      // console.log(output);
     }
   },
 

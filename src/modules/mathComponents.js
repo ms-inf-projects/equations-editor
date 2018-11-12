@@ -5,8 +5,29 @@ const symbolTypes = {
     root: "root",
 }
 
+const symbols = {
+    integral: {
+        type: symbolTypes.aboveBelow,
+        code: '222B'
+    },
+    sum: {
+        type: symbolTypes.aboveBelow,
+        code: '03A3'
+    },
+    root: {
+        type: symbolTypes.root,
+        code: '221A'
+    }
+}
+
+var latexSymbols = {};
+latexSymbols[symbols.integral.code] = "\\int";
+latexSymbols[symbols.sum.code] = "\\sum";
+latexSymbols[symbols.root.code] = "\\sqrt";
+
 export default {
     symbolTypes,
+    symbols,
 
     createSymbolComponent: function (type, uuid, symbol) {
         let component
@@ -19,7 +40,7 @@ export default {
                 component = createLiteralSymbol(symbol)
                 break;
             case this.symbolTypes.root:
-                component = createRootSymbol()
+                component = createRootSymbol(symbol)
                 break;
             default:
                 return {}
@@ -55,10 +76,10 @@ function createLiteralSymbol(symbol) {
     }
 }
 
-function createRootSymbol() {
+function createRootSymbol(symbol) {
     return {
         type: symbolTypes.root,
-        symbol: '\u8730',
+        symbol: symbol,
         degreeEqObject: {
             components: []
         },
@@ -114,12 +135,12 @@ function processRoot(component) {
     return output + " ";
 }
 
-const latexSymbols = {
-    '\u222B': "\\int",
-    '\u03A3': "\\sum",
-    '\u8730': "\\sqrt"
-};
-
 function symbolToLatex(symbol) {
-    return latexSymbols[symbol]
+    let num = symbol.charCodeAt(0);
+    let hexString = num.toString(16);
+
+    let zeros = "0".repeat(4 - hexString.length)
+    hexString = zeros + hexString.toUpperCase()
+
+    return latexSymbols[hexString]
 }
