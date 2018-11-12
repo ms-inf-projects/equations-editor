@@ -12,7 +12,6 @@ export default {
   components: {},
   props: {
     mathSymbolDisplay: String,
-    // inputType: String,
     symbol: Object,
     isCode: false
   },

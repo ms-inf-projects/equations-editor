@@ -99,7 +99,7 @@ export default {
     processToLatex() {
       let output = this.$store.getters.getLatexOutput;
       this.latexData = output;
-      // console.log(output);
+      console.log(output);
     }
   },
 
