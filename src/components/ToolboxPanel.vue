@@ -18,9 +18,11 @@
         <div class="toolbox-area" >
           <!-- TODO - try to refactor: foreach - list of symbolTypes and methods -->
           <!-- TODO - correct display in buttons -->
-          <math-symbol-button :symbol='symbols.integral' isCode="true" ></math-symbol-button>
-          <math-symbol-button :symbol='symbols.sum' isCode="true" ></math-symbol-button>
-          <math-symbol-button :symbol='symbols.root' isCode="true" ></math-symbol-button>
+          <math-symbol-button v-for="(symbol, index) in symbols" 
+                              :symbol='symbol' 
+                              v-bind:key="index" 
+                              isCode="true" ></math-symbol-button>
+          
         </div>
 
       </div>
@@ -46,11 +48,11 @@ export default {
   data() {
     return {
       symbols: mathComponents.symbols,
-      // symbolCodes: mathComponents.symbolCodes,
       toolboxDisplayed: true,
       buttonText: "Hide toolbox"
     };
   },
+
   methods: {
     toggleToolbox() {
       this.toolboxDisplayed = !this.toolboxDisplayed;
