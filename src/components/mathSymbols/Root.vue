@@ -37,11 +37,17 @@ export default {
       return this.rootHeight / 10 / 4;
     }
   },
+  methods: {
+    reScale() {
+      this.rootHeight = this.$refs.rootRef.clientHeight;
+    }
+  },
 
   created() {
-    EventBus.$on("componentInserted", () => {
-      this.rootHeight = this.$refs.rootRef.clientHeight;
-    });
+    EventBus.$on("componentInserted", this.reScale);
+  },
+  beforeDestroy() {
+    EventBus.$off("componentInserted", this.reScale);
   }
 };
 </script>
