@@ -5,18 +5,28 @@ const symbolTypes = {
     root: "root",
 }
 
+const symbolCategories = {
+    basic: "basic",
+    calculus: "calculus",
+    letter: "letter",
+    digit: "digit",
+}
+
 const symbols = {
     integral: {
         type: symbolTypes.aboveBelow,
-        code: '222B'
+        code: '222B',
+        category: symbolCategories.calculus,
     },
     sum: {
         type: symbolTypes.aboveBelow,
-        code: '03A3'
+        code: '03A3',
+        category: symbolCategories.calculus
     },
     root: {
         type: symbolTypes.root,
-        code: '221A'
+        code: '221A',
+        category: symbolCategories.basic
     }
 }
 
@@ -28,6 +38,7 @@ latexSymbols[symbols.root.code] = "\\sqrt";
 export default {
     symbolTypes,
     symbols,
+    symbolCategories,
 
     createSymbolComponent: function (type, uuid, symbol) {
         let component

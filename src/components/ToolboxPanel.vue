@@ -8,21 +8,35 @@
       </div>
       <div class="toolbox toolbox-responsive" v-bind:class="{ hidden: !toolboxDisplayed }">
 
-        <div class="change-palet-btn left">
+        <div class="change-palet-btn left" v-on:click="swapCategory(-1)">
           <font-awesome-icon icon="angle-left" />
         </div>
-        <div class="change-palet-btn right">
+        <div class="change-palet-btn right" v-on:click="swapCategory(1)">
           <font-awesome-icon icon="angle-right" />    
         </div>
 
         <div class="toolbox-area" >
-          <!-- TODO - try to refactor: foreach - list of symbolTypes and methods -->
-          <!-- TODO - correct display in buttons -->
-          <math-symbol-button v-for="(symbol, index) in symbols" 
-                              :symbol='symbol' 
-                              v-bind:key="index" 
-                              isCode="true" ></math-symbol-button>
-          
+          <b-row class="category-name">
+            <b-col>
+              <span >{{ activeCategory.name }}</span>
+            </b-col>
+          </b-row>
+          <!-- TODO - correct displays - ex 5-6 in a row -->
+          <div v-if="activeCategory.name == categories.letter">
+            <!-- TODO - display alphabet -->
+            <span>alphabet keyboard</span>
+          </div>
+          <div v-else-if="activeCategory.name == categories.digit">
+            <!-- TODO - display digits -->
+            <span>digits keyboard</span>
+          </div>
+          <div v-else>
+            <math-symbol-button v-for="(symbol, index) in symbols"
+                    v-bind:key="index"
+                    v-if="symbol.category == activeCategory.name"
+                    :symbol='symbol' 
+                    isCode="true" ></math-symbol-button>
+          </div>
         </div>
 
       </div>
@@ -48,6 +62,9 @@ export default {
   data() {
     return {
       symbols: mathComponents.symbols,
+      categories: mathComponents.symbolCategories,
+      categoriesArray: mathComponents.symbolCategories,
+      activeCategory: Object,
       toolboxDisplayed: true,
       buttonText: "Hide toolbox"
     };
@@ -59,7 +76,30 @@ export default {
 
       if (this.toolboxDisplayed) this.buttonText = "Hide toolbox";
       else this.buttonText = "Show toolbox";
+    },
+
+    swapCategory(side) {
+      let currentIndex = this.activeCategory.id;
+      let newIndex = currentIndex + side;
+
+      if (newIndex < 0) newIndex = this.categoriesArray.length + newIndex;
+      else if (newIndex >= this.categoriesArray.length)
+        newIndex = newIndex - this.categoriesArray.length;
+
+      this.activeCategory = {
+        id: newIndex,
+        name: this.categoriesArray[newIndex]
+      };
     }
+  },
+
+  created() {
+    this.categoriesArray = Object.values(mathComponents.symbolCategories);
+    this.activeCategory = {
+      id: 0,
+      name: this.categoriesArray[0]
+    };
+    console.log(this.activeCategory.name);
   }
 };
 </script>
@@ -72,7 +112,14 @@ export default {
   width: 78%;
   margin: auto;
   height: auto;
+  min-height: 100px;
   max-height: 50%;
+}
+
+.category-name {
+  margin: 5px 0px 5px 0px;
+  font-weight: 700;
+  font-size: 1.1em;
 }
 
 .toolbox {
@@ -111,6 +158,10 @@ export default {
 }
 
 @media only screen and (max-device-width: 480px) {
+  .category-name {
+    color: #fff;
+  }
+
   .change-palet-btn {
     color: #fff;
   }
