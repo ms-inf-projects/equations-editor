@@ -43,22 +43,25 @@ const symbols = {
         inputType: inputTypes.basic,
         category: symbolCategories.basic,
         text: ' x ',
-        symbolKind: symbolKinds.operator
+        kind: symbolKinds.operator
     },
     add: {
         inputType: inputTypes.basic,
         category: symbolCategories.basic,
-        text: ' + '
+        text: ' + ',
+        kind: symbolKinds.operator
     },
     subtract: {
         inputType: inputTypes.basic,
         category: symbolCategories.basic,
-        text: ' - '
+        text: ' - ',
+        kind: symbolKinds.operator
     },
     equal: {
         inputType: inputTypes.basic,
         category: symbolCategories.basic,
-        text: ' = '
+        text: ' = ',
+        kind: symbolKinds.operator
     }
 }
 
@@ -66,4 +69,5 @@ export default {
     inputTypes,
     symbols,
     symbolCategories,
+    symbolKinds
 }

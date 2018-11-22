@@ -6,7 +6,7 @@
  -->
 <template>
   <div class="basic">
-    <span class="basic-data" :class="kind">{{symbol}}</span>
+    <span class="basic-data" :class="symbol.kind">{{symbol.text}}</span>
   </div>
 </template>
 
@@ -15,8 +15,7 @@ export default {
   name: "Basic",
   components: {},
   props: {
-    symbol: String,
-    kind: String
+    symbol: Object
   }
 };
 </script>

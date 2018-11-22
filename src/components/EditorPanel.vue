@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       symbols: symbolsDefinitions.inputTypes,
+      symbolKinds: symbolsDefinitions.symbolKinds,
       equationObject: this.$store.getters.getEquationObject,
       latexData: ""
     };
@@ -65,9 +66,11 @@ export default {
         return;
       }
 
+      // TODO - determine if letter or number
       let literalSymbol = {
         inputType: this.symbols.basic,
-        text: event.key
+        text: event.key,
+        kind: this.symbolKinds.letter
       };
 
       this.insertMathSymbol(literalSymbol);
@@ -92,11 +95,7 @@ export default {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
         let uuid = this.$store.getters.getUUID;
-        let component = mathComponents.createSymbolComponent(
-          symbol.inputType,
-          uuid,
-          symbol.text
-        );
+        let component = mathComponents.createSymbolComponent(symbol, uuid);
 
         activeInput.addEmbededComponent(component);
       }

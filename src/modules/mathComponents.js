@@ -6,30 +6,25 @@ latexSymbols[symbolDefinitions.symbols.sum.code] = "\\sum";
 latexSymbols[symbolDefinitions.symbols.root.code] = "\\sqrt";
 
 export default {
-    createSymbolComponent: function (inputType, uuid, symbol) {
+    createSymbolComponent: function (symbol, uuid) {
         let component
 
-        switch (inputType) {
+        switch (symbol.inputType) {
             case symbolDefinitions.inputTypes.aboveBelow:
-                component = createAboveBeloweSymbol(symbol)
-                break;
-            case symbolDefinitions.inputTypes.literal:
-            case symbolDefinitions.inputTypes.operator:
-            case symbolDefinitions.inputTypes.specialChar:
-            case symbolDefinitions.inputTypes.basic:
-                component = {
-                    inputType: inputType,
-                    symbol: symbol
-                }
+                component = createAboveBeloweComponent()
                 break;
             case symbolDefinitions.inputTypes.root:
-                component = createRootSymbol(symbol)
+                component = createRootComponent()
                 break;
             default:
-                return {}
+                component = {}
         }
 
+        component.symbol = symbol
         component.uuid = uuid;
+
+        console.log(component)
+
         return component;
     },
 
@@ -39,10 +34,8 @@ export default {
 };
 
 // Components creation ------------------------------------
-function createAboveBeloweSymbol(symbol) {
+function createAboveBeloweComponent() {
     return {
-        inputType: symbolDefinitions.inputTypes.aboveBelow,
-        symbol: symbol,
         upEqObject: {
             components: []
         },
@@ -52,10 +45,8 @@ function createAboveBeloweSymbol(symbol) {
     }
 }
 
-function createRootSymbol(symbol) {
+function createRootComponent() {
     return {
-        inputType: symbolDefinitions.inputTypes.root,
-        symbol: symbol,
         degreeEqObject: {
             components: []
         },
@@ -80,19 +71,21 @@ function processEquetionInput(equationInput) {
     return equationInput.components.map(x => processComponent(x)).join('');
 }
 
+// TODO - fix Latex processing
 function processComponent(component) {
-    return processFunctions[component.inputType](component);
+    console.log(component)
+    return processFunctions[component.symbol.inputType](component);
 }
 
 function processBasicSymbol(component) {
-    return component.symbol;
+    return component.symbol.text;
 }
 
 function processAboveBelow(component) {
     let upInpt = processEquetionInput(component.upEqObject)
     let downInput = processEquetionInput(component.downEqObject)
 
-    let output = symbolToLatex(component.symbol)
+    let output = symbolToLatex(component.symbol.text)
 
     if (downInput) output += `_{${downInput}}`;
     if (upInpt) output += `^{${upInpt}}`;
@@ -104,7 +97,7 @@ function processRoot(component) {
     let degreeInput = processEquetionInput(component.degreeEqObject)
     let baseInput = processEquetionInput(component.baseEqObject)
 
-    let output = symbolToLatex(component.symbol)
+    let output = symbolToLatex(component.symbol.text)
 
     if (degreeInput) output += `[${degreeInput}]`;
     if (baseInput) output += `{${baseInput}}`;
