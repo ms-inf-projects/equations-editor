@@ -1,56 +1,28 @@
-const symbolTypes = {
-    literal: "literal",
-    aboveBelow: "aboveBelow",
-    specialChar: "specialChar",
-    root: "root",
-}
-
-const symbolCategories = {
-    basic: "basic",
-    calculus: "calculus",
-    letter: "letter",
-    digit: "digit",
-}
-
-const symbols = {
-    integral: {
-        type: symbolTypes.aboveBelow,
-        code: '222B',
-        category: symbolCategories.calculus,
-    },
-    sum: {
-        type: symbolTypes.aboveBelow,
-        code: '03A3',
-        category: symbolCategories.calculus
-    },
-    root: {
-        type: symbolTypes.root,
-        code: '221A',
-        category: symbolCategories.basic
-    }
-}
+import symbolDefinitions from './symbolsDefinitions.js'
 
 var latexSymbols = {};
-latexSymbols[symbols.integral.code] = "\\int";
-latexSymbols[symbols.sum.code] = "\\sum";
-latexSymbols[symbols.root.code] = "\\sqrt";
+latexSymbols[symbolDefinitions.symbols.integral.code] = "\\int";
+latexSymbols[symbolDefinitions.symbols.sum.code] = "\\sum";
+latexSymbols[symbolDefinitions.symbols.root.code] = "\\sqrt";
 
 export default {
-    symbolTypes,
-    symbols,
-    symbolCategories,
-
-    createSymbolComponent: function (type, uuid, symbol) {
+    createSymbolComponent: function (inputType, uuid, symbol) {
         let component
 
-        switch (type) {
-            case this.symbolTypes.aboveBelow:
+        switch (inputType) {
+            case symbolDefinitions.inputTypes.aboveBelow:
                 component = createAboveBeloweSymbol(symbol)
                 break;
-            case this.symbolTypes.literal:
-                component = createLiteralSymbol(symbol)
+            case symbolDefinitions.inputTypes.literal:
+            case symbolDefinitions.inputTypes.operator:
+            case symbolDefinitions.inputTypes.specialChar:
+            case symbolDefinitions.inputTypes.basic:
+                component = {
+                    inputType: inputType,
+                    symbol: symbol
+                }
                 break;
-            case this.symbolTypes.root:
+            case symbolDefinitions.inputTypes.root:
                 component = createRootSymbol(symbol)
                 break;
             default:
@@ -69,7 +41,7 @@ export default {
 // Components creation ------------------------------------
 function createAboveBeloweSymbol(symbol) {
     return {
-        type: symbolTypes.aboveBelow,
+        inputType: symbolDefinitions.inputTypes.aboveBelow,
         symbol: symbol,
         upEqObject: {
             components: []
@@ -80,16 +52,9 @@ function createAboveBeloweSymbol(symbol) {
     }
 }
 
-function createLiteralSymbol(symbol) {
-    return {
-        type: symbolTypes.literal,
-        symbol: symbol
-    }
-}
-
 function createRootSymbol(symbol) {
     return {
-        type: symbolTypes.root,
+        inputType: symbolDefinitions.inputTypes.root,
         symbol: symbol,
         degreeEqObject: {
             components: []
@@ -102,23 +67,24 @@ function createRootSymbol(symbol) {
 
 // Latex processing ----------------------------------------
 
+var processFunctions = {}
+processFunctions[symbolDefinitions.inputTypes.aboveBelow] = processAboveBelow;
+processFunctions[symbolDefinitions.inputTypes.root] = processRoot;
+processFunctions[symbolDefinitions.inputTypes.literal] = processBasicSymbol;
+processFunctions[symbolDefinitions.inputTypes.operator] = processBasicSymbol;
+processFunctions[symbolDefinitions.inputTypes.specialChar] = processBasicSymbol;
+
 function processEquetionInput(equationInput) {
     if (equationInput == null) return null
 
     return equationInput.components.map(x => processComponent(x)).join('');
 }
 
-const processFunctions = {
-    aboveBelow: processAboveBelow,
-    root: processRoot,
-    literal: processLiteral
-};
-
 function processComponent(component) {
-    return processFunctions[component.type](component);
+    return processFunctions[component.inputType](component);
 }
 
-function processLiteral(component) {
+function processBasicSymbol(component) {
     return component.symbol;
 }
 
@@ -146,7 +112,17 @@ function processRoot(component) {
     return output + " ";
 }
 
-function symbolToLatex(symbol) {
+function symbolToLatex(component) {
+    switch (component.inputType) {
+        case this.inputTypes.literal:
+        case this.inputTypes.operator:
+            return component.text
+        default:
+            return utf8SymbolToLatex(component.symbol)
+    }
+}
+
+function utf8SymbolToLatex(symbol) {
     let num = symbol.charCodeAt(0);
     let hexString = num.toString(16);
 

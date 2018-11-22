@@ -4,27 +4,31 @@
     <span v-if="!equationObject.components"></span>
     <span v-if="equationObject.components && equationObject.components.length==0">[_]</span>
     <div class="component-container" v-for="(elem, index) in equationObject.components" :key="index">
-      <above-below-input v-if="elem.type == types.aboveBelow" 
+     
+      <above-below-input v-if="elem.inputType == inputTypes.aboveBelow" 
         :symbol="elem.symbol"
         :component="elem">
       </above-below-input>
 
-      <literal v-if="elem.type == types.literal" 
-        :symbol="elem.symbol">
-      </literal>
+      <basic v-if="elem.inputType == inputTypes.basic" 
+        :symbol="elem.symbol"
+        :type="elem.inputType">
+      </basic>
 
-      <root v-if="elem.type == types.root" 
+      <root v-if="elem.inputType == inputTypes.root" 
         :symbol="elem.symbol"
         :component="elem">
       </root>
+
     </div>
   </div>
 </template>
 
 <script>
-import mathComponents from "../../modules/mathComponents.js";
+import symbolsDefinitions from "../../modules/symbolsDefinitions.js";
 import AboveBelowInput from "./AboveBelowInput.vue";
 import Literal from "./Literal.vue";
+import Basic from "./Basic.vue";
 import Root from "./Root.vue";
 import { EventBus } from "../../event-bus.js";
 
@@ -33,11 +37,12 @@ export default {
   components: {
     AboveBelowInput,
     Literal,
-    Root
+    Root,
+    Basic
   },
   data() {
     return {
-      types: mathComponents.symbolTypes
+      inputTypes: symbolsDefinitions.inputTypes
     };
   },
   props: {

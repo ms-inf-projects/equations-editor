@@ -17,18 +17,14 @@ export default {
   },
   methods: {
     insertSymbol() {
-      EventBus.$emit(
-        "mastSymbolButtonClick",
-        this.symbol.type,
-        this.decodedSymbol
-      );
+      EventBus.$emit("mastSymbolButtonClick", this.symbol);
     }
   },
   computed: {
     decodedSymbol() {
-      if (this.isCode)
+      if (this.symbol.code)
         return String.fromCharCode(parseInt(this.symbol.code, 16));
-      else return this.symbol.code;
+      else return this.symbol.text;
     }
   }
 };
