@@ -1,7 +1,5 @@
 // Type of the input - each one is represented by the vue component
 const inputTypes = {
-    literal: "literal",
-    operator: "operator",
     aboveBelow: "aboveBelow",
     specialChar: "specialChar",
     root: "root",

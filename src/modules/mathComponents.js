@@ -60,8 +60,6 @@ function createRootComponent() {
 var processFunctions = {}
 processFunctions[symbolDefinitions.inputTypes.aboveBelow] = processAboveBelow;
 processFunctions[symbolDefinitions.inputTypes.root] = processRoot;
-processFunctions[symbolDefinitions.inputTypes.literal] = processBasicSymbol;
-processFunctions[symbolDefinitions.inputTypes.operator] = processBasicSymbol;
 processFunctions[symbolDefinitions.inputTypes.specialChar] = processBasicSymbol;
 processFunctions[symbolDefinitions.inputTypes.basic] = processBasicSymbol;
 
