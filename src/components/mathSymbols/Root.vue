@@ -7,7 +7,7 @@
                     class="degree">
     </equation-input>
     <div class="root" ref="rootRef">
-      <img src="../../assets/root_img.png" v-bind:style="{height: rootHeight +'px'}">
+      <img :src="component.symbol.imagePath" v-bind:style="{height: rootHeight +'px'}">
       <equation-input  :equationObject="component.baseEqObject"
                       class="base" v-bind:style="{borderTop: borderWidth + 'px solid #000'}">
       </equation-input>

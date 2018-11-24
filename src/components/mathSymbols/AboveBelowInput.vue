@@ -8,9 +8,19 @@
     <equation-input v-if="component.upEqObject"
                     :equationObject="component.upEqObject">
     </equation-input>
-    {{ component.symbol.text }}
+
+      <div v-if="component.symbol.imagePath" class="img-wrap">
+        <img 
+            :src="component.symbol.imagePath"
+            class="symbol-img"
+        />
+      </div>
+      <span v-else>
+        {{ component.symbol.text }}
+      </span>
+
     <equation-input v-if="component.downEqObject"
-                    :equationObject="component.downEqObject" >
+                    :equationObject="component.downEqObject">
     </equation-input>
   </div>
 </template>
@@ -33,5 +43,12 @@ export default {
   margin: 1px;
   display: inline-block;
   vertical-align: middle;
+}
+
+.img-wrap {
+}
+
+.symbol-img {
+  display: block;
 }
 </style>

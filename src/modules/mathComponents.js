@@ -5,21 +5,11 @@ latexSymbols[symbolDefinitions.symbols.integral.text] = "\\int";
 latexSymbols[symbolDefinitions.symbols.sum.text] = "\\sum";
 latexSymbols[symbolDefinitions.symbols.root.text] = "\\sqrt";
 latexSymbols[symbolDefinitions.symbols.multiply.text] = "\\times";
+latexSymbols[symbolDefinitions.symbols.fraction.text] = "\\dfrac";
 
 export default {
     createSymbolComponent: function (symbol, uuid) {
-        let component
-
-        switch (symbol.inputType) {
-            case symbolDefinitions.inputTypes.aboveBelow:
-                component = createAboveBeloweComponent()
-                break;
-            case symbolDefinitions.inputTypes.root:
-                component = createRootComponent()
-                break;
-            default:
-                component = {}
-        }
+        let component = componentConstructors[symbol.inputType]()
 
         component.symbol = symbol
         component.uuid = uuid;
@@ -33,6 +23,13 @@ export default {
 };
 
 // Components creation ------------------------------------
+var componentConstructors = {}
+componentConstructors[symbolDefinitions.inputTypes.aboveBelow] = createAboveBeloweComponent;
+componentConstructors[symbolDefinitions.inputTypes.fraction] = createAboveBeloweComponent;
+componentConstructors[symbolDefinitions.inputTypes.root] = createRootComponent;
+componentConstructors[symbolDefinitions.inputTypes.specialChar] = createEmptyComponent;
+componentConstructors[symbolDefinitions.inputTypes.basic] = createEmptyComponent;
+
 function createAboveBeloweComponent() {
     return {
         upEqObject: {
@@ -55,10 +52,15 @@ function createRootComponent() {
     }
 }
 
+function createEmptyComponent() {
+    return {};
+}
+
 // Latex processing ----------------------------------------
 
 var processFunctions = {}
 processFunctions[symbolDefinitions.inputTypes.aboveBelow] = processAboveBelow;
+processFunctions[symbolDefinitions.inputTypes.fraction] = processFraction;
 processFunctions[symbolDefinitions.inputTypes.root] = processRoot;
 processFunctions[symbolDefinitions.inputTypes.specialChar] = processBasicSymbol;
 processFunctions[symbolDefinitions.inputTypes.basic] = processBasicSymbol;
@@ -69,7 +71,6 @@ function processEquetionInput(equationInput) {
     return equationInput.components.map(x => processComponent(x)).join('');
 }
 
-// TODO - fix Latex processing
 function processComponent(component) {
     return processFunctions[component.symbol.inputType](component);
 }
@@ -92,6 +93,18 @@ function processAboveBelow(component) {
 
     if (downInput) output += `_{${downInput}}`;
     if (upInpt) output += `^{${upInpt}}`;
+
+    return output + " ";
+}
+
+function processFraction(component) {
+    let upInpt = processEquetionInput(component.upEqObject)
+    let downInput = processEquetionInput(component.downEqObject)
+
+    let output = symbolToLatex(component.symbol)
+
+    if (downInput) output += `{${downInput}}`;
+    if (upInpt) output += `{${upInpt}}`;
 
     return output + " ";
 }
