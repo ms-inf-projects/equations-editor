@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      symbols: symbolsDefinitions.inputTypes,
+      inputTypes: symbolsDefinitions.inputTypes,
       symbolKinds: symbolsDefinitions.symbolKinds,
       equationObject: this.$store.getters.getEquationObject,
       latexData: ""
@@ -68,7 +68,7 @@ export default {
 
       // TODO - determine if letter or number
       let literalSymbol = {
-        inputType: this.symbols.basic,
+        inputType: this.inputTypes.basic,
         text: event.key,
         kind: this.symbolKinds.letter
       };
