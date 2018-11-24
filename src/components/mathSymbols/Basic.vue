@@ -40,7 +40,8 @@ export default {
   vertical-align: middle;
 }
 
+/* TODO - different font for operators */
 .operator {
-  font-size: 0.8em;
+  font-size: 0.7em;
 }
 </style>

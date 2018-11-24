@@ -113,7 +113,9 @@ export default {
   margin: auto;
   height: auto;
   min-height: 100px;
-  max-height: 50%;
+  max-height: 60%;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 .category-name {
@@ -158,6 +160,11 @@ export default {
 }
 
 @media only screen and (max-device-width: 480px) {
+  .toolbox-area {
+    max-height: 40%;
+    max-height: 40vh;
+  }
+
   .category-name {
     color: #fff;
   }

@@ -28,22 +28,26 @@ const symbols = {
         inputType: inputTypes.aboveBelow,
         text: String.fromCharCode(parseInt('222B', 16)),
         category: symbolCategories.calculus,
+        specialRender: true
     },
     sum: {
         inputType: inputTypes.aboveBelow,
         text: String.fromCharCode(parseInt('03A3', 16)),
-        category: symbolCategories.calculus
+        category: symbolCategories.calculus,
+        specialRender: true
     },
     root: {
         inputType: inputTypes.root,
         text: String.fromCharCode(parseInt('221A', 16)),
-        category: symbolCategories.basic
+        category: symbolCategories.basic,
+        specialRender: true
     },
     multiply: {
         inputType: inputTypes.basic,
         category: symbolCategories.basic,
         text: ' x ',
-        kind: symbolKinds.operator
+        kind: symbolKinds.operator,
+        specialRender: true
     },
     add: {
         inputType: inputTypes.basic,
