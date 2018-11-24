@@ -29,7 +29,6 @@ export default {
     };
   },
   props: {
-    symbol: String,
     component: Object
   },
   computed: {

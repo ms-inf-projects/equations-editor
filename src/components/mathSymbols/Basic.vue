@@ -1,26 +1,28 @@
 <!-- Handles
   - single letters
   - single numbers
+  - operators
+  - special symbols
  -->
 <template>
-  <div class="literal">
-    <span class="literal-data">{{symbol}}</span>
+  <div class="basic">
+    <span class="basic-data" :class="symbol.kind">{{symbol.text}}</span>
   </div>
 </template>
 
 <script>
 export default {
-  name: "AboveBelowInput",
+  name: "Basic",
   components: {},
   props: {
-    symbol: String
+    symbol: Object
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.literal {
+.basic {
   display: inline-block;
   text-align: center;
   vertical-align: auto;
@@ -34,7 +36,12 @@ export default {
   /* margin: -15% 0 0 -25%; */
 }
 
-.literal-data {
+.basic-data {
   vertical-align: middle;
+}
+
+/* TODO - different font for operators */
+.operator {
+  font-size: 0.7em;
 }
 </style>

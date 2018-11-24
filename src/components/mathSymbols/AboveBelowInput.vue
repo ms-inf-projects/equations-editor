@@ -8,7 +8,7 @@
     <equation-input v-if="component.upEqObject"
                     :equationObject="component.upEqObject">
     </equation-input>
-    {{symbol}}
+    {{ component.symbol.text }}
     <equation-input v-if="component.downEqObject"
                     :equationObject="component.downEqObject" >
     </equation-input>
@@ -22,7 +22,6 @@ export default {
     EquationInput: () => import("./EquationInput.vue")
   },
   props: {
-    symbol: String,
     component: Object
   }
 };

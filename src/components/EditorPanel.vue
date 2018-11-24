@@ -28,6 +28,7 @@
 import EquationInput from "./mathSymbols/EquationInput.vue";
 import alphanumeric from "../modules/alphanumeric.js";
 import mathComponents from "../modules/mathComponents.js";
+import symbolsDefinitions from "../modules/symbolsDefinitions.js";
 import { EventBus } from "../event-bus";
 
 export default {
@@ -37,7 +38,8 @@ export default {
   },
   data() {
     return {
-      symbols: mathComponents.symbolTypes,
+      inputTypes: symbolsDefinitions.inputTypes,
+      symbolKinds: symbolsDefinitions.symbolKinds,
       equationObject: this.$store.getters.getEquationObject,
       latexData: ""
     };
@@ -64,7 +66,14 @@ export default {
         return;
       }
 
-      this.insertMathSymbol(this.symbols.literal, event.key);
+      // TODO - determine if letter or number
+      let literalSymbol = {
+        inputType: this.inputTypes.basic,
+        text: event.key,
+        kind: this.symbolKinds.letter
+      };
+
+      this.insertMathSymbol(literalSymbol);
     },
 
     removeActiveInput() {
@@ -82,15 +91,11 @@ export default {
     },
 
     // TODO - when no active input the error occure
-    insertMathSymbol(type, symbol) {
+    insertMathSymbol(symbol) {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
         let uuid = this.$store.getters.getUUID;
-        let component = mathComponents.createSymbolComponent(
-          type,
-          uuid,
-          symbol
-        );
+        let component = mathComponents.createSymbolComponent(symbol, uuid);
 
         activeInput.addEmbededComponent(component);
       }
@@ -104,8 +109,8 @@ export default {
   },
 
   created() {
-    EventBus.$on("mastSymbolButtonClick", (type, symbol) =>
-      this.insertMathSymbol(type, symbol)
+    EventBus.$on("mastSymbolButtonClick", symbol =>
+      this.insertMathSymbol(symbol)
     );
   },
 

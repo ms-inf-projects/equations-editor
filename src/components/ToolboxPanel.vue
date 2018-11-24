@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import mathComponents from "../modules/mathComponents.js";
+import symbolsDefinitions from "../modules/symbolsDefinitions.js";
 import MathSymbolButton from "./MathSymbolButton.vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -61,9 +61,9 @@ export default {
   },
   data() {
     return {
-      symbols: mathComponents.symbols,
-      categories: mathComponents.symbolCategories,
-      categoriesArray: mathComponents.symbolCategories,
+      symbols: symbolsDefinitions.symbols,
+      categories: symbolsDefinitions.symbolCategories,
+      categoriesArray: Array,
       activeCategory: Object,
       toolboxDisplayed: true,
       buttonText: "Hide toolbox"
@@ -94,7 +94,7 @@ export default {
   },
 
   created() {
-    this.categoriesArray = Object.values(mathComponents.symbolCategories);
+    this.categoriesArray = Object.values(this.categories);
     this.activeCategory = {
       id: 0,
       name: this.categoriesArray[0]
@@ -113,7 +113,9 @@ export default {
   margin: auto;
   height: auto;
   min-height: 100px;
-  max-height: 50%;
+  max-height: 60%;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 .category-name {
@@ -158,6 +160,11 @@ export default {
 }
 
 @media only screen and (max-device-width: 480px) {
+  .toolbox-area {
+    max-height: 40%;
+    max-height: 40vh;
+  }
+
   .category-name {
     color: #fff;
   }
