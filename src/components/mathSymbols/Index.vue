@@ -1,10 +1,10 @@
 <!-- Handles
-  - x to power
+  - subscript
+  - superscript
+  - both at the same time
  -->
 <template>
   <div class="index-input">
-    <!-- TODO - style -->
-    <!-- <equation-input class="main-input"></equation-input> -->
 
     <div class="wrapper">
       <equation-input v-if="component.upEqObject"
@@ -45,11 +45,6 @@ export default {
   height: 100%;
 }
 
-.main-input {
-  display: inline-block;
-  vertical-align: middle;
-}
-
 .wrapper {
   height: 0px;
 }
@@ -63,7 +58,6 @@ export default {
 .subscript {
   vertical-align: bottom;
   display: inline-block;
-
   font-size: 0.5em;
 }
 </style>

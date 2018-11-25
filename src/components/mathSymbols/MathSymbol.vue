@@ -1,10 +1,3 @@
-<!-- 
-    TODO: consider using litteral for as many cases as you can
-    For: +,-,=, 
-    Maybe: *, >,<, !, Pi and other consts
-
--->
-
 <template>
   <div class="literal">
     <span class="literal-data">{{data}}</span>
