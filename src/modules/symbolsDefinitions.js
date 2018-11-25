@@ -4,41 +4,43 @@ const inputTypes = {
     specialChar: "specialChar",
     root: "root",
     basic: "basic",
-    fraction: "fraction"
-}
+    fraction: "fraction",
+    index: "index"
+};
 
 // Kind of the symbol to differentiate inside the input
 const symbolKinds = {
     letter: "letter",
     digit: "digit",
     operator: "operator",
-    fraction: "fraction"
-}
+    fraction: "fraction",
+    index: "index"
+};
 
-// Categories used for displaying 
+// Categories used for displaying
 const symbolCategories = {
     basic: "basic",
     advanced: "advanced",
     letter: "letter",
-    digit: "digit",
-}
+    digit: "digit"
+};
 
 const symbols = {
     integral: {
         inputType: inputTypes.aboveBelow,
-        text: String.fromCharCode(parseInt('222B', 16)),
+        text: String.fromCharCode(parseInt("222B", 16)),
         category: symbolCategories.advanced,
         specialRender: true
     },
     sum: {
         inputType: inputTypes.aboveBelow,
-        text: String.fromCharCode(parseInt('03A3', 16)),
+        text: String.fromCharCode(parseInt("03A3", 16)),
         category: symbolCategories.advanced,
         specialRender: true
     },
     fraction: {
         inputType: inputTypes.fraction,
-        text: String.fromCharCode(parseInt('2501', 16)),
+        text: String.fromCharCode(parseInt("2501", 16)),
         category: symbolCategories.advanced,
         specialRender: true,
         imagePath: require("@/assets/fraction_img.png"),
@@ -46,7 +48,7 @@ const symbols = {
     },
     root: {
         inputType: inputTypes.root,
-        text: String.fromCharCode(parseInt('221A', 16)),
+        text: String.fromCharCode(parseInt("221A", 16)),
         category: symbolCategories.basic,
         specialRender: true,
         imagePath: require("@/assets/root_img.png")
@@ -54,33 +56,54 @@ const symbols = {
     multiply: {
         inputType: inputTypes.basic,
         category: symbolCategories.basic,
-        text: ' x ',
+        text: " x ",
         kind: symbolKinds.operator,
         specialRender: true
     },
     add: {
         inputType: inputTypes.basic,
         category: symbolCategories.basic,
-        text: ' + ',
+        text: " + ",
         kind: symbolKinds.operator
     },
     subtract: {
         inputType: inputTypes.basic,
         category: symbolCategories.basic,
-        text: ' - ',
+        text: " - ",
         kind: symbolKinds.operator
     },
     equal: {
         inputType: inputTypes.basic,
         category: symbolCategories.basic,
-        text: ' = ',
+        text: " = ",
         kind: symbolKinds.operator
+    },
+    subscript: {
+        inputType: inputTypes.index,
+        category: symbolCategories.advanced,
+        text: "",
+        kind: symbolKinds.index,
+        iconPath: require("@/assets/subscript_img.png")
+    },
+    superscript: {
+        inputType: inputTypes.index,
+        category: symbolCategories.advanced,
+        text: "",
+        kind: symbolKinds.index,
+        iconPath: require("@/assets/superscript_img.png")
+    },
+    doublescript: {
+        inputType: inputTypes.index,
+        category: symbolCategories.advanced,
+        text: "",
+        kind: symbolKinds.index,
+        iconPath: require("@/assets/doublescript_img.png")
     }
-}
+};
 
 export default {
     inputTypes,
     symbols,
     symbolCategories,
     symbolKinds
-}
+};

@@ -9,7 +9,7 @@ latexSymbols[symbolDefinitions.symbols.fraction.text] = "\\dfrac";
 
 export default {
     createSymbolComponent: function (symbol, uuid) {
-        let component = componentConstructors[symbol.inputType]()
+        let component = componentConstructors[symbol.inputType](symbol)
 
         component.symbol = symbol
         component.uuid = uuid;
@@ -24,13 +24,14 @@ export default {
 
 // Components creation ------------------------------------
 var componentConstructors = {}
-componentConstructors[symbolDefinitions.inputTypes.aboveBelow] = createAboveBeloweComponent;
-componentConstructors[symbolDefinitions.inputTypes.fraction] = createAboveBeloweComponent;
+componentConstructors[symbolDefinitions.inputTypes.aboveBelow] = createUpAndDownInputComponent;
+componentConstructors[symbolDefinitions.inputTypes.fraction] = createUpAndDownInputComponent;
 componentConstructors[symbolDefinitions.inputTypes.root] = createRootComponent;
 componentConstructors[symbolDefinitions.inputTypes.specialChar] = createEmptyComponent;
 componentConstructors[symbolDefinitions.inputTypes.basic] = createEmptyComponent;
+componentConstructors[symbolDefinitions.inputTypes.index] = createIndexComponent;
 
-function createAboveBeloweComponent() {
+function createUpAndDownInputComponent() {
     return {
         upEqObject: {
             components: []
@@ -38,6 +39,27 @@ function createAboveBeloweComponent() {
         downEqObject: {
             components: []
         }
+    }
+}
+
+function createIndexComponent(symbol) {
+    switch (symbol) {
+        case symbolDefinitions.symbols.subscript:
+            return {
+                downEqObject: {
+                    components: []
+                }
+            }
+        case symbolDefinitions.symbols.superscript:
+            return {
+                upEqObject: {
+                    components: []
+                }
+            }
+        case symbolDefinitions.symbols.doublescript:
+            return createUpAndDownInputComponent()
+        default:
+            console.warn("createIndexComponent called with invalid argument")
     }
 }
 
@@ -64,6 +86,7 @@ processFunctions[symbolDefinitions.inputTypes.fraction] = processFraction;
 processFunctions[symbolDefinitions.inputTypes.root] = processRoot;
 processFunctions[symbolDefinitions.inputTypes.specialChar] = processBasicSymbol;
 processFunctions[symbolDefinitions.inputTypes.basic] = processBasicSymbol;
+processFunctions[symbolDefinitions.inputTypes.index] = processAboveBelow;
 
 function processEquetionInput(equationInput) {
     if (equationInput == null) return null
@@ -103,8 +126,8 @@ function processFraction(component) {
 
     let output = symbolToLatex(component.symbol)
 
-    if (downInput) output += `{${downInput}}`;
-    if (upInpt) output += `{${upInpt}}`;
+    output += `{${upInpt}}`;
+    output += `{${downInput}}`;
 
     return output + " ";
 }

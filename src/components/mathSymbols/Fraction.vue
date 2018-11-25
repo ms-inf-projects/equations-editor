@@ -4,6 +4,7 @@
 <template>
   <div class="symbol">
     <equation-input v-if="component.upEqObject"
+                    class="nested-input"
                     :equationObject="component.upEqObject">
     </equation-input>
     
@@ -12,6 +13,7 @@
     </div>
 
     <equation-input v-if="component.downEqObject"
+                    class="nested-input"
                     :equationObject="component.downEqObject" >
     </equation-input>
   </div>
@@ -27,7 +29,7 @@ export default {
   },
   data() {
     return {
-      fractionWidth: 25
+      fractionWidth: 15
     };
   },
   props: {
@@ -64,5 +66,9 @@ export default {
 .fraction-img {
   height: 2px;
   display: block;
+}
+
+.nested-input {
+  font-size: 0.75em;
 }
 </style>
