@@ -5,21 +5,11 @@ latexSymbols[symbolDefinitions.symbols.integral.text] = "\\int";
 latexSymbols[symbolDefinitions.symbols.sum.text] = "\\sum";
 latexSymbols[symbolDefinitions.symbols.root.text] = "\\sqrt";
 latexSymbols[symbolDefinitions.symbols.multiply.text] = "\\times";
+latexSymbols[symbolDefinitions.symbols.fraction.text] = "\\dfrac";
 
 export default {
     createSymbolComponent: function (symbol, uuid) {
-        let component
-
-        switch (symbol.inputType) {
-            case symbolDefinitions.inputTypes.aboveBelow:
-                component = createAboveBeloweComponent()
-                break;
-            case symbolDefinitions.inputTypes.root:
-                component = createRootComponent()
-                break;
-            default:
-                component = {}
-        }
+        let component = componentConstructors[symbol.inputType](symbol)
 
         component.symbol = symbol
         component.uuid = uuid;
@@ -33,7 +23,15 @@ export default {
 };
 
 // Components creation ------------------------------------
-function createAboveBeloweComponent() {
+var componentConstructors = {}
+componentConstructors[symbolDefinitions.inputTypes.aboveBelow] = createUpAndDownInputComponent;
+componentConstructors[symbolDefinitions.inputTypes.fraction] = createUpAndDownInputComponent;
+componentConstructors[symbolDefinitions.inputTypes.root] = createRootComponent;
+componentConstructors[symbolDefinitions.inputTypes.specialChar] = createEmptyComponent;
+componentConstructors[symbolDefinitions.inputTypes.basic] = createEmptyComponent;
+componentConstructors[symbolDefinitions.inputTypes.index] = createIndexComponent;
+
+function createUpAndDownInputComponent() {
     return {
         upEqObject: {
             components: []
@@ -41,6 +39,27 @@ function createAboveBeloweComponent() {
         downEqObject: {
             components: []
         }
+    }
+}
+
+function createIndexComponent(symbol) {
+    switch (symbol) {
+        case symbolDefinitions.symbols.subscript:
+            return {
+                downEqObject: {
+                    components: []
+                }
+            }
+        case symbolDefinitions.symbols.superscript:
+            return {
+                upEqObject: {
+                    components: []
+                }
+            }
+        case symbolDefinitions.symbols.doublescript:
+            return createUpAndDownInputComponent()
+        default:
+            console.warn("createIndexComponent called with invalid argument")
     }
 }
 
@@ -55,13 +74,19 @@ function createRootComponent() {
     }
 }
 
+function createEmptyComponent() {
+    return {};
+}
+
 // Latex processing ----------------------------------------
 
 var processFunctions = {}
 processFunctions[symbolDefinitions.inputTypes.aboveBelow] = processAboveBelow;
+processFunctions[symbolDefinitions.inputTypes.fraction] = processFraction;
 processFunctions[symbolDefinitions.inputTypes.root] = processRoot;
 processFunctions[symbolDefinitions.inputTypes.specialChar] = processBasicSymbol;
 processFunctions[symbolDefinitions.inputTypes.basic] = processBasicSymbol;
+processFunctions[symbolDefinitions.inputTypes.index] = processAboveBelow;
 
 function processEquetionInput(equationInput) {
     if (equationInput == null) return null
@@ -69,7 +94,6 @@ function processEquetionInput(equationInput) {
     return equationInput.components.map(x => processComponent(x)).join('');
 }
 
-// TODO - fix Latex processing
 function processComponent(component) {
     return processFunctions[component.symbol.inputType](component);
 }
@@ -92,6 +116,18 @@ function processAboveBelow(component) {
 
     if (downInput) output += `_{${downInput}}`;
     if (upInpt) output += `^{${upInpt}}`;
+
+    return output + " ";
+}
+
+function processFraction(component) {
+    let upInpt = processEquetionInput(component.upEqObject)
+    let downInput = processEquetionInput(component.downEqObject)
+
+    let output = symbolToLatex(component.symbol)
+
+    output += `{${upInpt}}`;
+    output += `{${downInput}}`;
 
     return output + " ";
 }

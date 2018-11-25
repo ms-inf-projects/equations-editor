@@ -1,13 +1,22 @@
 <template>
   <div class="equation-input" v-on:click="activateInput()" ref="equationInput">
-    <!-- TODO in first case there should be some white space - min height -->
     <span v-if="!equationObject.components"></span>
-    <span v-if="equationObject.components && equationObject.components.length==0">[_]</span>
+    <div v-if="equationObject.components && equationObject.components.length==0">
+      &#x2b1c;
+    </div>
     <div class="component-container" v-for="(elem, index) in equationObject.components" :key="index">
      
       <above-below-input v-if="elem.symbol.inputType == inputTypes.aboveBelow"
         :component="elem">
       </above-below-input>
+
+      <index v-if="elem.symbol.inputType == inputTypes.index"
+        :component="elem">
+      </index>
+
+      <fraction v-if="elem.symbol.inputType == inputTypes.fraction"
+        :component="elem">
+      </fraction>
 
       <basic v-if="elem.symbol.inputType == inputTypes.basic" 
         :symbol="elem.symbol">
@@ -26,6 +35,8 @@ import symbolsDefinitions from "../../modules/symbolsDefinitions.js";
 import AboveBelowInput from "./AboveBelowInput.vue";
 import Basic from "./Basic.vue";
 import Root from "./Root.vue";
+import Fraction from "./Fraction.vue";
+import Index from "./Index.vue";
 import { EventBus } from "../../event-bus.js";
 
 export default {
@@ -33,7 +44,9 @@ export default {
   components: {
     AboveBelowInput,
     Root,
-    Basic
+    Basic,
+    Fraction,
+    Index
   },
   data() {
     return {
@@ -68,8 +81,6 @@ export default {
         componentData.id = lastIndex + 1;
         this.equationObject.components.push(componentData);
       }
-
-      console.log(componentData);
     },
 
     deleteInput() {
@@ -105,7 +116,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .equation-input {
-  font-size: 0.8em;
   line-height: normal;
   /* display: inline-block;
   vertical-align: top; */
@@ -113,5 +123,10 @@ export default {
 
 .component-container {
   display: inline-block;
+}
+
+.empty-input-img {
+  margin-bottom: 3px;
+  margin-top: 3px;
 }
 </style>

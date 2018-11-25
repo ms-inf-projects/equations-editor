@@ -1,7 +1,5 @@
 <!-- Handels
-  - integral
-  - sum
-  - product
+  - fraction
  -->
 <template>
   <div class="symbol">
@@ -9,32 +7,46 @@
                     class="nested-input"
                     :equationObject="component.upEqObject">
     </equation-input>
-
-    <div v-if="component.symbol.imagePath" class="img-wrap">
-      <img 
-          :src="component.symbol.imagePath"
-          class="symbol-img"
-      />
+    
+    <div ref="fractionRef" class="img-wrapper">
+        <img class="fraction-img" :src="component.symbol.imagePath" :style="{width: fractionWidth +'px'}" />
     </div>
-    <span v-else>
-      {{ component.symbol.text }}
-    </span>
 
     <equation-input v-if="component.downEqObject"
                     class="nested-input"
-                    :equationObject="component.downEqObject">
+                    :equationObject="component.downEqObject" >
     </equation-input>
   </div>
 </template>
 
 <script>
+import { EventBus } from "../../event-bus.js";
+
 export default {
-  name: "AboveBelowInput",
+  name: "Fraction",
   components: {
     EquationInput: () => import("./EquationInput.vue")
   },
+  data() {
+    return {
+      fractionWidth: 15
+    };
+  },
   props: {
     component: Object
+  },
+
+  methods: {
+    reScale() {
+      this.fractionWidth = this.$refs.fractionRef.clientWidth;
+    }
+  },
+
+  created() {
+    EventBus.$on("componentInserted", this.reScale);
+  },
+  beforeDestroy() {
+    EventBus.$off("componentInserted", this.reScale);
   }
 };
 </script>
@@ -47,10 +59,12 @@ export default {
   vertical-align: middle;
 }
 
-.img-wrap {
+.img-wrapper {
+  height: 2px;
 }
 
-.symbol-img {
+.fraction-img {
+  height: 2px;
   display: block;
 }
 
