@@ -23,7 +23,6 @@
 
 <script>
 import HeaderPanel from "../components/HeaderPanel.vue";
-import HelpPanel from "../components/HelpPanel.vue";
 import ToolboxPanel from "../components/ToolboxPanel.vue";
 import EditorPanel from "../components/EditorPanel.vue";
 import ExportPanel from "../components/ExportPanel.vue";
@@ -32,7 +31,6 @@ export default {
   name: "MainView",
   components: {
     HeaderPanel,
-    HelpPanel,
     ToolboxPanel,
     EditorPanel,
     ExportPanel
