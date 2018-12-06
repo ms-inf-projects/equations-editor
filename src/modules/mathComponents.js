@@ -1,5 +1,14 @@
 import symbolDefinitions from './symbolsDefinitions.js'
 
+const SIZE_PERCENTAGE_DECREASE = 0.2;
+const DEFAULT_SIZE_PERCENTAGE = 1;
+const SIZE = {
+    aboveBelowWidth: 30,
+    aboveBelowHeight: 50,
+    basicWidth: 30,
+    basicHeight: 30,
+}
+
 var latexSymbols = {};
 latexSymbols[symbolDefinitions.symbols.integral.text] = "\\int";
 latexSymbols[symbolDefinitions.symbols.sum.text] = "\\sum";
@@ -8,10 +17,17 @@ latexSymbols[symbolDefinitions.symbols.multiply.text] = "\\times";
 latexSymbols[symbolDefinitions.symbols.fraction.text] = "\\dfrac";
 
 export default {
-    createSymbolComponent: function (symbol, uuid) {
-        let component = componentConstructors[symbol.inputType](symbol)
+    createSymbolComponent: function (symbol, uuid, sizePercentage) {
+        let newSizePercentage = sizePercentage - SIZE_PERCENTAGE_DECREASE;
 
-        component.symbol = symbol
+        let component = componentConstructors[symbol.inputType](symbol, newSizePercentage)
+
+        component.sizePercentage = newSizePercentage;
+        component.position = {
+            x: 0,
+            y: 0
+        }
+        component.symbol = symbol;
         component.uuid = uuid;
 
         return component;
@@ -19,6 +35,10 @@ export default {
 
     processToLatex: function (equationObject) {
         return processEquetionInput(equationObject);
+    },
+
+    initialEquationObject: function () {
+        return createEquationInput(DEFAULT_SIZE_PERCENTAGE);
     }
 };
 
@@ -31,51 +51,56 @@ componentConstructors[symbolDefinitions.inputTypes.specialChar] = createEmptyCom
 componentConstructors[symbolDefinitions.inputTypes.basic] = createEmptyComponent;
 componentConstructors[symbolDefinitions.inputTypes.index] = createIndexComponent;
 
-function createUpAndDownInputComponent() {
+function createUpAndDownInputComponent(symbol, sizePercentage) {
+    console.log(sizePercentage)
     return {
-        upEqObject: {
-            components: []
-        },
-        downEqObject: {
-            components: []
-        }
+        upEqObject: createEquationInput(sizePercentage),
+        downEqObject: createEquationInput(sizePercentage),
+        width: SIZE.aboveBelowWidth * sizePercentage,
+        height: SIZE.aboveBelowHeight * sizePercentage,
+        innerBaseLine: (SIZE.aboveBelowHeight / 2) * sizePercentage,
     }
 }
 
-function createIndexComponent(symbol) {
+function createIndexComponent(symbol, sizePercentage) {
     switch (symbol) {
         case symbolDefinitions.symbols.subscript:
             return {
-                downEqObject: {
-                    components: []
-                }
+                downEqObject: createEquationInput(sizePercentage)
             }
         case symbolDefinitions.symbols.superscript:
             return {
-                upEqObject: {
-                    components: []
-                }
+                upEqObject: createEquationInput(sizePercentage)
             }
         case symbolDefinitions.symbols.doublescript:
-            return createUpAndDownInputComponent()
+            return createUpAndDownInputComponent(sizePercentage)
         default:
             console.warn("createIndexComponent called with invalid argument")
     }
 }
 
-function createRootComponent() {
+function createRootComponent(symbol, sizePercentage) {
     return {
-        degreeEqObject: {
-            components: []
-        },
-        baseEqObject: {
-            components: []
-        }
+        degreeEqObject: createEquationInput(sizePercentage),
+        baseEqObject: createEquationInput(sizePercentage)
     }
 }
 
 function createEmptyComponent() {
     return {};
+}
+
+function createEquationInput(sizePercentage) {
+    return {
+        components: [],
+        width: 48 * sizePercentage,
+        height: 48 * sizePercentage,
+        sizePercentage: sizePercentage,
+        position: {
+            x: 0,
+            y: 0
+        }
+    }
 }
 
 // Latex processing ----------------------------------------

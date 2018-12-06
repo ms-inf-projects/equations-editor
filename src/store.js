@@ -19,15 +19,8 @@ export default new Vuex.Store({
 
     activeInputId: 0,
 
-    equationInputs: Array,
-    /*
-      equationInput {
-        parent: equationInput,
-        children: []equationInput,
-        id: int,
-        
-      }
-    */
+    // equationInputs: Array,
+
 
     activeEquationInput: Object,
     activationSet: false,

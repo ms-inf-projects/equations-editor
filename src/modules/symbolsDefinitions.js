@@ -25,15 +25,29 @@ const symbolCategories = {
     digit: "digit"
 };
 
+// TODO - if can be handeled like that make it a part of inputType or implement as lookup based on input type
+var baseSize = {}
+baseSize[inputTypes.aboveBelow] = {
+    width: 30,
+    height: 50
+}
+baseSize[inputTypes.basic] = {
+    width: 30,
+    height: 30
+}
+
+// TODO - implement template for basic letter or digit literal
 const symbols = {
     integral: {
         inputType: inputTypes.aboveBelow,
+        baseSize: baseSize[inputTypes.aboveBelow],
         text: String.fromCharCode(parseInt("222B", 16)),
         category: symbolCategories.advanced,
         specialRender: true
     },
     sum: {
         inputType: inputTypes.aboveBelow,
+        baseSize: baseSize[inputTypes.aboveBelow],
         text: String.fromCharCode(parseInt("03A3", 16)),
         category: symbolCategories.advanced,
         specialRender: true

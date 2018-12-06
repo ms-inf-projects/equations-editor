@@ -1,24 +1,17 @@
 <template>
-  <div class="">
+  <div class>
     <div class="section-header">editor</div>
     <div class="editor" v-on:click="finishActivation()" v-on:keydown="handleKeyboard()">
-			<equation-input :equationObject="equationObject" 
-                      id="mainInput"
-                      :rootInput="true">
-      </equation-input>
+      <equation-input :equationObject="equationObject" id="mainInput" :rootInput="true"></equation-input>
     </div>
     <b-row class="top-space">
       <b-col>
-        <b-button v-on:click="processToLatex()">
-          Process to latex
-        </b-button>
+        <b-button v-on:click="processToLatex()">Process to latex</b-button>
       </b-col>
     </b-row>
     <b-row class="top-space">
       <b-col>
-        <div class="latex-display">
-          {{ latexData }}
-        </div>
+        <div class="latex-display">{{ latexData }}</div>
       </b-col>
     </b-row>
   </div>
@@ -40,7 +33,7 @@ export default {
     return {
       inputTypes: symbolsDefinitions.inputTypes,
       symbolKinds: symbolsDefinitions.symbolKinds,
-      equationObject: this.$store.getters.getEquationObject,
+      equationObject: {},
       latexData: ""
     };
   },
@@ -94,8 +87,14 @@ export default {
     insertMathSymbol(symbol) {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
+        let sizePercentage = activeInput.equationObject.sizePercentage;
+        console.log(sizePercentage);
         let uuid = this.$store.getters.getUUID;
-        let component = mathComponents.createSymbolComponent(symbol, uuid);
+        let component = mathComponents.createSymbolComponent(
+          symbol,
+          uuid,
+          sizePercentage
+        );
 
         activeInput.addEmbededComponent(component);
       }
@@ -112,6 +111,14 @@ export default {
     EventBus.$on("mastSymbolButtonClick", symbol =>
       this.insertMathSymbol(symbol)
     );
+
+    let payload = {
+      equationObject: mathComponents.initialEquationObject()
+    };
+
+    this.$store.dispatch("updateEquationObject", payload);
+
+    this.equationObject = this.$store.getters.getEquationObject;
   },
 
   mounted() {

@@ -2,15 +2,17 @@
   - root
  -->
 <template>
-  <div class="symbol">
-    <equation-input :equationObject="component.degreeEqObject"
-                    class="degree">
-    </equation-input>
+  <div class="symbol" ref="root">
+    <equation-input :equationObject="component.degreeEqObject" class="degree"></equation-input>
     <div class="root" ref="rootRef">
       <img :src="component.symbol.imagePath" v-bind:style="{height: rootHeight +'px'}">
-      <equation-input  :equationObject="component.baseEqObject"
-                      class="base" v-bind:style="{borderTop: borderWidth + 'px solid #000'}">
-      </equation-input>
+      <equation-input
+        id="abcd"
+        :equationObject="component.baseEqObject"
+        class="base"
+        ref="baseRef"
+        v-bind:style="{borderTop: borderWidth + 'px solid #000'}"
+      ></equation-input>
     </div>
   </div>
 </template>
@@ -38,7 +40,7 @@ export default {
   },
   methods: {
     reScale() {
-      this.rootHeight = this.$refs.rootRef.clientHeight;
+      this.rootHeight = this.$refs.baseRef.$el.clientHeight;
     }
   },
 
