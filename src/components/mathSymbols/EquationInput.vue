@@ -110,20 +110,20 @@ export default {
       let maxHeightTop = Math.max.apply(
         Math,
         this.equationObject.components.map(
-          c => c.height - c.innerBaseLine - c.symbol.baseSize.height / 2
+          c => c.height - c.innerBaseLine - c.baseSize.height / 2
         )
       );
 
       let maxHeightDown = Math.max.apply(
         Math,
         this.equationObject.components.map(
-          c => c.innerBaseLine - c.symbol.baseSize.height / 2
+          c => c.innerBaseLine - c.baseSize.height / 2
         )
       );
 
       let maxSymbolHeight = Math.max.apply(
         Math,
-        this.equationObject.components.map(c => c.symbol.baseSize.height)
+        this.equationObject.components.map(c => c.baseSize.height)
       );
 
       this.equationObject.height =

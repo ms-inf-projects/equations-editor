@@ -4,16 +4,11 @@ import {
 
 var componentMethods = {
     reScale() {
-        // // this.component.height = this.$refs.rootRef.clientHeight;
-        // this.component.height = this.$el.clientHeight;
-        // // this.component.width = this.$refs.rootRef.clientWidth;
-        // this.component.width = this.$el.clientWidth;
-        // // console.log("height: " + this.component.height + "    width: " + this.component.width)
         let upInputHeight = 0;
         let downInputHeight = 0;
 
-        let newHeight = this.component.symbol.baseSize.height * this.component.sizePercentage
-        let newWidth = this.component.symbol.baseSize.width * this.component.sizePercentage
+        let newHeight = this.component.baseSize.height
+        let newWidth = this.component.baseSize.width
 
         if (this.component.upEqObject) {
             upInputHeight = this.component.upEqObject.height;
@@ -33,7 +28,7 @@ var componentMethods = {
 
         this.component.height = newHeight;
         this.component.width = newWidth;
-        this.component.innerBaseLine = downInputHeight + (this.component.symbol.baseSize.height) / 2
+        this.component.innerBaseLine = downInputHeight + (this.component.baseSize.height) / 2
 
         this.$emit('modified');
         console.log("height: " + this.component.height + "    width: " + this.component.width + "   innerbaseline: " + this.component.innerBaseLine)

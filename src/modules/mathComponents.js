@@ -23,6 +23,10 @@ export default {
         let component = componentConstructors[symbol.inputType](symbol, newSizePercentage)
 
         component.sizePercentage = newSizePercentage;
+        component.baseSize = {
+            height: newSizePercentage * symbol.baseSize.height,
+            width: newSizePercentage * symbol.baseSize.width,
+        }
         component.position = {
             x: 0,
             y: 0

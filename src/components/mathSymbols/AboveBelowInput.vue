@@ -46,7 +46,7 @@ export default {
     component: Object,
     positionX: 0
   },
-  mixins: [sizeMixins.componentSizeMixin, innerBaseLineMixin]
+  mixins: [sizeMixins.componentSizeMixin]
 };
 </script>
 
