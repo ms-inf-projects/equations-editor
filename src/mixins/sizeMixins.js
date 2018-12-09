@@ -1,7 +1,3 @@
-import {
-    EventBus
-} from "../event-bus.js";
-
 var componentMethods = {
     reScale() {
         let upInputHeight = 0;
@@ -31,51 +27,11 @@ var componentMethods = {
         this.component.innerBaseLine = downInputHeight + (this.component.baseSize.height) / 2
 
         this.$emit('modified');
-        console.log("height: " + this.component.height + "    width: " + this.component.width + "   innerbaseline: " + this.component.innerBaseLine)
-    }
-}
-
-var eqInputMethods = {
-    reScale() {
-        console.log(this.$el)
-        if (this.equationObject.components && this.equationObject.components.length > 0) {
-            // this.equationObject.width = this.equationObject.components.reduce((a, b) => a + b.width, 0)
-            // debugger
-            let maxHeightTop = Math.max.apply(Math, this.equationObject.components.map(c => c.height - c.innerBaseLine));
-            let maxHeightDown = Math.max.apply(Math, this.equationObject.components.map(c => c.innerBaseLine));
-            this.equationObject.height = maxHeightTop + maxHeightDown;
-        } else {
-            this.equationObject.height = this.$refs.inputDefault.clientHeight;
-            // this.equationObject.width = this.$refs.inputDefault.clientWidth;
-        }
-
-        console.log("height: " + this.equationObject.height + "    width: " + this.equationObject.width)
     }
 }
 
 export default {
-    componentSizeMixin: sizeMixinWithMethods(componentMethods),
-    equationInputSizeMixin: sizeMixinWithMethods(eqInputMethods)
-}
-
-function sizeMixinWithMethods(methods) {
-    return {
-        methods: methods,
-        created() {
-            EventBus.$on("componentInserted", this.reScale);
-        },
-        beforeDestroy() {
-            EventBus.$off("componentInserted", this.reScale);
-        }
+    componentSizingMixin: {
+        methods: componentMethods
     }
 }
-
-
-
-// focus: {
-//     // directive definition
-//     inserted: function(el) {
-//       console.log(el);
-//       console.log(el.style);
-//     }
-//   },

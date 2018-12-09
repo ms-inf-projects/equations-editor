@@ -88,7 +88,6 @@ export default {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
         let sizePercentage = activeInput.equationObject.sizePercentage;
-        console.log(sizePercentage);
         let uuid = this.$store.getters.getUUID;
         let component = mathComponents.createSymbolComponent(
           symbol,

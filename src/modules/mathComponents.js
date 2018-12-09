@@ -56,7 +56,6 @@ componentConstructors[symbolDefinitions.inputTypes.basic] = createEmptyComponent
 componentConstructors[symbolDefinitions.inputTypes.index] = createIndexComponent;
 
 function createUpAndDownInputComponent(symbol, sizePercentage) {
-    console.log(sizePercentage)
     return {
         upEqObject: createEquationInput(sizePercentage),
         downEqObject: createEquationInput(sizePercentage),

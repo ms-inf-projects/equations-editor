@@ -5,7 +5,6 @@
     ref="equationInput"
     :style="{height: equationObject.height+'px', width: equationObject.width+'px'}"
   >
-    <!-- :style="{height: equationObject.height+'px', width: equationObject.width+'px'}" -->
     <span v-if="!equationObject.components"></span>
     <div
       v-if="equationObject.components && equationObject.components.length==0"
@@ -22,6 +21,7 @@
         :component="elem"
         :positionX="getPositionX(index)"
         v-on:modified="reScaleInput"
+        :inputBaseLine="inputBaseLine"
       ></above-below-input>
 
       <index v-if="elem.symbol.inputType == inputTypes.index" :component="elem"></index>
@@ -42,8 +42,6 @@ import Basic from "./Basic.vue";
 import Root from "./Root.vue";
 import Fraction from "./Fraction.vue";
 import Index from "./Index.vue";
-import sizeMixins from "../../mixins/sizeMixins.js";
-import { EventBus } from "../../event-bus.js";
 
 export default {
   name: "EquationInput",
@@ -54,16 +52,22 @@ export default {
     Fraction,
     Index
   },
-  // mixins: [sizeMixins.equationInputSizeMixin],
   data() {
     return {
       inputTypes: symbolsDefinitions.inputTypes
     };
   },
   props: {
-    // TODO - consider passing font size reduction as prop
     equationObject: Object,
     rootInput: false
+  },
+  computed: {
+    inputBaseLine() {
+      let maxHeightDown = this.maxHeightDown();
+      let maxSymbolHeight = this.maxSymbolHeight();
+
+      return maxHeightDown + maxSymbolHeight / 2;
+    }
   },
   methods: {
     activateInput() {
@@ -75,13 +79,36 @@ export default {
     },
 
     getPositionX(index) {
-      console.log(this.equationObject.components);
-
       let positionX = this.equationObject.components
         .slice(0, index)
         .reduce((c1, c2) => c1 + c2.width, 0);
 
       return positionX;
+    },
+
+    maxHeightDown() {
+      return Math.max.apply(
+        Math,
+        this.equationObject.components.map(
+          c => c.innerBaseLine - c.baseSize.height / 2
+        )
+      );
+    },
+
+    maxSymbolHeight() {
+      return Math.max.apply(
+        Math,
+        this.equationObject.components.map(c => c.baseSize.height)
+      );
+    },
+
+    maxHeightUp() {
+      return Math.max.apply(
+        Math,
+        this.equationObject.components.map(
+          c => c.height - c.innerBaseLine - c.baseSize.height / 2
+        )
+      );
     },
 
     addEmbededComponent(componentData) {
@@ -107,27 +134,14 @@ export default {
       );
 
       // TODO - consider doing this in single loop
-      let maxHeightTop = Math.max.apply(
-        Math,
-        this.equationObject.components.map(
-          c => c.height - c.innerBaseLine - c.baseSize.height / 2
-        )
-      );
-
-      let maxHeightDown = Math.max.apply(
-        Math,
-        this.equationObject.components.map(
-          c => c.innerBaseLine - c.baseSize.height / 2
-        )
-      );
-
-      let maxSymbolHeight = Math.max.apply(
-        Math,
-        this.equationObject.components.map(c => c.baseSize.height)
-      );
+      let maxHeightUp = this.maxHeightUp();
+      let maxHeightDown = this.maxHeightDown();
+      let maxSymbolHeight = this.maxSymbolHeight();
 
       this.equationObject.height =
-        maxHeightTop + maxHeightDown + maxSymbolHeight;
+        maxHeightUp + maxHeightDown + maxSymbolHeight;
+
+      this.$emit("modified");
     },
 
     deleteInput() {
@@ -142,7 +156,7 @@ export default {
         this.equationObject.components = null;
       }
 
-      EventBus.$emit("componentInserted");
+      this.$emit("modified");
     },
 
     removeLast() {
@@ -152,13 +166,12 @@ export default {
         updated.components.splice(-1, 1);
       }
 
-      EventBus.$emit("componentInserted");
+      this.$emit("modified");
     }
   },
 
-  // TODO - consider approach with passing events (performence issue with large amout of components)
   mounted() {
-    EventBus.$emit("componentInserted");
+    this.$emit("modified");
   }
 };
 </script>
@@ -172,8 +185,6 @@ export default {
 .equation-input {
   line-height: normal;
   position: relative;
-  /* display: inline-block;
-  vertical-align: top; */
 }
 
 .component-container {

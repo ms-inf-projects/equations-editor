@@ -7,29 +7,35 @@
   <div
     class="symbol"
     ref="rootRef"
-    :style="{left: positionX + 'px', width: component.width+'px', height: component.height+'px'}"
+    :style="{left: positionX + 'px', width: component.width+'px', height: component.height+'px', 
+    bottom: basePosition+'px'}"
   >
-    <!-- <div :style="{left: 'calc(0%+'+ positionLeft + 'px'}"></div> -->
-    <equation-input
-      v-if="component.upEqObject"
-      class="nested-input"
-      :equationObject="component.upEqObject"
-      ref="upInput"
-    ></equation-input>
+    <div class="input-container">
+      <equation-input
+        v-if="component.upEqObject"
+        class="nested-input"
+        :equationObject="component.upEqObject"
+        ref="upInput"
+        v-on:modified="reScale"
+      ></equation-input>
+    </div>
 
-    <div>
+    <div class="symbol-container" :style="{bottom: symbolPosition + 'px'}">
       <div v-if="component.symbol.imagePath" class="img-wrap">
         <img :src="component.symbol.imagePath" class="symbol-img">
       </div>
       <span v-else>{{ component.symbol.text }}</span>
     </div>
 
-    <equation-input
-      v-if="component.downEqObject"
-      class="nested-input"
-      :equationObject="component.downEqObject"
-      ref="downInput"
-    ></equation-input>
+    <div class="input-container" style="bottom: 0%">
+      <equation-input
+        v-if="component.downEqObject"
+        class="nested-input"
+        :equationObject="component.downEqObject"
+        ref="downInput"
+        v-on:modified="reScale"
+      ></equation-input>
+    </div>
   </div>
 </template>
 
@@ -39,14 +45,30 @@ import innerBaseLineMixin from "../../mixins/innerBaseLineMixin.js";
 
 export default {
   name: "AboveBelowInput",
+  mixins: [sizeMixins.componentSizingMixin],
   components: {
     EquationInput: () => import("./EquationInput.vue")
   },
   props: {
     component: Object,
+    inputBaseLine: 0,
     positionX: 0
   },
-  mixins: [sizeMixins.componentSizeMixin]
+  computed: {
+    downInputPosition() {},
+    upInputPosition() {},
+    symbolPosition() {
+      return this.component.downEqObject.height;
+    },
+    basePosition() {
+      console.log(this.inputBaseLine - this.component.baseSize.height / 2);
+      return (
+        this.inputBaseLine -
+        this.component.baseSize.height / 2 -
+        this.component.downEqObject.height
+      );
+    }
+  }
 };
 </script>
 
@@ -55,12 +77,14 @@ export default {
 .symbol {
   margin: 1px;
   position: absolute;
-  /* bottom: 0%; */
+}
 
-  /* display: inline-block; */
-  /* vertical-align: middle; */
+.input-container {
+  position: absolute;
+}
 
-  bottom: 50%;
+.symbol-container {
+  position: absolute;
 }
 
 /* .img-wrap {
@@ -71,6 +95,6 @@ export default {
 }
 
 .nested-input {
-  font-size: 0.75em;
+  font-size: 0.8em;
 }
 </style>
