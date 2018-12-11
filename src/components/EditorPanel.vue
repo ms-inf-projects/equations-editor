@@ -59,14 +59,14 @@ export default {
         return;
       }
 
-      // TODO - determine if letter or number
-      let literalSymbol = {
-        inputType: this.inputTypes.basic,
-        text: event.key,
-        kind: this.symbolKinds.letter
-      };
+      // // TODO - determine if letter or number
+      // let literalSymbol = {
+      //   inputType: this.inputTypes.basic,
+      //   text: event.key,
+      //   kind: this.symbolKinds.letter
+      // };
 
-      this.insertMathSymbol(literalSymbol);
+      this.insertMathSymbol(symbolsDefinitions.createLiteralSymbol(event.key));
     },
 
     removeActiveInput() {

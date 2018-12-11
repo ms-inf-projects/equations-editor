@@ -2,12 +2,6 @@ import symbolDefinitions from './symbolsDefinitions.js'
 
 const SIZE_PERCENTAGE_DECREASE = 0.2;
 const DEFAULT_SIZE_PERCENTAGE = 1;
-const SIZE = {
-    aboveBelowWidth: 30,
-    aboveBelowHeight: 50,
-    basicWidth: 30,
-    basicHeight: 30,
-}
 
 var latexSymbols = {};
 latexSymbols[symbolDefinitions.symbols.integral.text] = "\\int";
@@ -26,13 +20,17 @@ export default {
         component.baseSize = {
             height: newSizePercentage * symbol.baseSize.height,
             width: newSizePercentage * symbol.baseSize.width,
-        }
+        };
         component.position = {
             x: 0,
             y: 0
         }
         component.symbol = symbol;
         component.uuid = uuid;
+
+        component.width = symbol.baseSize.width * newSizePercentage;
+        component.height = symbol.baseSize.height * newSizePercentage;
+        component.innerBaseLine = (component.height / 2) * newSizePercentage;
 
         return component;
     },
@@ -59,9 +57,6 @@ function createUpAndDownInputComponent(symbol, sizePercentage) {
     return {
         upEqObject: createEquationInput(sizePercentage),
         downEqObject: createEquationInput(sizePercentage),
-        width: SIZE.aboveBelowWidth * sizePercentage,
-        height: SIZE.aboveBelowHeight * sizePercentage,
-        innerBaseLine: (SIZE.aboveBelowHeight / 2) * sizePercentage,
     }
 }
 
@@ -84,7 +79,7 @@ function createIndexComponent(symbol, sizePercentage) {
 
 function createRootComponent(symbol, sizePercentage) {
     return {
-        degreeEqObject: createEquationInput(sizePercentage),
+        degreeEqObject: createEquationInput(sizePercentage / 2),
         baseEqObject: createEquationInput(sizePercentage)
     }
 }
@@ -96,13 +91,9 @@ function createEmptyComponent() {
 function createEquationInput(sizePercentage) {
     return {
         components: [],
-        width: 48 * sizePercentage,
-        height: 48 * sizePercentage,
+        width: symbolDefinitions.INPUT_BASE_SIZE * sizePercentage,
+        height: symbolDefinitions.INPUT_BASE_SIZE * sizePercentage,
         sizePercentage: sizePercentage,
-        position: {
-            x: 0,
-            y: 0
-        }
     }
 }
 

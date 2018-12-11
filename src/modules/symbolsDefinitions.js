@@ -35,6 +35,12 @@ baseSize[inputTypes.basic] = {
     width: 30,
     height: 30
 }
+baseSize[inputTypes.root] = {
+    width: 30,
+    height: 45
+}
+
+const INPUT_BASE_SIZE = 48;
 
 // TODO - implement template for basic letter or digit literal
 const symbols = {
@@ -63,6 +69,7 @@ const symbols = {
     root: {
         inputType: inputTypes.root,
         text: String.fromCharCode(parseInt("221A", 16)),
+        baseSize: baseSize[inputTypes.root],
         category: symbolCategories.basic,
         specialRender: true,
         imagePath: require("@/assets/root_img.png")
@@ -115,9 +122,21 @@ const symbols = {
     }
 };
 
+function createLiteralSymbol(text) {
+    return {
+        inputType: inputTypes.basic,
+        text: text,
+        kind: symbolKinds.letter,
+        baseSize: baseSize[inputTypes.basic],
+    }
+}
+
 export default {
+    INPUT_BASE_SIZE,
     inputTypes,
     symbols,
     symbolCategories,
-    symbolKinds
+    symbolKinds,
+    baseSize,
+    createLiteralSymbol
 };

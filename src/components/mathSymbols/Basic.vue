@@ -5,19 +5,27 @@
   - special symbols
  -->
 <template>
-  <div class="basic">
-    <span class="basic-data" :class="symbol.kind">{{symbol.text}}</span>
+  <div class="basic component" :style="position()">
+    <span class="basic-data" :class="component.symbol.kind">{{component.symbol.text}}</span>
   </div>
 </template>
 
 <script>
 import { EventBus } from "../../event-bus.js";
+import stylingMixins from "../../mixins/stylingMixins.js";
 
 export default {
   name: "Basic",
+  mixins: [stylingMixins.positioningMixin],
   components: {},
   props: {
-    symbol: Object
+    component: Object
+  },
+  computed: {
+    basePosition() {
+      console.log(this.inputBaseLine - this.component.baseSize.height / 2);
+      return this.inputBaseLine - this.component.baseSize.height / 2;
+    }
   },
 
   mounted() {
@@ -31,7 +39,6 @@ export default {
 .basic {
   display: inline-block;
   text-align: center;
-  vertical-align: auto;
   /* vertical-align: 110%; */
   /* height: 100px; */
   /* position: absolute; */
@@ -40,10 +47,6 @@ export default {
   /* height: 30%; */
   /* width: 50%; */
   /* margin: -15% 0 0 -25%; */
-}
-
-.basic-data {
-  vertical-align: middle;
 }
 
 /* TODO - different font for operators */

@@ -6,11 +6,12 @@
     :style="{height: equationObject.height+'px', width: equationObject.width+'px'}"
   >
     <span v-if="!equationObject.components"></span>
-    <div
+    <img
       v-if="equationObject.components && equationObject.components.length==0"
-      ref="inputDefault"
-      class="empty-input"
-    >&#x2b1c;</div>
+      src="../../assets/empty_input_img.png"
+      class="empty-input-img"
+      :style="{height: equationObject.height+'px', width: equationObject.width+'px'}"
+    >
     <div
       class="component-container"
       v-for="(elem, index) in equationObject.components"
@@ -28,9 +29,21 @@
 
       <fraction v-if="elem.symbol.inputType == inputTypes.fraction" :component="elem"></fraction>
 
-      <basic v-if="elem.symbol.inputType == inputTypes.basic" :symbol="elem.symbol"></basic>
+      <basic
+        v-if="elem.symbol.inputType == inputTypes.basic"
+        :component="elem"
+        :positionX="getPositionX(index)"
+        v-on:modified="reScaleInput"
+        :inputBaseLine="inputBaseLine"
+      ></basic>
 
-      <root v-if="elem.symbol.inputType == inputTypes.root" :component="elem"></root>
+      <root
+        v-if="elem.symbol.inputType == inputTypes.root"
+        :component="elem"
+        :positionX="getPositionX(index)"
+        v-on:modified="reScaleInput"
+        :inputBaseLine="inputBaseLine"
+      ></root>
     </div>
   </div>
 </template>
@@ -125,21 +138,37 @@ export default {
         componentData.id = lastIndex + 1;
         this.equationObject.components.push(componentData);
       }
+
+      this.reScaleInput();
     },
 
     reScaleInput() {
-      this.equationObject.width = this.equationObject.components.reduce(
-        (c1, c2) => c1 + c2.width,
-        0
-      );
+      let newHeight = 0;
+      let newWidth = 0;
 
-      // TODO - consider doing this in single loop
-      let maxHeightUp = this.maxHeightUp();
-      let maxHeightDown = this.maxHeightDown();
-      let maxSymbolHeight = this.maxSymbolHeight();
+      if (this.equationObject.components.length > 0) {
+        newWidth = this.equationObject.components.reduce(
+          (c1, c2) => c1 + c2.width,
+          0
+        );
 
-      this.equationObject.height =
-        maxHeightUp + maxHeightDown + maxSymbolHeight;
+        // TODO - consider doing this in single loop
+        let maxHeightUp = this.maxHeightUp();
+        let maxHeightDown = this.maxHeightDown();
+        let maxSymbolHeight = this.maxSymbolHeight();
+
+        newHeight = maxHeightUp + maxHeightDown + maxSymbolHeight;
+      } else {
+        newWidth =
+          symbolsDefinitions.INPUT_BASE_SIZE *
+          this.equationObject.sizePercentage;
+        newHeight =
+          symbolsDefinitions.INPUT_BASE_SIZE *
+          this.equationObject.sizePercentage;
+      }
+
+      this.equationObject.width = newWidth;
+      this.equationObject.height = newHeight;
 
       this.$emit("modified");
     },
@@ -156,7 +185,7 @@ export default {
         this.equationObject.components = null;
       }
 
-      this.$emit("modified");
+      this.reScaleInput();
     },
 
     removeLast() {
@@ -166,7 +195,7 @@ export default {
         updated.components.splice(-1, 1);
       }
 
-      this.$emit("modified");
+      this.reScaleInput();
     }
   },
 
@@ -178,10 +207,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.empty-input {
-  display: block;
-}
-
 .equation-input {
   line-height: normal;
   position: relative;
@@ -192,7 +217,8 @@ export default {
 }
 
 .empty-input-img {
-  margin-bottom: 3px;
-  margin-top: 3px;
+  position: absolute;
+  top: 0%;
+  left: 0%;
 }
 </style>

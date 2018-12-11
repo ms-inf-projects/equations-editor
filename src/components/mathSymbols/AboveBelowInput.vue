@@ -4,12 +4,7 @@
   - product
  -->
 <template>
-  <div
-    class="symbol"
-    ref="rootRef"
-    :style="{left: positionX + 'px', width: component.width+'px', height: component.height+'px', 
-    bottom: basePosition+'px'}"
-  >
+  <div class="symbol component" :style="position()">
     <div class="input-container">
       <equation-input
         v-if="component.upEqObject"
@@ -42,17 +37,16 @@
 <script>
 import sizeMixins from "../../mixins/sizeMixins.js";
 import innerBaseLineMixin from "../../mixins/innerBaseLineMixin.js";
+import stylingMixins from "../../mixins/stylingMixins.js";
 
 export default {
   name: "AboveBelowInput",
-  mixins: [sizeMixins.componentSizingMixin],
+  mixins: [sizeMixins.componentSizingMixin, stylingMixins.positioningMixin],
   components: {
     EquationInput: () => import("./EquationInput.vue")
   },
   props: {
-    component: Object,
-    inputBaseLine: 0,
-    positionX: 0
+    component: Object
   },
   computed: {
     downInputPosition() {},
@@ -61,7 +55,6 @@ export default {
       return this.component.downEqObject.height;
     },
     basePosition() {
-      console.log(this.inputBaseLine - this.component.baseSize.height / 2);
       return (
         this.inputBaseLine -
         this.component.baseSize.height / 2 -
@@ -76,11 +69,6 @@ export default {
 <style scoped>
 .symbol {
   margin: 1px;
-  position: absolute;
-}
-
-.input-container {
-  position: absolute;
 }
 
 .symbol-container {
