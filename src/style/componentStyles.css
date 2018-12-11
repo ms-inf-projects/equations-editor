@@ -10,3 +10,8 @@
 .textCanvas {
     display: none;
 }
+
+.absolute-bottom {
+    position: absolute;
+    bottom: 0%;
+}

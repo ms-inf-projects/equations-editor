@@ -25,7 +25,6 @@ export default {
   },
   computed: {
     basePosition() {
-      console.log(this.inputBaseLine - this.component.baseSize.height / 2);
       return this.inputBaseLine - this.component.baseSize.height / 2;
     },
     imgStyling() {

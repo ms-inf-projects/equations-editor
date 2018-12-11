@@ -17,7 +17,7 @@
 
     <div class="symbol-container" :style="{bottom: symbolPosition + 'px'}">
       <canvas ref="textCanvas" class="textCanvas"></canvas>
-      <img ref="textImage" :style="imgStyling">
+      <img ref="textImage" class="absolute-bottom" :style="imgStyling">
     </div>
 
     <div class="input-container" :style="downInputPosition">
@@ -80,12 +80,10 @@ export default {
     },
     imgStyling() {
       return {
-        position: "absolute",
         width: this.component.baseSize.width + "px",
         height: this.component.baseSize.height + "px",
         left:
-          this.component.width / 2 - this.component.baseSize.width / 2 + "px",
-        bottom: 0 + "px"
+          this.component.width / 2 - this.component.baseSize.width / 2 + "px"
       };
     }
   }
@@ -102,7 +100,14 @@ export default {
   position: absolute;
 }
 
+/* .img-wrap {
+} */
+
 .symbol-img {
   display: block;
+}
+
+.nested-input {
+  font-size: 0.8em;
 }
 </style>
