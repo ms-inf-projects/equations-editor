@@ -6,3 +6,7 @@
 .input-container {
     position: absolute;
 }
+
+.textCanvas {
+    display: none;
+}

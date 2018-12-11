@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     borderWidth() {
-      return this.component.baseEqObject.height / 10 / 4;
+      return 1;
     },
     degreeInputYPosition() {},
     baseInputXPosition() {
@@ -92,7 +92,6 @@ export default {
   },
 
   created() {
-    console.log(this.component);
     EventBus.$on("componentInserted", this.reScale);
   },
   beforeDestroy() {

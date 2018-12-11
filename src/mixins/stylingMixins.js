@@ -13,7 +13,8 @@ export default {
                     left: this.positionX + 'px',
                     width: this.component.width + 'px',
                     height: this.component.height + 'px',
-                    bottom: this.basePosition + 'px'
+                    bottom: this.basePosition + 'px',
+                    position: "absolute",
                 }
             }
         }

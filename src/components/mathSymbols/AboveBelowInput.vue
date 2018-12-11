@@ -5,7 +5,7 @@
  -->
 <template>
   <div class="symbol component" :style="position()">
-    <div class="input-container">
+    <div class="input-container" :style="upInputPosition">
       <equation-input
         v-if="component.upEqObject"
         class="nested-input"
@@ -16,13 +16,11 @@
     </div>
 
     <div class="symbol-container" :style="{bottom: symbolPosition + 'px'}">
-      <div v-if="component.symbol.imagePath" class="img-wrap">
-        <img :src="component.symbol.imagePath" class="symbol-img">
-      </div>
-      <span v-else>{{ component.symbol.text }}</span>
+      <canvas ref="textCanvas" class="textCanvas"></canvas>
+      <img ref="textImage" :style="imgStyling">
     </div>
 
-    <div class="input-container" style="bottom: 0%">
+    <div class="input-container" :style="downInputPosition">
       <equation-input
         v-if="component.downEqObject"
         class="nested-input"
@@ -38,10 +36,15 @@
 import sizeMixins from "../../mixins/sizeMixins.js";
 import innerBaseLineMixin from "../../mixins/innerBaseLineMixin.js";
 import stylingMixins from "../../mixins/stylingMixins.js";
+import displayMixins from "../../mixins/displayMixins.js";
 
 export default {
   name: "AboveBelowInput",
-  mixins: [sizeMixins.componentSizingMixin, stylingMixins.positioningMixin],
+  mixins: [
+    sizeMixins.componentSizingMixin,
+    stylingMixins.positioningMixin,
+    displayMixins.textToImageMixin
+  ],
   components: {
     EquationInput: () => import("./EquationInput.vue")
   },
@@ -49,8 +52,22 @@ export default {
     component: Object
   },
   computed: {
-    downInputPosition() {},
-    upInputPosition() {},
+    downInputPosition() {
+      return {
+        left:
+          this.component.width / 2 -
+          this.component.downEqObject.width / 2 +
+          "px",
+        bottom: 0 + "%"
+      };
+    },
+    upInputPosition() {
+      return {
+        left:
+          this.component.width / 2 - this.component.upEqObject.width / 2 + "px",
+        top: 0 + "%"
+      };
+    },
     symbolPosition() {
       return this.component.downEqObject.height;
     },
@@ -60,6 +77,16 @@ export default {
         this.component.baseSize.height / 2 -
         this.component.downEqObject.height
       );
+    },
+    imgStyling() {
+      return {
+        position: "absolute",
+        width: this.component.baseSize.width + "px",
+        height: this.component.baseSize.height + "px",
+        left:
+          this.component.width / 2 - this.component.baseSize.width / 2 + "px",
+        bottom: 0 + "px"
+      };
     }
   }
 };
@@ -75,14 +102,7 @@ export default {
   position: absolute;
 }
 
-/* .img-wrap {
-} */
-
 .symbol-img {
   display: block;
-}
-
-.nested-input {
-  font-size: 0.8em;
 }
 </style>

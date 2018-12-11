@@ -6,17 +6,19 @@
  -->
 <template>
   <div class="basic component" :style="position()">
-    <span class="basic-data" :class="component.symbol.kind">{{component.symbol.text}}</span>
+    <canvas ref="textCanvas" class="textCanvas"></canvas>
+    <img ref="textImage" :style="imgStyling">
   </div>
 </template>
 
 <script>
 import { EventBus } from "../../event-bus.js";
 import stylingMixins from "../../mixins/stylingMixins.js";
+import displayMixins from "../../mixins/displayMixins.js";
 
 export default {
   name: "Basic",
-  mixins: [stylingMixins.positioningMixin],
+  mixins: [stylingMixins.positioningMixin, displayMixins.textToImageMixin],
   components: {},
   props: {
     component: Object
@@ -25,6 +27,14 @@ export default {
     basePosition() {
       console.log(this.inputBaseLine - this.component.baseSize.height / 2);
       return this.inputBaseLine - this.component.baseSize.height / 2;
+    },
+    imgStyling() {
+      return {
+        position: "absolute",
+        width: this.component.width + "px",
+        height: this.component.height + "px",
+        left: 0 + "px"
+      };
     }
   },
 
@@ -39,18 +49,9 @@ export default {
 .basic {
   display: inline-block;
   text-align: center;
-  /* vertical-align: 110%; */
-  /* height: 100px; */
-  /* position: absolute; */
-  /* top: 50%; */
-  /* left: 50%; */
-  /* height: 30%; */
-  /* width: 50%; */
-  /* margin: -15% 0 0 -25%; */
 }
 
 /* TODO - different font for operators */
 .operator {
-  font-size: 0.7em;
 }
 </style>
