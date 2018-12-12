@@ -10,7 +10,6 @@
         v-if="component.upEqObject"
         class="nested-input"
         :equationObject="component.upEqObject"
-        ref="upInput"
         v-on:modified="reScale"
       ></equation-input>
     </div>
@@ -25,7 +24,6 @@
         v-if="component.downEqObject"
         class="nested-input"
         :equationObject="component.downEqObject"
-        ref="downInput"
         v-on:modified="reScale"
       ></equation-input>
     </div>

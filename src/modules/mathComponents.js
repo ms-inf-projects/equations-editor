@@ -1,6 +1,6 @@
 import symbolDefinitions from './symbolsDefinitions.js'
 
-const SIZE_PERCENTAGE_DECREASE = 0.2;
+const SIZE_PERCENTAGE_DECREASE = 0.15;
 const DEFAULT_SIZE_PERCENTAGE = 1;
 
 var latexSymbols = {};

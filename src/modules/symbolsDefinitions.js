@@ -39,6 +39,10 @@ baseSize[inputTypes.root] = {
     width: 30,
     height: 45
 }
+baseSize[inputTypes.fraction] = {
+    width: 30,
+    height: 4
+}
 
 const INPUT_BASE_SIZE = 48;
 
@@ -60,6 +64,7 @@ const symbols = {
     },
     fraction: {
         inputType: inputTypes.fraction,
+        baseSize: baseSize[inputTypes.fraction],
         text: String.fromCharCode(parseInt("2501", 16)),
         category: symbolCategories.advanced,
         specialRender: true,
@@ -68,8 +73,8 @@ const symbols = {
     },
     root: {
         inputType: inputTypes.root,
-        text: String.fromCharCode(parseInt("221A", 16)),
         baseSize: baseSize[inputTypes.root],
+        text: String.fromCharCode(parseInt("221A", 16)),
         category: symbolCategories.basic,
         specialRender: true,
         imagePath: require("@/assets/root_img.png")

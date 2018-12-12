@@ -2,51 +2,79 @@
   - fraction
  -->
 <template>
-  <div class="symbol">
-    <equation-input v-if="component.upEqObject"
-                    class="nested-input"
-                    :equationObject="component.upEqObject">
-    </equation-input>
-    
-    <div ref="fractionRef" class="img-wrapper">
-        <img class="fraction-img" :src="component.symbol.imagePath" :style="{width: fractionWidth +'px'}" />
+  <div class="symbol component" :style="position()">
+    <div class="input-container" :style="upInputPosition">
+      <equation-input
+        v-if="component.upEqObject"
+        class="nested-input"
+        :equationObject="component.upEqObject"
+        v-on:modified="reScale"
+      ></equation-input>
     </div>
 
-    <equation-input v-if="component.downEqObject"
-                    class="nested-input"
-                    :equationObject="component.downEqObject" >
-    </equation-input>
+    <img class="fraction-img" :src="component.symbol.imagePath" :style="imgStyling">
+
+    <div class="input-container" :style="downInputPosition">
+      <equation-input
+        v-if="component.downEqObject"
+        class="nested-input"
+        :equationObject="component.downEqObject"
+        v-on:modified="reScale"
+      ></equation-input>
+    </div>
   </div>
 </template>
 
 <script>
 import { EventBus } from "../../event-bus.js";
+import sizeMixins from "../../mixins/sizeMixins.js";
+import innerBaseLineMixin from "../../mixins/innerBaseLineMixin.js";
+import stylingMixins from "../../mixins/stylingMixins.js";
 
 export default {
   name: "Fraction",
+  mixins: [sizeMixins.componentSizingMixin, stylingMixins.positioningMixin],
   components: {
     EquationInput: () => import("./EquationInput.vue")
-  },
-  data() {
-    return {
-      fractionWidth: 15
-    };
   },
   props: {
     component: Object
   },
-
-  methods: {
-    reScale() {
-      this.fractionWidth = this.$refs.fractionRef.clientWidth;
+  computed: {
+    downInputPosition() {
+      return {
+        left:
+          this.component.width / 2 -
+          this.component.downEqObject.width / 2 +
+          "px",
+        bottom: 0 + "%"
+      };
+    },
+    upInputPosition() {
+      return {
+        left:
+          this.component.width / 2 - this.component.upEqObject.width / 2 + "px",
+        top: 0 + "%"
+      };
+    },
+    symbolPosition() {
+      return this.component.downEqObject.height;
+    },
+    basePosition() {
+      return (
+        this.inputBaseLine -
+        this.component.baseSize.height / 2 -
+        this.component.downEqObject.height
+      );
+    },
+    imgStyling() {
+      return {
+        width: this.component.width + "px",
+        height: this.component.baseSize.height + "px",
+        left: 0 + "%",
+        bottom: this.component.downEqObject.height + "px"
+      };
     }
-  },
-
-  created() {
-    EventBus.$on("componentInserted", this.reScale);
-  },
-  beforeDestroy() {
-    EventBus.$off("componentInserted", this.reScale);
   }
 };
 </script>
@@ -64,8 +92,7 @@ export default {
 }
 
 .fraction-img {
-  height: 2px;
-  display: block;
+  position: absolute;
 }
 
 .nested-input {
