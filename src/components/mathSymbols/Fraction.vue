@@ -82,9 +82,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .symbol {
-  margin: 1px;
   display: inline-block;
   vertical-align: middle;
+  margin: 1px;
 }
 
 .img-wrapper {
@@ -93,6 +93,8 @@ export default {
 
 .fraction-img {
   position: absolute;
+  padding-bottom: 1px;
+  padding-top: 1px;
 }
 
 .nested-input {

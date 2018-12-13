@@ -120,7 +120,7 @@ function processComponent(component) {
 function processBasicSymbol(component) {
     let latex = symbolToLatex(component.symbol)
 
-    if (component.symbol.specialRender) {
+    if (component.symbol.specialParsing) {
         return ` ${latex} `
     }
 
@@ -164,8 +164,12 @@ function processRoot(component) {
 }
 
 function symbolToLatex(symbol) {
-    if (symbol.specialRender) {
+    if (symbol.specialParsing) {
         return latexSymbols[symbol.text]
+    }
+
+    if (symbol.kind == symbolDefinitions.symbolKinds.operator) {
+        return ` ${symbol.text} `
     }
 
     return symbol.text
