@@ -30,9 +30,49 @@ var componentMethods = {
     }
 }
 
+var indexMethods = {
+    reScale() {
+        let downInputHeight = 0;
+
+        this.component.baseSize = this.component.baseSize
+
+        let extraHeight = 0;
+        let extraWidth = 0;
+
+        if (this.component.mainEqObject) {
+            this.component.baseSize = {
+                height: this.component.mainEqObject.height,
+                width: this.component.mainEqObject.width,
+            }
+        }
+
+        if (this.component.upEqObject) {
+            extraHeight += this.component.upEqObject.height / 2;
+            extraWidth = this.component.upEqObject.width;
+        }
+
+        if (this.component.downEqObject) {
+            extraHeight += this.component.downEqObject.height / 2;
+
+            if (this.component.downEqObject.width > extraWidth)
+                extraWidth = this.component.downEqObject.width;
+        }
+
+        this.component.height = this.component.baseSize.height + extraHeight;
+        this.component.width = this.component.baseSize.width + extraWidth;
+        this.component.innerBaseLine = downInputHeight / 2 + (this.component.baseSize.height) / 2
+
+        this.$emit('modified');
+    }
+}
+
 export default {
     componentSizingMixin: {
         methods: componentMethods
+    },
+
+    indexSizingMixin: {
+        methods: indexMethods
     },
 
     rootSizingMixin: {

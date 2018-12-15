@@ -47,7 +47,8 @@ export default {
     EquationInput: () => import("./EquationInput.vue")
   },
   props: {
-    component: Object
+    component: Object,
+    inputBaseLine: 0
   },
   computed: {
     downInputPosition() {
@@ -97,9 +98,6 @@ export default {
 .symbol-container {
   position: absolute;
 }
-
-/* .img-wrap {
-} */
 
 .symbol-img {
   display: block;

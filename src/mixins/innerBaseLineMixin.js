@@ -14,12 +14,5 @@ export default {
             this.component.innerBaseLine = this.component.baseSize.height / 2 + downInputHeight
             // console.log("inner base line: " + this.component.innerBaseLine)
         }
-    },
-
-    created() {
-        EventBus.$on("componentInserted", this.calculateInnerBaseLine);
-    },
-    beforeDestroy() {
-        EventBus.$off("componentInserted", this.calculateInnerBaseLine);
     }
 }

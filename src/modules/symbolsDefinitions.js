@@ -43,6 +43,10 @@ baseSize[inputTypes.fraction] = {
     width: 30,
     height: 6
 };
+baseSize[inputTypes.index] = {
+    width: INPUT_BASE_SIZE,
+    height: INPUT_BASE_SIZE
+};
 
 const INPUT_BASE_SIZE = 48;
 
@@ -85,6 +89,7 @@ const symbols = {
     equal: operatorWithText("="),
     subscript: {
         inputType: inputTypes.index,
+        baseSize: baseSize[inputTypes.index],
         category: symbolCategories.advanced,
         text: "",
         kind: symbolKinds.index,
@@ -92,6 +97,7 @@ const symbols = {
     },
     superscript: {
         inputType: inputTypes.index,
+        baseSize: baseSize[inputTypes.index],
         category: symbolCategories.advanced,
         text: "",
         kind: symbolKinds.index,
@@ -99,6 +105,7 @@ const symbols = {
     },
     doublescript: {
         inputType: inputTypes.index,
+        baseSize: baseSize[inputTypes.index],
         category: symbolCategories.advanced,
         text: "",
         kind: symbolKinds.index,

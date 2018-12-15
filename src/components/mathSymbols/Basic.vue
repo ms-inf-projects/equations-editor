@@ -21,7 +21,8 @@ export default {
   mixins: [stylingMixins.positioningMixin, displayMixins.textToImageMixin],
   components: {},
   props: {
-    component: Object
+    component: Object,
+    inputBaseLine: 0
   },
   computed: {
     basePosition() {

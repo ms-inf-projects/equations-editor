@@ -25,7 +25,13 @@
         :inputBaseLine="inputBaseLine"
       ></above-below-input>
 
-      <index v-if="elem.symbol.inputType == inputTypes.index" :component="elem"></index>
+      <index
+        v-if="elem.symbol.inputType == inputTypes.index"
+        :component="elem"
+        :positionX="getPositionX(index)"
+        v-on:modified="reScaleInput"
+        :inputBaseLine="inputBaseLine"
+      ></index>
 
       <fraction
         v-if="elem.symbol.inputType == inputTypes.fraction"
