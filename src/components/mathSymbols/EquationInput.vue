@@ -16,7 +16,6 @@
       class="component-container"
       v-for="(elem, index) in equationObject.components"
       :key="index"
-      :style="{width: elem.width+'px', height: elem.height + 'px'}"
     >
       <above-below-input
         v-if="elem.symbol.inputType == inputTypes.aboveBelow"
@@ -91,7 +90,7 @@ export default {
     inputBaseLine() {
       let maxHeightDown = this.maxHeightDown();
       let maxSymbolHeight = this.maxSymbolHeight();
-
+      console.log("input base: " + maxHeightDown + maxSymbolHeight / 2);
       return maxHeightDown + maxSymbolHeight / 2;
     }
   },

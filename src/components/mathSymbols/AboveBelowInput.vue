@@ -32,7 +32,6 @@
 
 <script>
 import sizeMixins from "../../mixins/sizeMixins.js";
-import innerBaseLineMixin from "../../mixins/innerBaseLineMixin.js";
 import stylingMixins from "../../mixins/stylingMixins.js";
 import displayMixins from "../../mixins/displayMixins.js";
 
@@ -47,8 +46,7 @@ export default {
     EquationInput: () => import("./EquationInput.vue")
   },
   props: {
-    component: Object,
-    inputBaseLine: 0
+    component: Object
   },
   computed: {
     downInputPosition() {

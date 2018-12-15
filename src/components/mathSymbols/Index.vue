@@ -35,19 +35,16 @@
 </template>
 
 <script>
-import sizeMixins from "../../mixins/sizeMixins.js";
-import innerBaseLineMixin from "../../mixins/innerBaseLineMixin.js";
 import stylingMixins from "../../mixins/stylingMixins.js";
 
 export default {
   name: "Index",
-  mixins: [sizeMixins.indexSizingMixin, stylingMixins.positioningMixin],
+  mixins: [stylingMixins.positioningMixin],
   components: {
     EquationInput: () => import("./EquationInput.vue")
   },
   props: {
-    component: Object,
-    inputBaseLine: 0
+    component: Object
   },
   computed: {
     downEqObjectHeight() {
@@ -80,12 +77,48 @@ export default {
       if (!this.component.upEqObject) return 0;
       return {
         left: this.component.baseSize.width + "px",
-        bottom: this.component.height - this.component.upEqObject.height + "px"
+        top: 0 + "%"
       };
     }
   },
-  created() {
-    console.log(this.component);
+  methods: {
+    reScale() {
+      let downInputHeight = 0;
+
+      this.component.baseSize = this.component.symbol.baseSize;
+
+      let extraHeight = 0;
+      let extraWidth = 0;
+
+      if (this.component.mainEqObject) {
+        this.component.baseSize = {
+          height: this.component.mainEqObject.height,
+          width: this.component.mainEqObject.width
+        };
+      }
+
+      if (this.component.upEqObject) {
+        extraHeight += this.component.upEqObject.height / 2;
+        extraWidth = this.component.upEqObject.width;
+      }
+
+      if (this.component.downEqObject) {
+        downInputHeight = this.component.downEqObject.height;
+        extraHeight += downInputHeight / 2;
+
+        if (this.component.downEqObject.width > extraWidth)
+          extraWidth = this.component.downEqObject.width;
+      }
+
+      this.component.height = this.component.baseSize.height + extraHeight;
+      this.component.width = this.component.baseSize.width + extraWidth;
+      console.log("Down input h: " + downInputHeight);
+      console.log("base h: " + this.component.baseSize.height);
+      this.component.innerBaseLine =
+        downInputHeight / 2 + this.component.baseSize.height / 2;
+      console.log("Inner base line: " + this.component.innerBaseLine);
+      this.$emit("modified");
+    }
   }
 };
 </script>

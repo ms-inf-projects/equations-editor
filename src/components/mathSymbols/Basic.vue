@@ -21,11 +21,12 @@ export default {
   mixins: [stylingMixins.positioningMixin, displayMixins.textToImageMixin],
   components: {},
   props: {
-    component: Object,
-    inputBaseLine: 0
+    component: Object
   },
   computed: {
     basePosition() {
+      // console.log(this.inputBaseLine);
+      // console.log(this.component.baseSize.height);
       return this.inputBaseLine - this.component.baseSize.height / 2;
     },
     imgStyling() {
@@ -33,13 +34,14 @@ export default {
         position: "absolute",
         width: this.component.width + "px",
         height: this.component.height + "px",
-        left: 0 + "px"
+        left: 0 + "px",
+        bottom: 0 + "%"
       };
     }
   },
 
   mounted() {
-    EventBus.$emit("componentInserted");
+    this.component.innerBaseLine = this.component.height / 2;
   }
 };
 </script>
@@ -49,9 +51,5 @@ export default {
 .basic {
   display: inline-block;
   text-align: center;
-}
-
-/* TODO - different font for operators */
-.operator {
 }
 </style>

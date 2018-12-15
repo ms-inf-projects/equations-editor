@@ -7,8 +7,6 @@ export default {
 
         methods: {
             position() {
-                // return `left: ${this.positionX}px; width: ${this.component.width}px`
-
                 return {
                     left: this.positionX + 'px',
                     width: this.component.width + 'px',

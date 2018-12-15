@@ -28,7 +28,6 @@
 <script>
 import { EventBus } from "../../event-bus.js";
 import sizeMixins from "../../mixins/sizeMixins.js";
-import innerBaseLineMixin from "../../mixins/innerBaseLineMixin.js";
 import stylingMixins from "../../mixins/stylingMixins.js";
 
 export default {
@@ -85,10 +84,6 @@ export default {
   display: inline-block;
   vertical-align: middle;
   margin: 1px;
-}
-
-.img-wrapper {
-  height: 2px;
 }
 
 .fraction-img {

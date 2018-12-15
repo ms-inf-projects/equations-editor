@@ -64,7 +64,6 @@ export default {
   methods: {
     reScale() {
       // TODO - handle degree input if nessecery
-
       let newHeight =
         this.component.symbol.baseSize.height * this.component.sizePercentage;
 
