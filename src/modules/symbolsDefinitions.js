@@ -32,7 +32,7 @@ baseSize[inputTypes.aboveBelow] = {
     height: 50
 };
 baseSize[inputTypes.basic] = {
-    width: 30,
+    width: 20,
     height: 30
 };
 baseSize[inputTypes.root] = {
@@ -87,6 +87,8 @@ const symbols = {
     add: operatorWithText("+"),
     subtract: operatorWithText("-"),
     equal: operatorWithText("="),
+    lessThan: operatorWithText("<"),
+    moreThan: operatorWithText(">"),
     subscript: {
         inputType: inputTypes.index,
         baseSize: baseSize[inputTypes.index],

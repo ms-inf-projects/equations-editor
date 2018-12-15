@@ -11,38 +11,38 @@ latexSymbols[symbolDefinitions.symbols.multiply.text] = "\\times";
 latexSymbols[symbolDefinitions.symbols.fraction.text] = "\\dfrac";
 
 export default {
-  createSymbolComponent: function(symbol, uuid, sizePercentage) {
-    let newSizePercentage = sizePercentage - SIZE_PERCENTAGE_DECREASE;
+    createSymbolComponent: function (symbol, uuid, sizePercentage) {
+        let newSizePercentage = sizePercentage - SIZE_PERCENTAGE_DECREASE;
 
-    // TODO - pass some data object
-    let component = componentConstructors[symbol.inputType](symbol, newSizePercentage, sizePercentage);
+        // TODO - pass some data object
+        let component = componentConstructors[symbol.inputType](symbol, newSizePercentage, sizePercentage);
 
-    component.sizePercentage = newSizePercentage;
-    component.baseSize = {
-      height: newSizePercentage * symbol.baseSize.height,
-      width: newSizePercentage * symbol.baseSize.width
-    };
-    component.position = {
-      x: 0,
-      y: 0
-    };
-    component.symbol = symbol;
-    component.uuid = uuid;
+        component.sizePercentage = newSizePercentage;
+        component.baseSize = {
+            height: newSizePercentage * symbol.baseSize.height,
+            width: newSizePercentage * symbol.baseSize.width
+        };
+        component.position = {
+            x: 0,
+            y: 0
+        };
+        component.symbol = symbol;
+        component.uuid = uuid;
 
-    component.width = symbol.baseSize.width * newSizePercentage;
-    component.height = symbol.baseSize.height * newSizePercentage;
-    component.innerBaseLine = (component.height / 2) * newSizePercentage;
+        component.width = symbol.baseSize.width * newSizePercentage;
+        component.height = symbol.baseSize.height * newSizePercentage;
+        component.innerBaseLine = (component.height / 2) * newSizePercentage;
 
-    return component;
-  },
+        return component;
+    },
 
-  processToLatex: function(equationObject) {
-    return processEquetionInput(equationObject);
-  },
+    processToLatex: function (equationObject) {
+        return processEquetionInput(equationObject);
+    },
 
-  initialEquationObject: function() {
-    return createEquationInput(DEFAULT_SIZE_PERCENTAGE);
-  }
+    initialEquationObject: function () {
+        return createEquationInput(DEFAULT_SIZE_PERCENTAGE);
+    }
 };
 
 // Components creation ------------------------------------
@@ -55,55 +55,55 @@ componentConstructors[symbolDefinitions.inputTypes.basic] = createEmptyComponent
 componentConstructors[symbolDefinitions.inputTypes.index] = createIndexComponent;
 
 function createUpAndDownInputComponent(symbol, sizePercentage) {
-  return {
-    upEqObject: createEquationInput(sizePercentage),
-    downEqObject: createEquationInput(sizePercentage)
-  };
+    return {
+        upEqObject: createEquationInput(sizePercentage),
+        downEqObject: createEquationInput(sizePercentage)
+    };
 }
 
 function createIndexComponent(symbol, newSizePercentage, sizePercentage) {
-  let indexComponent;
+    let indexComponent;
 
-  switch (symbol) {
-    case symbolDefinitions.symbols.subscript:
-      indexComponent = {
-        downEqObject: createEquationInput(sizePercentage / 2)
-      };
-      break;
-    case symbolDefinitions.symbols.superscript:
-      indexComponent = {
-        upEqObject: createEquationInput(sizePercentage / 2)
-      };
-      break;
-    case symbolDefinitions.symbols.doublescript:
-      indexComponent = createUpAndDownInputComponent(symbol, sizePercentage / 2);
-      break;
-    default:
-      console.warn("createIndexComponent called with invalid argument");
-  }
+    switch (symbol) {
+        case symbolDefinitions.symbols.subscript:
+            indexComponent = {
+                downEqObject: createEquationInput(sizePercentage / 2)
+            };
+            break;
+        case symbolDefinitions.symbols.superscript:
+            indexComponent = {
+                upEqObject: createEquationInput(sizePercentage / 2)
+            };
+            break;
+        case symbolDefinitions.symbols.doublescript:
+            indexComponent = createUpAndDownInputComponent(symbol, sizePercentage / 2);
+            break;
+        default:
+            console.warn("createIndexComponent called with invalid argument");
+    }
 
-  indexComponent.mainEqObject = createEquationInput(sizePercentage);
-  return indexComponent;
+    indexComponent.mainEqObject = createEquationInput(sizePercentage);
+    return indexComponent;
 }
 
 function createRootComponent(symbol, sizePercentage) {
-  return {
-    degreeEqObject: createEquationInput(sizePercentage / 2),
-    baseEqObject: createEquationInput(sizePercentage)
-  };
+    return {
+        degreeEqObject: createEquationInput(sizePercentage / 1.5),
+        baseEqObject: createEquationInput(sizePercentage)
+    };
 }
 
 function createEmptyComponent() {
-  return {};
+    return {};
 }
 
 function createEquationInput(sizePercentage) {
-  return {
-    components: [],
-    width: symbolDefinitions.INPUT_BASE_SIZE * sizePercentage,
-    height: symbolDefinitions.INPUT_BASE_SIZE * sizePercentage,
-    sizePercentage: sizePercentage
-  };
+    return {
+        components: [],
+        width: symbolDefinitions.INPUT_BASE_SIZE * sizePercentage,
+        height: symbolDefinitions.INPUT_BASE_SIZE * sizePercentage,
+        sizePercentage: sizePercentage
+    };
 }
 
 // Latex processing ----------------------------------------
@@ -117,73 +117,73 @@ processFunctions[symbolDefinitions.inputTypes.basic] = processBasicSymbol;
 processFunctions[symbolDefinitions.inputTypes.index] = processIndex;
 
 function processEquetionInput(equationInput) {
-  if (equationInput == null) return null;
+    if (equationInput == null) return null;
 
-  return equationInput.components.map(x => processComponent(x)).join("");
+    return equationInput.components.map(x => processComponent(x)).join("");
 }
 
 function processComponent(component) {
-  return processFunctions[component.symbol.inputType](component);
+    return processFunctions[component.symbol.inputType](component);
 }
 
 function processBasicSymbol(component) {
-  let latex = symbolToLatex(component.symbol);
+    let latex = symbolToLatex(component.symbol);
 
-  if (component.symbol.specialParsing) {
-    return ` ${latex} `;
-  }
+    if (component.symbol.specialParsing) {
+        return ` ${latex} `;
+    }
 
-  return latex;
+    return latex;
 }
 
 function processAboveBelow(component) {
-  let upInpt = processEquetionInput(component.upEqObject);
-  let downInput = processEquetionInput(component.downEqObject);
+    let upInpt = processEquetionInput(component.upEqObject);
+    let downInput = processEquetionInput(component.downEqObject);
 
-  let output = symbolToLatex(component.symbol);
+    let output = symbolToLatex(component.symbol);
 
-  if (downInput) output += `_{${downInput}}`;
-  if (upInpt) output += `^{${upInpt}}`;
+    if (downInput) output += `_{${downInput}}`;
+    if (upInpt) output += `^{${upInpt}}`;
 
-  return output + " ";
+    return output + " ";
 }
 
 function processIndex(component) {
-  return processEquetionInput(component.mainEqObject) + processAboveBelow(component);
+    return processEquetionInput(component.mainEqObject) + processAboveBelow(component);
 }
 
 function processFraction(component) {
-  let upInpt = processEquetionInput(component.upEqObject);
-  let downInput = processEquetionInput(component.downEqObject);
+    let upInpt = processEquetionInput(component.upEqObject);
+    let downInput = processEquetionInput(component.downEqObject);
 
-  let output = symbolToLatex(component.symbol);
+    let output = symbolToLatex(component.symbol);
 
-  output += `{${upInpt}}`;
-  output += `{${downInput}}`;
+    output += `{${upInpt}}`;
+    output += `{${downInput}}`;
 
-  return output + " ";
+    return output + " ";
 }
 
 function processRoot(component) {
-  let degreeInput = processEquetionInput(component.degreeEqObject);
-  let baseInput = processEquetionInput(component.baseEqObject);
+    let degreeInput = processEquetionInput(component.degreeEqObject);
+    let baseInput = processEquetionInput(component.baseEqObject);
 
-  let output = symbolToLatex(component.symbol);
+    let output = symbolToLatex(component.symbol);
 
-  if (degreeInput) output += `[${degreeInput}]`;
-  if (baseInput) output += `{${baseInput}}`;
+    if (degreeInput) output += `[${degreeInput}]`;
+    if (baseInput) output += `{${baseInput}}`;
 
-  return output + " ";
+    return output + " ";
 }
 
 function symbolToLatex(symbol) {
-  if (symbol.specialParsing) {
-    return latexSymbols[symbol.text];
-  }
+    if (symbol.specialParsing) {
+        return latexSymbols[symbol.text];
+    }
 
-  if (symbol.kind == symbolDefinitions.symbolKinds.operator) {
-    return ` ${symbol.text} `;
-  }
+    if (symbol.kind == symbolDefinitions.symbolKinds.operator) {
+        return ` ${symbol.text} `;
+    }
 
-  return symbol.text;
+    return symbol.text;
 }

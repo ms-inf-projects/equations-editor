@@ -1,3 +1,7 @@
+const CHAR_WIDTH = 32;
+const CHAR_HEIGHT = 64;
+const FONT = "68px Consolas";
+
 export default {
     textToImageMixin: {
         methods: {
@@ -5,11 +9,12 @@ export default {
                 let tCtx = this.$refs.textCanvas.getContext("2d");
                 let imageElem = this.$refs.textImage;
 
-                tCtx.font = "48px Consolas";
-                tCtx.canvas.width = tCtx.measureText(this.component.symbol.text).width;
-                tCtx.canvas.height = tCtx.canvas.width;
-                tCtx.font = "28px Consolas";
-                tCtx.fillText(this.component.symbol.text, 0, 20, 50);
+                tCtx.font = FONT;
+                tCtx.canvas.width = CHAR_WIDTH
+                tCtx.canvas.height = CHAR_HEIGHT;
+                tCtx.font = FONT
+                tCtx.textBaseline = "middle"
+                tCtx.fillText(this.component.symbol.text, -2, 25, 50);
 
                 imageElem.src = tCtx.canvas.toDataURL();
             }
