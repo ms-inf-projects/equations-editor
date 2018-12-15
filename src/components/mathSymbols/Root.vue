@@ -55,7 +55,7 @@ export default {
       );
     },
     basePosition() {
-      return this.inputBaseLine - this.component.baseSize.height / 2;
+      return this.inputBaseLine - this.component.height / 2;
     },
     baseXPosition() {
       return this.component.degreeEqObject.width;

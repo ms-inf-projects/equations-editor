@@ -16,6 +16,7 @@
       class="component-container"
       v-for="(elem, index) in equationObject.components"
       :key="index"
+      :style="{width: elem.width+'px', height: elem.height + 'px'}"
     >
       <above-below-input
         v-if="elem.symbol.inputType == inputTypes.aboveBelow"
