@@ -5,23 +5,43 @@
   - special symbols
  -->
 <template>
-  <div class="basic">
-    <span class="basic-data" :class="symbol.kind">{{symbol.text}}</span>
+  <div class="basic component" :style="position()">
+    <canvas ref="textCanvas" class="textCanvas"></canvas>
+    <img ref="textImage" :style="imgStyling">
   </div>
 </template>
 
 <script>
 import { EventBus } from "../../event-bus.js";
+import stylingMixins from "../../mixins/stylingMixins.js";
+import displayMixins from "../../mixins/displayMixins.js";
 
 export default {
   name: "Basic",
+  mixins: [stylingMixins.positioningMixin, displayMixins.textToImageMixin],
   components: {},
   props: {
-    symbol: Object
+    component: Object
+  },
+  computed: {
+    basePosition() {
+      // console.log(this.inputBaseLine);
+      // console.log(this.component.baseSize.height);
+      return this.inputBaseLine - this.component.baseSize.height / 2;
+    },
+    imgStyling() {
+      return {
+        position: "absolute",
+        width: this.component.width + "px",
+        height: this.component.height + "px",
+        left: 0 + "px",
+        bottom: 0 + "%"
+      };
+    }
   },
 
   mounted() {
-    EventBus.$emit("componentInserted");
+    this.component.innerBaseLine = this.component.height / 2;
   }
 };
 </script>
@@ -31,23 +51,5 @@ export default {
 .basic {
   display: inline-block;
   text-align: center;
-  vertical-align: auto;
-  /* vertical-align: 110%; */
-  /* height: 100px; */
-  /* position: absolute; */
-  /* top: 50%; */
-  /* left: 50%; */
-  /* height: 30%; */
-  /* width: 50%; */
-  /* margin: -15% 0 0 -25%; */
-}
-
-.basic-data {
-  vertical-align: middle;
-}
-
-/* TODO - different font for operators */
-.operator {
-  font-size: 0.7em;
 }
 </style>
