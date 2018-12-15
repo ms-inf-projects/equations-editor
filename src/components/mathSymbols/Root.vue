@@ -2,43 +2,91 @@
   - root
  -->
 <template>
-  <div class="symbol">
-    <equation-input :equationObject="component.degreeEqObject"
-                    class="degree">
-    </equation-input>
-    <div class="root" ref="rootRef">
-      <img :src="component.symbol.imagePath" v-bind:style="{height: rootHeight +'px'}">
-      <equation-input  :equationObject="component.baseEqObject"
-                      class="base" v-bind:style="{borderTop: borderWidth + 'px solid #000'}">
-      </equation-input>
+  <div class="symbol component" ref="root" :style="position()">
+    <div class="input-container" style="top: 0%">
+      <equation-input
+        :equationObject="component.degreeEqObject"
+        class="degree"
+        v-on:modified="reScale"
+      ></equation-input>
+    </div>
+
+    <img
+      :src="component.symbol.imagePath"
+      class="root-img"
+      v-bind:style="{height: component.baseEqObject.height+4*component.sizePercentage +'px', width: component.baseSize.width+'px', left: baseXPosition+'px'}"
+    >
+
+    <div class="input-container" :style="{top: 0+'%', left: baseInputXPosition+'px'}">
+      <equation-input
+        :equationObject="component.baseEqObject"
+        class="base"
+        v-on:modified="reScale"
+        v-bind:style="{borderTop: borderWidth + 'px solid #000'}"
+      ></equation-input>
     </div>
   </div>
 </template>
  
 <script>
 import { EventBus } from "../../event-bus.js";
+import stylingMixins from "../../mixins/stylingMixins.js";
 
 export default {
   name: "Root",
+  mixins: [stylingMixins.positioningMixin],
   components: {
     EquationInput: () => import("./EquationInput.vue")
   },
   data() {
-    return {
-      rootHeight: 20
-    };
+    return {};
   },
   props: {
     component: Object
   },
   computed: {
     borderWidth() {
-      return this.rootHeight / 10 / 4;
+      return 1;
+    },
+    degreeInputYPosition() {},
+    baseInputXPosition() {
+      return (
+        this.component.degreeEqObject.width + this.component.baseSize.width
+      );
+    },
+    basePosition() {
+      return this.inputBaseLine - this.component.height / 2;
+    },
+    baseXPosition() {
+      return this.component.degreeEqObject.width;
     }
   },
   methods: {
     reScale() {
-      this.rootHeight = this.$refs.rootRef.clientHeight;
+      // TODO - handle degree input if nessecery
+      let newHeight =
+        this.component.symbol.baseSize.height * this.component.sizePercentage;
+
+      let baseInputWidth = 0;
+      let degreeInputWidth = 0;
+
+      if (this.component.baseEqObject) {
+        newHeight =
+          this.component.baseEqObject.height +
+          5 * this.component.sizePercentage;
+
+        baseInputWidth = this.component.baseEqObject.width;
+      }
+
+      if (this.component.degreeEqObject) {
+        degreeInputWidth = this.component.degreeEqObject.width;
+      }
+
+      this.component.height = newHeight;
+      this.component.width =
+        baseInputWidth + degreeInputWidth + this.component.baseSize.width;
+
+      this.$emit("modified");
     }
   },
 
@@ -59,6 +107,12 @@ export default {
   vertical-align: middle;
 }
 
+.root-img {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
+
 .root {
   display: inline-block;
   vertical-align: middle;
@@ -71,7 +125,6 @@ export default {
 
 .degree {
   display: inline-block;
-  height: 50%;
   vertical-align: top;
 }
 </style>

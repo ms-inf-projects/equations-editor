@@ -4,37 +4,85 @@
   - product
  -->
 <template>
-  <div class="symbol">
-    <equation-input v-if="component.upEqObject"
-                    class="nested-input"
-                    :equationObject="component.upEqObject">
-    </equation-input>
-
-    <div v-if="component.symbol.imagePath" class="img-wrap">
-      <img 
-          :src="component.symbol.imagePath"
-          class="symbol-img"
-      />
+  <div class="symbol component" :style="position()">
+    <div class="input-container" :style="upInputPosition">
+      <equation-input
+        v-if="component.upEqObject"
+        class="nested-input"
+        :equationObject="component.upEqObject"
+        v-on:modified="reScale"
+      ></equation-input>
     </div>
-    <span v-else>
-      {{ component.symbol.text }}
-    </span>
 
-    <equation-input v-if="component.downEqObject"
-                    class="nested-input"
-                    :equationObject="component.downEqObject">
-    </equation-input>
+    <div class="symbol-container" :style="{bottom: symbolPosition + 'px'}">
+      <canvas ref="textCanvas" class="textCanvas"></canvas>
+      <img ref="textImage" class="absolute-bottom" :style="imgStyling">
+    </div>
+
+    <div class="input-container" :style="downInputPosition">
+      <equation-input
+        v-if="component.downEqObject"
+        class="nested-input"
+        :equationObject="component.downEqObject"
+        v-on:modified="reScale"
+      ></equation-input>
+    </div>
   </div>
 </template>
 
 <script>
+import sizeMixins from "../../mixins/sizeMixins.js";
+import stylingMixins from "../../mixins/stylingMixins.js";
+import displayMixins from "../../mixins/displayMixins.js";
+
 export default {
   name: "AboveBelowInput",
+  mixins: [
+    sizeMixins.componentSizingMixin,
+    stylingMixins.positioningMixin,
+    displayMixins.textToImageMixin
+  ],
   components: {
     EquationInput: () => import("./EquationInput.vue")
   },
   props: {
     component: Object
+  },
+  computed: {
+    downInputPosition() {
+      return {
+        left:
+          this.component.width / 2 -
+          this.component.downEqObject.width / 2 +
+          "px",
+        bottom: 0 + "%"
+      };
+    },
+    upInputPosition() {
+      return {
+        left:
+          this.component.width / 2 - this.component.upEqObject.width / 2 + "px",
+        top: 0 + "%"
+      };
+    },
+    symbolPosition() {
+      return this.component.downEqObject.height;
+    },
+    basePosition() {
+      return (
+        this.inputBaseLine -
+        this.component.baseSize.height / 2 -
+        this.component.downEqObject.height
+      );
+    },
+    imgStyling() {
+      return {
+        width: this.component.baseSize.width + "px",
+        height: this.component.baseSize.height + "px",
+        left:
+          this.component.width / 2 - this.component.baseSize.width / 2 + "px"
+      };
+    }
   }
 };
 </script>
@@ -43,11 +91,10 @@ export default {
 <style scoped>
 .symbol {
   margin: 1px;
-  display: inline-block;
-  vertical-align: middle;
 }
 
-.img-wrap {
+.symbol-container {
+  position: absolute;
 }
 
 .symbol-img {
@@ -55,6 +102,6 @@ export default {
 }
 
 .nested-input {
-  font-size: 0.75em;
+  font-size: 0.8em;
 }
 </style>
