@@ -112,11 +112,9 @@ export default {
 
       this.component.height = this.component.baseSize.height + extraHeight;
       this.component.width = this.component.baseSize.width + extraWidth;
-      console.log("Down input h: " + downInputHeight);
-      console.log("base h: " + this.component.baseSize.height);
       this.component.innerBaseLine =
         downInputHeight / 2 + this.component.baseSize.height / 2;
-      console.log("Inner base line: " + this.component.innerBaseLine);
+
       this.$emit("modified");
     }
   }
