@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import { EventBus } from "../../event-bus.js";
 import stylingMixins from "../../mixins/stylingMixins.js";
 import displayMixins from "../../mixins/displayMixins.js";
 
@@ -25,15 +24,13 @@ export default {
   },
   computed: {
     basePosition() {
-      // console.log(this.inputBaseLine);
-      // console.log(this.component.baseSize.height);
       return this.inputBaseLine - this.component.baseSize.height / 2;
     },
     imgStyling() {
       return {
         position: "absolute",
-        width: this.component.width + "px",
-        height: this.component.height + "px",
+        maxWidth: this.component.width + "px",
+        maxHeight: this.component.height + "px",
         left: 0 + "px",
         bottom: 0 + "%"
       };
@@ -42,6 +39,7 @@ export default {
 
   mounted() {
     this.component.innerBaseLine = this.component.height / 2;
+    this.$emit("modified");
   }
 };
 </script>
