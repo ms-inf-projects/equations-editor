@@ -5,7 +5,8 @@ const inputTypes = {
     root: "root",
     basic: "basic",
     fraction: "fraction",
-    index: "index"
+    index: "index",
+    brackets: "brackets"
 };
 
 // Kind of the symbol to differentiate inside the input
@@ -14,7 +15,8 @@ const symbolKinds = {
     digit: "digit",
     operator: "operator",
     fraction: "fraction",
-    index: "index"
+    index: "index",
+    brackets: "brackets"
 };
 
 // Categories used for displaying
@@ -33,7 +35,7 @@ baseSize[inputTypes.aboveBelow] = {
 };
 baseSize[inputTypes.basic] = {
     width: 20,
-    height: 30
+    height: 40
 };
 baseSize[inputTypes.root] = {
     width: 30,
@@ -46,6 +48,10 @@ baseSize[inputTypes.fraction] = {
 baseSize[inputTypes.index] = {
     width: INPUT_BASE_SIZE,
     height: INPUT_BASE_SIZE
+};
+baseSize[inputTypes.brackets] = {
+    width: 30,
+    height: 10
 };
 
 const INPUT_BASE_SIZE = 48;
@@ -112,8 +118,21 @@ const symbols = {
         text: "",
         kind: symbolKinds.index,
         iconPath: require("@/assets/doublescript_img.png")
-    }
+    },
+    brackets: bracket("()", require("@/assets/brackets_icon.png")),
+    squareBrackets: bracket("[]", require("@/assets/square_brackets_icon.png"))
 };
+
+function bracket(brackets, icon) {
+    return {
+        inputType: inputTypes.brackets,
+        baseSize: baseSize[inputTypes.brackets],
+        category: symbolCategories.basic,
+        text: brackets,
+        kind: symbolKinds.brackets,
+        iconPath: icon
+    }
+}
 
 function operatorWithText(text) {
     return operator(text)

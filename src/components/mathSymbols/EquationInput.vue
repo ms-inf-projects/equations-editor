@@ -56,6 +56,14 @@
         v-on:modified="reScaleInput"
         :inputBaseLine="inputBaseLine"
       ></root>
+
+      <brackets
+        v-if="elem.symbol.inputType == inputTypes.brackets"
+        :component="elem"
+        :positionX="getPositionX(index)"
+        v-on:modified="reScaleInput"
+        :inputBaseLine="inputBaseLine"
+      ></brackets>
     </div>
   </div>
 </template>
@@ -67,6 +75,7 @@ import Basic from "./Basic.vue";
 import Root from "./Root.vue";
 import Fraction from "./Fraction.vue";
 import Index from "./Index.vue";
+import Brackets from "./Brackets.vue";
 
 export default {
   name: "EquationInput",
@@ -75,7 +84,8 @@ export default {
     Root,
     Basic,
     Fraction,
-    Index
+    Index,
+    Brackets
   },
   data() {
     return {
@@ -90,8 +100,10 @@ export default {
     inputBaseLine() {
       let maxHeightDown = this.maxHeightDown();
       let maxSymbolHeight = this.maxSymbolHeight();
-      console.log("input base: " + maxHeightDown + maxSymbolHeight / 2);
-      return maxHeightDown + maxSymbolHeight / 2;
+      let baseLine = maxHeightDown + maxSymbolHeight / 2;
+
+      this.$emit("baseLineRecalculation", baseLine);
+      return baseLine;
     }
   },
   methods: {
@@ -183,6 +195,7 @@ export default {
       this.equationObject.height = newHeight;
 
       this.$emit("modified");
+      this.$emit("baseLineRecalculation", this.inputBaseLine);
     },
 
     deleteInput() {
