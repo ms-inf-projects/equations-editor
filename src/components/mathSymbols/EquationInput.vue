@@ -98,10 +98,7 @@ export default {
   },
   computed: {
     inputBaseLine() {
-      let maxHeightDown = this.maxHeightDown();
-      let maxSymbolHeight = this.maxSymbolHeight();
-      let baseLine = maxHeightDown + maxSymbolHeight / 2;
-
+      let baseLine = this.maxHeightDown();
       this.$emit("baseLineRecalculation", baseLine);
       return baseLine;
     }
@@ -126,25 +123,14 @@ export default {
     maxHeightDown() {
       return Math.max.apply(
         Math,
-        this.equationObject.components.map(
-          c => c.innerBaseLine - c.baseSize.height / 2
-        )
-      );
-    },
-
-    maxSymbolHeight() {
-      return Math.max.apply(
-        Math,
-        this.equationObject.components.map(c => c.baseSize.height)
+        this.equationObject.components.map(c => c.innerBaseLine)
       );
     },
 
     maxHeightUp() {
       return Math.max.apply(
         Math,
-        this.equationObject.components.map(
-          c => c.height - c.innerBaseLine - c.baseSize.height / 2
-        )
+        this.equationObject.components.map(c => c.height - c.innerBaseLine)
       );
     },
 
@@ -179,9 +165,8 @@ export default {
         // TODO - consider doing this in single loop
         let maxHeightUp = this.maxHeightUp();
         let maxHeightDown = this.maxHeightDown();
-        let maxSymbolHeight = this.maxSymbolHeight();
 
-        newHeight = maxHeightUp + maxHeightDown + maxSymbolHeight;
+        newHeight = maxHeightUp + maxHeightDown;
       } else {
         newWidth =
           symbolsDefinitions.INPUT_BASE_SIZE *

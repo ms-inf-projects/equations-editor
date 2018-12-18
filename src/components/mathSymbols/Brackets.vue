@@ -82,7 +82,7 @@ export default {
 
       if (this.component.mainEqObject.components.length > 0) {
         this.component.innerBaseLine =
-          this.mainInputBaseLine - this.component.baseSize.height;
+          this.mainInputBaseLine + this.component.baseSize.height / 2;
       } else {
         this.component.innerBaseLine = this.component.height / 2;
       }
@@ -91,10 +91,22 @@ export default {
     },
 
     updateMainInputBaseLine(baseLine) {
+      if (isNullOrInfinity(baseLine)) baseLine = 0;
+
       this.mainInputBaseLine = baseLine;
     }
   }
 };
+
+function isNullOrInfinity(val) {
+  if (
+    !val ||
+    val == Number.POSITIVE_INFINITY ||
+    val == Number.NEGATIVE_INFINITY
+  ) {
+    true;
+  } else false;
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
