@@ -50,7 +50,7 @@ baseSize[inputTypes.index] = {
     height: INPUT_BASE_SIZE
 };
 baseSize[inputTypes.brackets] = {
-    width: 30,
+    width: 35,
     height: 10
 };
 
