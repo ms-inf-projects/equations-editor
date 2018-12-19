@@ -56,6 +56,14 @@
         v-on:modified="reScaleInput"
         :inputBaseLine="inputBaseLine"
       ></root>
+
+      <brackets
+        v-if="elem.symbol.inputType == inputTypes.brackets"
+        :component="elem"
+        :positionX="getPositionX(index)"
+        v-on:modified="reScaleInput"
+        :inputBaseLine="inputBaseLine"
+      ></brackets>
     </div>
   </div>
 </template>
@@ -67,6 +75,7 @@ import Basic from "./Basic.vue";
 import Root from "./Root.vue";
 import Fraction from "./Fraction.vue";
 import Index from "./Index.vue";
+import Brackets from "./Brackets.vue";
 
 export default {
   name: "EquationInput",
@@ -75,7 +84,8 @@ export default {
     Root,
     Basic,
     Fraction,
-    Index
+    Index,
+    Brackets
   },
   data() {
     return {
@@ -88,10 +98,9 @@ export default {
   },
   computed: {
     inputBaseLine() {
-      let maxHeightDown = this.maxHeightDown();
-      let maxSymbolHeight = this.maxSymbolHeight();
-      console.log("input base: " + maxHeightDown + maxSymbolHeight / 2);
-      return maxHeightDown + maxSymbolHeight / 2;
+      let baseLine = this.maxHeightDown();
+      this.$emit("baseLineRecalculation", baseLine);
+      return baseLine;
     }
   },
   methods: {
@@ -114,25 +123,14 @@ export default {
     maxHeightDown() {
       return Math.max.apply(
         Math,
-        this.equationObject.components.map(
-          c => c.innerBaseLine - c.baseSize.height / 2
-        )
-      );
-    },
-
-    maxSymbolHeight() {
-      return Math.max.apply(
-        Math,
-        this.equationObject.components.map(c => c.baseSize.height)
+        this.equationObject.components.map(c => c.innerBaseLine)
       );
     },
 
     maxHeightUp() {
       return Math.max.apply(
         Math,
-        this.equationObject.components.map(
-          c => c.height - c.innerBaseLine - c.baseSize.height / 2
-        )
+        this.equationObject.components.map(c => c.height - c.innerBaseLine)
       );
     },
 
@@ -167,9 +165,8 @@ export default {
         // TODO - consider doing this in single loop
         let maxHeightUp = this.maxHeightUp();
         let maxHeightDown = this.maxHeightDown();
-        let maxSymbolHeight = this.maxSymbolHeight();
 
-        newHeight = maxHeightUp + maxHeightDown + maxSymbolHeight;
+        newHeight = maxHeightUp + maxHeightDown;
       } else {
         newWidth =
           symbolsDefinitions.INPUT_BASE_SIZE *
@@ -183,6 +180,7 @@ export default {
       this.equationObject.height = newHeight;
 
       this.$emit("modified");
+      this.$emit("baseLineRecalculation", this.inputBaseLine);
     },
 
     deleteInput() {
