@@ -128,6 +128,7 @@ export default {
 .editor {
   border: 1px solid #000;
   min-height: 200px;
+  overflow: auto;
 }
 
 .latex-display {

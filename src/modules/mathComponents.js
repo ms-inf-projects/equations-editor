@@ -53,6 +53,7 @@ componentConstructors[symbolDefinitions.inputTypes.root] = createRootComponent;
 componentConstructors[symbolDefinitions.inputTypes.specialChar] = createEmptyComponent;
 componentConstructors[symbolDefinitions.inputTypes.basic] = createEmptyComponent;
 componentConstructors[symbolDefinitions.inputTypes.index] = createIndexComponent;
+componentConstructors[symbolDefinitions.inputTypes.brackets] = createBracketsComponent;
 
 function createUpAndDownInputComponent(symbol, sizePercentage) {
     return {
@@ -86,6 +87,12 @@ function createIndexComponent(symbol, newSizePercentage, sizePercentage) {
     return indexComponent;
 }
 
+function createBracketsComponent(symbol, newSizePercentage, sizePercentage) {
+    return {
+        mainEqObject: createEquationInput(sizePercentage)
+    }
+}
+
 function createRootComponent(symbol, sizePercentage) {
     return {
         degreeEqObject: createEquationInput(sizePercentage / 1.5),
@@ -115,6 +122,7 @@ processFunctions[symbolDefinitions.inputTypes.root] = processRoot;
 processFunctions[symbolDefinitions.inputTypes.specialChar] = processBasicSymbol;
 processFunctions[symbolDefinitions.inputTypes.basic] = processBasicSymbol;
 processFunctions[symbolDefinitions.inputTypes.index] = processIndex;
+processFunctions[symbolDefinitions.inputTypes.brackets] = processBrackets;
 
 function processEquetionInput(equationInput) {
     if (equationInput == null) return null;
@@ -174,6 +182,16 @@ function processRoot(component) {
     if (baseInput) output += `{${baseInput}}`;
 
     return output + " ";
+}
+
+function processBrackets(component) {
+    let openingBracket = component.symbol.text.substring(0, 1)
+    let closingBracket = component.symbol.text.substring(1, 2)
+
+    let mainInput = processEquetionInput(component.mainEqObject)
+
+    // TODO - consider using /big based on component height
+    return `${openingBracket}${mainInput}${closingBracket}`
 }
 
 function symbolToLatex(symbol) {
