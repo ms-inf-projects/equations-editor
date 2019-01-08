@@ -1,8 +1,7 @@
 <template>
   <b-col class="math-symbol-button">
     <b-button class="symbol-btn" variant="primary" v-on:click="insertSymbol()">
-      <img v-if="symbol.iconPath" :src="symbol.iconPath" class="symbol-img">
-      <span v-else>{{ symbol.text }}</span>
+      <span>{{ character }}</span>
     </b-button>
   </b-col>
 </template>
@@ -11,23 +10,14 @@
 import { EventBus } from "../event-bus.js";
 
 export default {
-  name: "MathSymbolButton",
+  name: "KeyboardButton",
   components: {},
   props: {
-    mathSymbolDisplay: String,
-    symbol: Object,
-    isCode: false
+    character: String
   },
   methods: {
     insertSymbol() {
       EventBus.$emit("mastSymbolButtonClick", this.symbol);
-    }
-  },
-  computed: {
-    decodedSymbol() {
-      if (this.symbol.code)
-        return String.fromCharCode(parseInt(this.symbol.code, 16));
-      else return this.symbol.text;
     }
   }
 };
