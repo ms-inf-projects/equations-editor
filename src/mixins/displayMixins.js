@@ -1,6 +1,11 @@
 const CHAR_WIDTH = 32;
 const CHAR_HEIGHT = 64;
-const FONT = "68px Consolas";
+const FONT = "48px Menlo";
+
+// WINDOWS CONFIG
+// const CHAR_WIDTH = 32;
+// const CHAR_HEIGHT = 64;
+// const FONT = "68px Consolas";
 
 export default {
     textToImageMixin: {

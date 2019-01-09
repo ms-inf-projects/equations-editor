@@ -63,6 +63,10 @@ export default {
       this.insertMathSymbol(symbolsDefinitions.createLiteralSymbol(event.key));
     },
 
+    handleMobileKeyboard(key) {
+      this.insertMathSymbol(symbolsDefinitions.createLiteralSymbol(key));
+    },
+
     removeActiveInput() {
       let activeInput = this.$store.getters.getActiveInput;
       if (activeInput) {
@@ -103,6 +107,10 @@ export default {
   created() {
     EventBus.$on("mastSymbolButtonClick", symbol =>
       this.insertMathSymbol(symbol)
+    );
+
+    EventBus.$on("keyboardButtonClick", key =>
+      this.handleMobileKeyboard(key)
     );
 
     let payload = {

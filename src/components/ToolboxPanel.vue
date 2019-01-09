@@ -19,17 +19,15 @@
           </b-col>
         </b-row>
         <!-- TODO - correct displays - ex 5-6 in a row -->
-        <div v-if="activeCategory.name == categories.letter">
-          <!-- TODO - display alphabet -->
-          <b-row v-for="(row, index) in keyboard" v-bind:key="index">
-            <b-col cols="1" v-for="(key, keyIndex) in row" v-bind:key="keyIndex">
-              <keyboard-button :character="key"></keyboard-button>
-            </b-col>
-          </b-row>
+        <div v-if="activeCategory.name == categories.letter" class="keyboard-container">
+          <div v-for="(row, index) in keyboard" v-bind:key="index" class="keyboard-row">
+              <keyboard-button v-for="(key, keyIndex) in row" v-bind:key="keyIndex" :character="key"></keyboard-button>
+          </div>
         </div>
-        <div v-else-if="activeCategory.name == categories.digit">
-          <!-- TODO - display digits -->
-          <span>digits keyboard</span>
+        <div v-else-if="activeCategory.name == categories.digit" class="keyboard-container">
+          <div v-for="(row, index) in numpad" v-bind:key="index" class="keyboard-row">
+            <keyboard-button v-for="(key, keyIndex) in row" v-bind:key="keyIndex" :character="key"></keyboard-button>
+          </div>
         </div>
         <div v-else>
           <math-symbol-button
@@ -111,12 +109,25 @@ export default {
       "a,s,d,f,g,h,j,k,l".split(","),
       "z,x,c,v,b,n,m".split(",")
     ];
+    this.numpad = [
+      "1,2,3,4,5,6,7,8,9,0".split(",")
+    ];
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.keyboard-container {
+  margin: 5px;
+}
+
+.keyboard-row {
+  overflow: auto;
+  white-space: nowrap;
+  margin-bottom: 1px;
+}
+
 .toolbox-area {
   border: 0.5px solid rgb(51, 51, 51);
   display: inline-block;

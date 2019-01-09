@@ -1,9 +1,7 @@
 <template>
-  <b-col class="math-symbol-button">
-    <b-button class="symbol-btn" variant="primary" v-on:click="insertSymbol()">
+    <b-button class="symbol-btn" variant="primary" v-on:click="insertKey()">
       <span>{{ character }}</span>
     </b-button>
-  </b-col>
 </template>
 
 <script>
@@ -16,8 +14,8 @@ export default {
     character: String
   },
   methods: {
-    insertSymbol() {
-      EventBus.$emit("mastSymbolButtonClick", this.symbol);
+    insertKey() {
+      EventBus.$emit("keyboardButtonClick", this.character);
     }
   }
 };
@@ -25,15 +23,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.math-symbol-button {
-  margin: 10px 0px 10px 0px;
-}
 
 .symbol-btn {
-  font-size: 1.3em;
+  display: inline-block;
+  padding: 0px;
+  margin: 0px;
+  width: 22px;
 }
 
-.symbol-img {
-  max-width: 25px;
-}
 </style>

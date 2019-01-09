@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import { EventBus } from "../../event-bus.js";
 import sizeMixins from "../../mixins/sizeMixins.js";
 import stylingMixins from "../../mixins/stylingMixins.js";
 
