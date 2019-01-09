@@ -113,6 +113,10 @@ export default {
       this.handleMobileKeyboard(key)
     );
 
+    EventBus.$on("backspaceButtonClick", () =>
+      this.removeLastFromActiveInput()
+    );
+
     let payload = {
       equationObject: mathComponents.initialEquationObject()
     };

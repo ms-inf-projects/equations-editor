@@ -23,10 +23,16 @@
           <div v-for="(row, index) in keyboard" v-bind:key="index" class="keyboard-row">
               <keyboard-button v-for="(key, keyIndex) in row" v-bind:key="keyIndex" :character="key"></keyboard-button>
           </div>
+          <div class="keyboard-container"> 
+            <backspace-button/>
+          </div>
         </div>
         <div v-else-if="activeCategory.name == categories.digit" class="keyboard-container">
           <div v-for="(row, index) in numpad" v-bind:key="index" class="keyboard-row">
             <keyboard-button v-for="(key, keyIndex) in row" v-bind:key="keyIndex" :character="key"></keyboard-button>
+          </div>
+          <div class="keyboard-container"> 
+            <backspace-button/>
           </div>
         </div>
         <div v-else>
@@ -37,6 +43,9 @@
             :symbol="symbol"
             isCode="true"
           ></math-symbol-button>
+          <div class="keyboard-container"> 
+            <backspace-button/>
+          </div>
         </div>
       </div>
     </div>
@@ -47,6 +56,7 @@
 import symbolsDefinitions from "../modules/symbolsDefinitions.js";
 import MathSymbolButton from "./MathSymbolButton.vue";
 import KeyboardButton from "./KeyboardButton.vue";
+import BackspaceButton from "./BackspaceButton.vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -58,7 +68,8 @@ export default {
   name: "ToolboxPanel",
   components: {
     MathSymbolButton,
-    KeyboardButton
+    KeyboardButton,
+    BackspaceButton
   },
   data() {
     return {

@@ -1,5 +1,5 @@
 <template>
-  <b-col class="math-symbol-button">
+  <b-col class="math-symbol-button" cols="4">
     <b-button class="symbol-btn" variant="primary" v-on:click="insertSymbol()">
       <img v-if="symbol.iconPath" :src="symbol.iconPath" class="symbol-img">
       <span v-else>{{ symbol.text }}</span>
@@ -37,6 +37,7 @@ export default {
 <style scoped>
 .math-symbol-button {
   margin: 10px 0px 10px 0px;
+  display: inline-block;
 }
 
 .symbol-btn {
