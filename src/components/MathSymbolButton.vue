@@ -1,22 +1,17 @@
 <template>
-    <b-col class="math-symbol-button">
-      <b-button class="symbol-btn" variant="primary" v-on:click="insertSymbol()">
-        <img 
-             v-if="symbol.iconPath" 
-             :src="symbol.iconPath" 
-             class="symbol-img" />
-        <span v-else>
-          {{ symbol.text }}
-        </span>
-      </b-button>
-    </b-col> 
+  <b-col class="math-symbol-button" cols="4">
+    <b-button class="symbol-btn" variant="primary" v-on:click="insertSymbol()">
+      <img v-if="symbol.iconPath" :src="symbol.iconPath" class="symbol-img">
+      <span v-else>{{ symbol.text }}</span>
+    </b-button>
+  </b-col>
 </template>
 
 <script>
 import { EventBus } from "../event-bus.js";
 
 export default {
-  name: "ExportButton",
+  name: "MathSymbolButton",
   components: {},
   props: {
     mathSymbolDisplay: String,
@@ -42,6 +37,7 @@ export default {
 <style scoped>
 .math-symbol-button {
   margin: 10px 0px 10px 0px;
+  display: inline-block;
 }
 
 .symbol-btn {

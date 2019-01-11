@@ -48,7 +48,6 @@ export default {
     borderWidth() {
       return 1;
     },
-    degreeInputYPosition() {},
     baseInputXPosition() {
       return (
         this.component.degreeEqObject.width + this.component.baseSize.width
