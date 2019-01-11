@@ -1,52 +1,62 @@
 <template>
   <div class="toolbox-panel">
-      <div class="section-header toolbox-header hide-on-mobile">
-        toolbox
+    <div class="section-header toolbox-header hide-on-mobile">toolbox</div>
+    <div class="toggle-button show-on-mobile" v-on:click="toggleToolbox">
+      <span>{{ buttonText }}</span>
+    </div>
+    <div class="toolbox toolbox-responsive" v-bind:class="{ hidden: !toolboxDisplayed }">
+      <div class="change-palet-btn left" v-on:click="swapCategory(-1)">
+        <font-awesome-icon icon="angle-left"/>
       </div>
-      <div class="toggle-button show-on-mobile" v-on:click="toggleToolbox">
-        <span > {{ buttonText }} </span>
-      </div>
-      <div class="toolbox toolbox-responsive" v-bind:class="{ hidden: !toolboxDisplayed }">
-
-        <div class="change-palet-btn left" v-on:click="swapCategory(-1)">
-          <font-awesome-icon icon="angle-left" />
-        </div>
-        <div class="change-palet-btn right" v-on:click="swapCategory(1)">
-          <font-awesome-icon icon="angle-right" />    
-        </div>
-
-        <div class="toolbox-area" >
-          <b-row class="category-name">
-            <b-col>
-              <span >{{ activeCategory.name }}</span>
-            </b-col>
-          </b-row>
-          <!-- TODO - correct displays - ex 5-6 in a row -->
-          <div v-if="activeCategory.name == categories.letter">
-            <!-- TODO - display alphabet -->
-            <span>alphabet keyboard</span>
-          </div>
-          <div v-else-if="activeCategory.name == categories.digit">
-            <!-- TODO - display digits -->
-            <span>digits keyboard</span>
-          </div>
-          <div v-else>
-            <math-symbol-button v-for="(symbol, index) in symbols"
-                    v-bind:key="index"
-                    v-if="symbol.category == activeCategory.name"
-                    :symbol='symbol' 
-                    isCode="true" ></math-symbol-button>
-          </div>
-        </div>
-
+      <div class="change-palet-btn right" v-on:click="swapCategory(1)">
+        <font-awesome-icon icon="angle-right"/>
       </div>
 
+      <div class="toolbox-area">
+        <b-row class="category-name">
+          <b-col>
+            <span>{{ activeCategory.name }}</span>
+          </b-col>
+        </b-row>
+        <!-- TODO - correct displays - ex 5-6 in a row -->
+        <div v-if="activeCategory.name == categories.letter" class="keyboard-container">
+          <div v-for="(row, index) in keyboard" v-bind:key="index" class="keyboard-row">
+              <keyboard-button v-for="(key, keyIndex) in row" v-bind:key="keyIndex" :character="key"></keyboard-button>
+          </div>
+          <div class="keyboard-container"> 
+            <backspace-button/>
+          </div>
+        </div>
+        <div v-else-if="activeCategory.name == categories.digit" class="keyboard-container">
+          <div v-for="(row, index) in numpad" v-bind:key="index" class="keyboard-row">
+            <keyboard-button v-for="(key, keyIndex) in row" v-bind:key="keyIndex" :character="key"></keyboard-button>
+          </div>
+          <div class="keyboard-container"> 
+            <backspace-button/>
+          </div>
+        </div>
+        <div v-else>
+          <math-symbol-button
+            v-for="(symbol, index) in symbols"
+            v-bind:key="index"
+            v-if="symbol.category == activeCategory.name"
+            :symbol="symbol"
+            isCode="true"
+          ></math-symbol-button>
+          <div class="keyboard-container"> 
+            <backspace-button/>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import symbolsDefinitions from "../modules/symbolsDefinitions.js";
 import MathSymbolButton from "./MathSymbolButton.vue";
+import KeyboardButton from "./KeyboardButton.vue";
+import BackspaceButton from "./BackspaceButton.vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faAngleRight, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
@@ -57,7 +67,9 @@ library.add(faAngleLeft);
 export default {
   name: "ToolboxPanel",
   components: {
-    MathSymbolButton
+    MathSymbolButton,
+    KeyboardButton,
+    BackspaceButton
   },
   data() {
     return {
@@ -66,7 +78,9 @@ export default {
       categoriesArray: Array,
       activeCategory: Object,
       toolboxDisplayed: true,
-      buttonText: "Hide toolbox"
+      buttonText: "Hide toolbox",
+      keyboard: [],
+      numpad: []
     };
   },
 
@@ -100,12 +114,31 @@ export default {
       name: this.categoriesArray[0]
     };
     console.log(this.activeCategory.name);
+
+    this.keyboard = [
+      "q,w,e,r,t,y,u,i,o,p".split(","),
+      "a,s,d,f,g,h,j,k,l".split(","),
+      "z,x,c,v,b,n,m".split(",")
+    ];
+    this.numpad = [
+      "1,2,3,4,5,6,7,8,9,0".split(",")
+    ];
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.keyboard-container {
+  margin: 5px;
+}
+
+.keyboard-row {
+  overflow: auto;
+  white-space: nowrap;
+  margin-bottom: 1px;
+}
+
 .toolbox-area {
   border: 0.5px solid rgb(51, 51, 51);
   display: inline-block;

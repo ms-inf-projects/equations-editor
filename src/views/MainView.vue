@@ -16,7 +16,6 @@
         </b-col>
       
       </b-row>
-      <export-panel/>
     </b-container>
   </div>
 </template>
