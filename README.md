@@ -15,9 +15,14 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
+### Run unit tests
 ```
 npm run test
+```
+
+### Run acceptance tests
+```
+robot tests
 ```
 
 ### Lints and fixes files
